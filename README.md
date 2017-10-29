@@ -1,8 +1,8 @@
 # Rest
 
-Rest (*noun*) is a modular web framework. ¯\\_(ツ)_/¯
+Rest (*noun*) is a yet another modular web framework. ¯\\\_(ツ)\_/¯
 
-> Take some Rest!
+> Take some Rest! 🍻
 
 [![Build Status](https://travis-ci.org/vladfaust/rest.cr.svg?branch=master)](https://travis-ci.org/vladfaust/rest.cr) [![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://vladfaust.com/rest.cr) [![Dependencies](https://shards.rocks/badge/github/vladfaust/rest.cr/status.svg)](https://shards.rocks/github/vladfaust/rest.cr) [![GitHub release](https://img.shields.io/github/release/vladfaust/rest.cr.svg)](https://github.com/vladfaust/rest.cr/releases)
 

@@ -1,5 +1,5 @@
 require "./rest/*"
 
-# Rest (*noun*) is a collection of independent web framework components.
+# Rest (*noun*) is a yet another modular web framework. ¯\\\_(ツ)\_/¯
 module Rest
 end
