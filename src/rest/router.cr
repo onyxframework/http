@@ -1,4 +1,5 @@
 require "radix"
+require "http/web_socket"
 require "./ext/http/request/action"
 require "./ext/http/request/path_params"
 
@@ -23,10 +24,12 @@ module Rest
   class Router
     include HTTP::Handler
     alias ContextProc = ::Proc(HTTP::Server::Context, Nil)
+    alias WebSocketProc = ::Proc(HTTP::WebSocket, HTTP::Server::Context, Nil)
+    alias Node = ContextProc | HTTP::WebSocketHandler
 
     # :nodoc:
     HTTP_METHODS = %w(get post put patch delete options)
-    @tree = Radix::Tree(ContextProc).new
+    @tree = Radix::Tree(Node).new
 
     # Initialize a new router and yield it. You can define routes in *&block*.
     #
@@ -71,6 +74,14 @@ module Rest
         end
       end
     {% end %}
+
+    def ws(path, &proc : WebSocketProc)
+      begin
+        @tree.add("/get" + path, HTTP::WebSocketHandler.new(&proc))
+      rescue Radix::Tree::DuplicateError
+        raise DuplicateRouteError.new("WS " + path)
+      end
+    end
 
     # Raised if duplicate route found
     class DuplicateRouteError < Exception

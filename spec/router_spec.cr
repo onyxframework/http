@@ -11,6 +11,10 @@ class Rest::Router
       r.post "/foo" do |env|
         env.response.print("foo")
       end
+
+      r.ws "/bar/:baz" do |socket, env|
+        socket.send "Hello!"
+      end
     end
 
     describe Rest::Router do
@@ -37,6 +41,19 @@ class Rest::Router
 
         it "sets empty path params" do
           context.request.path_params.not_nil!.empty?.should be_true
+        end
+      end
+
+      context "ws /bar" do
+        context = dummy_context(Req.new("GET", "/bar/kek"))
+        router.call(context)
+
+        it "updates request action" do
+          context.request.action.should be_a(HTTP::WebSocketHandler)
+        end
+
+        it "sets path params" do
+          context.request.path_params.should eq({"baz" => "kek"})
         end
       end
 
