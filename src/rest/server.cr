@@ -38,7 +38,7 @@ module Rest
     end
 
     # :nodoc:
-    COLORS = %i(red green yellow blue cyan)
+    COLORS = %i(green yellow blue cyan)
 
     def listen
       color = COLORS.sample(1).first
