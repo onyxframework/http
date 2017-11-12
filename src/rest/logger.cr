@@ -17,11 +17,22 @@ module Rest
   class Logger
     include HTTP::Handler
 
+    WS_COLOR = :cyan
+
     def initialize(@logger : ::Logger)
     end
 
     def call(context)
       time = Time.now
+
+      websocket = context.request.headers["Upgrade"]? == "websocket"
+
+      if websocket
+        method = "WS".rjust(6).colorize(WS_COLOR).mode(:bold)
+        resource = context.request.resource.colorize(WS_COLOR)
+        progess = "pending".colorize(:dark_gray)
+        @logger.info("#{method} #{resource} #{progess}")
+      end
 
       begin
         call_next(context)
@@ -38,7 +49,7 @@ module Rest
           color = :yellow
         end
 
-        method = context.request.method.rjust(6).colorize(color).mode(:bold)
+        method = (websocket ? "WS" : context.request.method).rjust(6).colorize(color).mode(:bold)
         resource = context.request.resource.colorize(color)
         status_code = context.response.status_code.colorize(color).mode(:bold)
 
