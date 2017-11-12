@@ -8,6 +8,10 @@ module Rest
         context.request.auth
       end
 
+      def auth?
+        auth.try &.auth
+      end
+
       # Invoke `#auth.auth` or close the socket
       macro auth!
         def auth

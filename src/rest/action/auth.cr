@@ -7,6 +7,10 @@ module Rest
         context.request.auth
       end
 
+      def auth?
+        auth.try &.auth
+      end
+
       # Invoke `#auth.auth` and `halt!(401)` if returns falsey value.
       macro auth!
         def auth

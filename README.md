@@ -76,9 +76,10 @@ server.listen
 
 ```crystal
 class Auth < Rest::Authable
-  getter user : User?
+  @user : User? = nil
+  getter! user
 
-  def initialize(@token : String?)
+  def initialize(@token : String)
   end
 
   # This method will be lazily called on `auth!`
@@ -107,7 +108,7 @@ auth = Rest::ProcHandler.new do |handler, context|
 end
 ```
 
-A soft auth could be applied as well, just do not do `auth!`; in this case, you'll need to call `auth.try &.auth` manually.
+A soft auth could be applied as well, just do not do `auth!`; in this case, you'll need to call `auth?` then, which is a shortcut to `context.request.auth.try &.auth`.
 
 ### Websockets ⚡️
 
