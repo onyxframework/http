@@ -46,7 +46,11 @@ module Rest
     end
 
     def call(context : HTTP::Server::Context)
-      result = @tree.find("/" + context.request.method.downcase + context.request.path)
+      if context.request.headers["Upgrade"]? == "websocket"
+        result = @tree.find("/ws" + context.request.path)
+      else
+        result = @tree.find("/" + context.request.method.downcase + context.request.path)
+      end
 
       if result.found?
         context.request.action = result.payload
@@ -75,9 +79,20 @@ module Rest
       end
     {% end %}
 
+    # Draw a WebSocket route for *path*.
+    #
+    # NOTE: Such route will be accessible **only** via `ws://` or `wss://` schemes!
+    #
+    # ```
+    # router = Rest::Router.new do |r|
+    #   r.ws "/foo/:bar" do |socket, context|
+    #     socket.send("Hello WS!")
+    #   end
+    # end
+    # ```
     def ws(path, &proc : WebSocketProc)
       begin
-        @tree.add("/get" + path, HTTP::WebSocketHandler.new(&proc))
+        @tree.add("/ws" + path, HTTP::WebSocketHandler.new(&proc))
       rescue Radix::Tree::DuplicateError
         raise DuplicateRouteError.new("WS " + path)
       end

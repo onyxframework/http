@@ -12,7 +12,7 @@ class Rest::Router
         env.response.print("foo")
       end
 
-      r.ws "/bar/:baz" do |socket, env|
+      r.ws "/foo/:bar" do |socket, env|
         socket.send "Hello!"
       end
     end
@@ -44,8 +44,10 @@ class Rest::Router
         end
       end
 
-      context "ws /bar" do
-        context = dummy_context(Req.new("GET", "/bar/kek"))
+      context "ws /foo/baz" do
+        context = dummy_context(Req.new("GET", "/foo/baz", headers: HTTP::Headers{
+          "Upgrade" => "websocket",
+        }))
         router.call(context)
 
         it "updates request action" do
@@ -53,7 +55,7 @@ class Rest::Router
         end
 
         it "sets path params" do
-          context.request.path_params.should eq({"baz" => "kek"})
+          context.request.path_params.should eq({"bar" => "baz"})
         end
       end
 
