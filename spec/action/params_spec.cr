@@ -7,7 +7,9 @@ module Rest::Action::Params::Spec
     include Params
 
     params do
-      param :id, Int32
+      param :id, Int32, validate: ->(id : Int32) do
+        id >= 42
+      end
       param :value, Int32?
       param :time, Time?
     end
@@ -54,7 +56,7 @@ module Rest::Action::Params::Spec
       end
     end
 
-    context "with invalid params" do
+    context "with invalid params types" do
       response = handle_request(RestAction, Req.new(method: "GET", resource: "/?id=foo"))
 
       it "updates status" do
@@ -63,6 +65,18 @@ module Rest::Action::Params::Spec
 
       it "halts" do
         response.body.should eq "Parameter \"id\" is expected to be Int32"
+      end
+    end
+
+    context "with invalid params" do
+      response = handle_request(RestAction, Req.new(method: "GET", resource: "/?id=41"))
+
+      it "updates status" do
+        response.status_code.should eq 400
+      end
+
+      it "halts" do
+        response.body.should eq "Parameter \"id\" is invalid"
       end
     end
   end

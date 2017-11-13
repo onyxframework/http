@@ -13,18 +13,18 @@ module Rest
   #   include Rest::Params
   #
   #   params do
-  #     param :foo, Int32
-  #     param :name, String?
+  #     param :foo, Int32?
+  #     param :name, String, validate: ->(name : String?) { name.size >= 3 }
   #   end
   #
   #   def self.call(context)
   #     params = parse_params(context)
   #
   #     p params[:foo].class
-  #     # => Int32
+  #     # => Int32?
   #
   #     p params[:name].class
-  #     # => String?
+  #     # => String
   #   end
   # end
   # ```
@@ -72,6 +72,7 @@ module Rest
         name: Symbol,
         type: String,
         nilable: Bool,
+        validation: Proc?
       )
 
       {{yield}}
@@ -87,12 +88,13 @@ module Rest
     # - *name* declares an access key for the `params` tuple
     # - *type* defines a type which the param must be casted to, otherwise validation will fail (i.e. "foo" won't cast to `Int32`)
     # - *:nilable* option declares if this param is nilable (the same effect is achieved with nilable *type*, i.e. `Int32?`)
+    # - *validate* option accepts a `Proc` which must return truthy value for the param to pass validation
     #
     # NOTE: If a param is nilable, but is present and of invalid type, an `InvalidParamTypeError` will be raised.
     #
     # ```
     # params do
-    #   param :id, Int32
+    #   param :id, Int32, validate: ->(id : Int32) { id > 0 }
     #   param :name, String?             # => Nilable
     #   param :age, Int32, nilable: true # => Nilable as well
     # end
@@ -106,9 +108,10 @@ module Rest
                   end
 
         REST___PARAMS.push({
-          name:    name,
-          type:    _type,
-          nilable: nilable,
+          name:       name,
+          type:       _type,
+          nilable:    nilable,
+          validation: options[:validate],
         })
       %}
     end
@@ -203,9 +206,11 @@ module Rest
         __type = _type.is_a?(Generic) ? _type.type_vars.first.resolve : _type.resolve
       %}
 
+      %temp = uninitialized {{_type.id}}
+
       begin
-        _temp_params[{{name}}] = {{__type}}.from_s({{value.id}}.to_s)
-      rescue ex : ArgumentError
+        %temp = {{__type}}.from_s({{value.id}}.to_s)
+      rescue ArgumentError
         {%
           expected_type = _type.is_a?(Generic) ? _type.type_vars.join(" or ") : _type.stringify
         %}
@@ -215,6 +220,18 @@ module Rest
           expected_type: {{expected_type}},
         )
       end
+
+      # OPTIMIZE
+      {% param = REST___PARAMS.find { |p| p[:name] == name } %}
+      {% if param && (validation_proc = param[:validation]) %}
+        begin
+          {{validation_proc.id}}.call(%temp) || raise "Invalid"
+        rescue
+          raise InvalidParamError.new({{name.id.stringify}})
+        end
+      {% end %}
+
+      _temp_params[{{name}}] = %temp
     end
 
     class InvalidParamTypeError < Exception
@@ -235,6 +252,18 @@ module Rest
       getter name
 
       MESSAGE_TEMPLATE = "Parameter \"%{name}\" is missing"
+
+      def initialize(@name : String)
+        super(MESSAGE_TEMPLATE % {
+          name: @name,
+        })
+      end
+    end
+
+    class InvalidParamError < Exception
+      getter name
+
+      MESSAGE_TEMPLATE = "Parameter \"%{name}\" is invalid"
 
       def initialize(@name : String)
         super(MESSAGE_TEMPLATE % {

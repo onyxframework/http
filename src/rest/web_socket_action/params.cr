@@ -19,7 +19,7 @@ module Rest
             begin
               @params = self.class.parse_params(context)
               true
-            rescue ex : InvalidParamTypeError | ParamNotFoundError
+            rescue ex : InvalidParamTypeError | ParamNotFoundError | InvalidParamError
               socket.close(ex.message)
               false
             end

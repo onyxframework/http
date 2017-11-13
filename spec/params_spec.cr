@@ -6,7 +6,9 @@ module Rest::Params::Specs
     include Rest::Params
 
     params do
-      param :id, Int32
+      param :id, Int32, validate: ->(id : Int32) {
+        id >= 42
+      }
       param :value, Int32?
       param :time, Time?
     end
@@ -72,6 +74,14 @@ module Rest::Params::Specs
       it "raises" do
         expect_raises(InvalidParamTypeError) do
           response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&value=foo"))
+        end
+      end
+    end
+
+    context "with invalid params" do
+      it "raises" do
+        expect_raises(InvalidParamError) do
+          response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=41"))
         end
       end
     end
