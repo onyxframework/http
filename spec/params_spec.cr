@@ -40,38 +40,38 @@ module Rest::Params::Specs
       it "has time in params" do
         SimpleAction.last_params[:time].should eq Time.epoch(1506952232)
       end
+    end
 
-      context "with missing insignificant param" do
-        response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42"))
+    context "with missing insignificant param" do
+      response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42"))
 
-        it "doesn't halt" do
-          response.body.should eq "ok"
+      it "doesn't halt" do
+        response.body.should eq "ok"
+      end
+
+      it "returns params" do
+        SimpleAction.last_params[:id].should eq 42
+      end
+    end
+
+    context "with missing significant params" do
+      it "raises" do
+        expect_raises(ParamNotFoundError) do
+          response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?value=42"))
         end
+      end
+    end
 
-        it "returns params" do
-          SimpleAction.last_params[:id].should eq 42
+    context "with invalid params type" do
+      it "raises" do
+        expect_raises(InvalidParamTypeError) do
+          response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=foo"))
         end
       end
 
-      context "with missing significant params" do
-        it "raises" do
-          expect_raises(ParamNotFoundError) do
-            response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?value=42"))
-          end
-        end
-      end
-
-      context "with invalid params" do
-        it "raises" do
-          expect_raises(InvalidParamTypeError) do
-            response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=foo"))
-          end
-        end
-
-        it "raises" do
-          expect_raises(InvalidParamTypeError) do
-            response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&value=foo"))
-          end
+      it "raises" do
+        expect_raises(InvalidParamTypeError) do
+          response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&value=foo"))
         end
       end
     end
