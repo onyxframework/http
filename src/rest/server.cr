@@ -44,7 +44,7 @@ module Rest
       color = COLORS.sample(1).first
 
       @logger.info(
-        "Rest".rjust(6).colorize(color).mode(:bold).to_s +
+        "Rest".rjust(7).colorize(color).mode(:bold).to_s +
         " server " +
         "v#{VERSION}".colorize(:light_gray).mode(:bold).to_s +
         " is up @ " +
@@ -53,7 +53,7 @@ module Rest
 
       Signal::INT.trap do
         @logger.info(
-          "Rest".rjust(6).colorize(color).mode(:bold).to_s +
+          "Rest".rjust(7).colorize(color).mode(:bold).to_s +
           " server is going to take some rest ~(˘▾˘~)"
         )
         exit

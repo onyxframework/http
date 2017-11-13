@@ -10,9 +10,9 @@ module Rest
   # require "rest/logger"
   # logger = Rest::Logger.new(Logger.new(STDOUT))
   #
-  # #   INFO -- :    GET /users 200 102μs
-  # #   INFO -- :    GET /favicon.ico 404 52μs
-  # #   INFO -- :   POST /users 201 3.74ms
+  # #   INFO -- :     GET /users 200 102μs
+  # #   INFO -- :     GET /favicon.ico 404 52μs
+  # #   INFO -- :    POST /users 201 3.74ms
   # ```
   class Logger
     include HTTP::Handler
@@ -28,7 +28,7 @@ module Rest
       websocket = context.request.headers["Upgrade"]? == "websocket"
 
       if websocket
-        method = "WS".rjust(6).colorize(WS_COLOR).mode(:bold)
+        method = "WS".rjust(7).colorize(WS_COLOR).mode(:bold)
         resource = context.request.resource.colorize(WS_COLOR)
         progess = "pending".colorize(:dark_gray)
         @logger.info("#{method} #{resource} #{progess}")
@@ -49,7 +49,7 @@ module Rest
           color = :yellow
         end
 
-        method = (websocket ? "WS" : context.request.method).rjust(6).colorize(color).mode(:bold)
+        method = (websocket ? "WS" : context.request.method).rjust(7).colorize(color).mode(:bold)
         resource = context.request.resource.colorize(color)
         status_code = context.response.status_code.colorize(color).mode(:bold)
 
