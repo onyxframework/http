@@ -11,6 +11,7 @@ module Rest::Params::Specs
       }
       param :value, Int32?
       param :time, Time?
+      param :float_value, Float64?
     end
 
     @@last_params = uninitialized ParamsTuple
@@ -41,6 +42,26 @@ module Rest::Params::Specs
 
       it "has time in params" do
         SimpleAction.last_params[:time].should eq Time.epoch(1506952232)
+      end
+    end
+
+    describe "testing certain content types" do
+      context "JSON" do
+        response = handle_request(SimpleAction, Req.new(
+          method: "POST",
+          resource: "/",
+          body: {
+            id:          42,
+            float_value: 0.000000000001,
+          }.to_json,
+          headers: HTTP::Headers{
+            "Content-Type" => "application/json",
+          }
+        ))
+
+        it "properly parses float" do
+          SimpleAction.last_params[:float_value].should eq 0.000000000001
+        end
       end
     end
 

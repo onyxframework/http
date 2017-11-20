@@ -1,4 +1,5 @@
 require "./ext/from_s"
+require "./ext/json/lexer"
 require "json"
 
 module Rest
@@ -31,7 +32,7 @@ module Rest
   #
   # Params parsing order (latter rewrites previous):
   #
-  # 1. Path params (only if `"rest/ext/http/request/path_params"` is required)
+  # 1. Path params (only if `"rest/ext/http/request/path_params"` is required **before**)
   # 2. Request query params
   # 3. Multipart form data (only if `"Content-Type"` is `"multipart/form-data"`)
   # 4. Body params (only if `"Content-Type"` is `"application/x-www-form-urlencoded"`)
