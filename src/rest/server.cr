@@ -47,7 +47,7 @@ module Rest
         "Rest".rjust(7).colorize(color).mode(:bold).to_s +
         " server " +
         "v#{VERSION}".colorize(:light_gray).mode(:bold).to_s +
-        " is up @ " +
+        " is working at " +
         "http://#{@host}:#{@port}".colorize.mode(:bold).to_s
       )
 

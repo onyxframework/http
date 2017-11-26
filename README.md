@@ -71,7 +71,7 @@ handlers = [
 server = Rest::Server.new("localhost", 5000, handlers, logger)
 server.listen
 
-#  INFO -- :    Rest server v0.1.0 is up @ http://localhost:5000
+#  INFO -- :    Rest server v0.1.0 is working at http://localhost:5000
 ```
 
 ### Auth
