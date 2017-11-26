@@ -60,6 +60,25 @@ module Rest
       call_next(context)
     end
 
+    # Draw a route for *path* and *methods*.
+    #
+    # ```
+    # router = Rest::Router.new do |r|
+    #   r.on "/foo", methods: %w(get post) do |context|
+    #     context.response.print("Hello from #{context.request.method} /foo!")
+    #   end
+    # end
+    # ```
+    def on(path, methods : Array(String), &proc : ContextProc)
+      methods.map(&.downcase).each do |method|
+        begin
+          @tree.add("/" + method + path, proc)
+        rescue Radix::Tree::DuplicateError
+          raise DuplicateRouteError.new(method.upcase + " " + path)
+        end
+      end
+    end
+
     {% for method in HTTP_METHODS %}
       # Draw a route for *path* with `{{method.upcase.id}}` method.
       #
@@ -71,11 +90,7 @@ module Rest
       # end
       # ```
       def {{method.id}}(path, &proc : ContextProc)
-        begin
-          @tree.add("/" + {{method}} + path, proc)
-        rescue Radix::Tree::DuplicateError
-          raise DuplicateRouteError.new({{method.upcase}} + " " + path)
-        end
+        on(path, [{{method}}], &proc)
       end
     {% end %}
 

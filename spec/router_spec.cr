@@ -15,6 +15,10 @@ class Rest::Router
       r.ws "/foo/:bar" do |socket, env|
         socket.send "Hello!"
       end
+
+      r.on "/baz", methods: %w(put options) do |env|
+        env.response.print("#{env.request.method} /baz")
+      end
     end
 
     describe Rest::Router do
@@ -56,6 +60,15 @@ class Rest::Router
 
         it "sets path params" do
           context.request.path_params.should eq({"bar" => "baz"})
+        end
+      end
+
+      context "put/options /baz" do
+        context = dummy_context(Req.new("PUT", "/baz"))
+        router.call(context)
+
+        it "updates request action" do
+          context.request.action.should be_a(::Proc(HTTP::Server::Context, Nil))
         end
       end
 

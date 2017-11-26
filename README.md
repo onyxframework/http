@@ -57,6 +57,10 @@ router = Rest::Router.new do |r|
   r.get "/users/:id" do |env|
     GetUser.call(env)
   end
+
+  r.on "/users/:id", methods: %w(post put) do |env|
+    env.response.print("Will update user #{env.request.path_params["id"]}")
+  end
 end
 
 handlers = [
