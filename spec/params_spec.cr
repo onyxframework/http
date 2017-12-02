@@ -12,6 +12,7 @@ module Rest::Params::Specs
       param :value, Int32?
       param :time, Time?
       param :float_value, Float64?
+      param :"kebab-param", String?
     end
 
     @@last_params = uninitialized ParamsTuple
@@ -26,7 +27,7 @@ module Rest::Params::Specs
 
   describe SimpleAction do
     context "with valid params" do
-      response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&value=42&time=1506952232"))
+      response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&value=42&time=1506952232&kebab-param=foo"))
 
       it "doesn't halt" do
         response.body.should eq "ok"
@@ -42,6 +43,10 @@ module Rest::Params::Specs
 
       it "has time in params" do
         SimpleAction.last_params[:time].should eq Time.epoch(1506952232)
+      end
+
+      it "has kebab-param in params" do
+        SimpleAction.last_params["kebab-param"].should eq "foo"
       end
     end
 

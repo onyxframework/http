@@ -5,7 +5,7 @@ require "json"
 module Rest
   # Request params access and validation module.
   #
-  # Extracts params from (nearly) all possible sources and casts them accordingly (invoking `Type.from_s`).
+  # Extracts params from (nearly) all possible sources and casts them accordingly (invoking `Type.from_s`) into a `NamedTuple`.
   #
   # ```
   # require "rest/action/params"
@@ -16,6 +16,7 @@ module Rest
   #   params do
   #     param :foo, Int32?
   #     param :name, String, validate: ->(name : String?) { name.size >= 3 }
+  #     param "kebab-case-time", Time?
   #   end
   #
   #   def self.call(context)
@@ -26,9 +27,14 @@ module Rest
   #
   #     p params[:name].class
   #     # => String
+  #
+  #     p params["kebab-case-time"].class
+  #     # => Time?
   #   end
   # end
   # ```
+  #
+  # NOTE: Params can be accessed both by `String` and `Symbol` keys.
   #
   # Params parsing order (latter rewrites previous):
   #
@@ -120,7 +126,7 @@ module Rest
     private macro define_params_tuple
       alias ParamsTuple = NamedTuple(
         {% for param in REST___PARAMS %}
-          {{param[:name].id}}: {{param[:type].id}}
+          "{{param[:name].id}}": {{param[:type].id}}
         {% end %}
       )
     end
