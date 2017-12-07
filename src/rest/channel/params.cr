@@ -1,8 +1,8 @@
 require "../params"
 
 module Rest
-  class WebSocketAction
-    # Params module for `WebSocketAction`. Closes the socket on validation error.
+  class Channel
+    # Params module for `Channel`. Closes the socket on validation error.
     module Params
       include Rest::Params
 

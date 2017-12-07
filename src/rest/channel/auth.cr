@@ -1,8 +1,8 @@
 require "../ext/http/request/auth"
 
 module Rest
-  class WebSocketAction
-    # Auth module for `WebSocketAction`. `auth!` closes the socket if unauthorized.
+  class Channel
+    # Auth module for `Channel`. `auth!` closes the socket if unauthorized.
     module Auth
       def auth
         context.request.auth

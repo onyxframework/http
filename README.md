@@ -119,9 +119,9 @@ A soft auth could be applied as well, just do not do `auth!`; in this case, you'
 Easy peazy:
 
 ```crystal
-require "rest/web_socket_action"
+require "rest/channel"
 
-class Notifications < Rest::WebSocketAction
+class Notifications < Rest::Channel
   @@subscriptions = Array(self).new # It's a custom code
 
   # It's a custom code as well
@@ -143,7 +143,7 @@ end
 
 router = Rest::Router.new do |r|
   r.ws "/notifications" do |socket, env|
-    Notifications.call(socket, env)
+    Notifications.subscribe(socket, env)
   end
 end
 

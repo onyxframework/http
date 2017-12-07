@@ -2,12 +2,12 @@ require "http/server"
 require "json"
 
 module Rest
-  # A callable WebSocket Action.
+  # A callable websocket Channel.
   #
   # ```
   # require "rest/web_socket_action"
   #
-  # class UserNotifications < Rest::WebSocketAction
+  # class UserNotifications < Rest::Channel
   #   include Auth
   #   include Params
   #
@@ -42,7 +42,7 @@ module Rest
   #
   # router = Rest::Router.new do |r|
   #   r.ws "/notifications" do |socket, env|
-  #     UserNotifications.call(socket, env)
+  #     UserNotifications.subscribe(socket, env)
   #   end
   # end
   #
@@ -50,7 +50,7 @@ module Rest
   #
   # UserNotifications.notify(user, "You've got a message!") # Damn it's cool
   # ```
-  class WebSocketAction
+  class Channel
     # Called once when a new socket is opened.
     def on_open
     end
@@ -76,13 +76,13 @@ module Rest
     def on_close
     end
 
-    # Initialize a new instance and invoke `#call_with_callbacks` on it.
-    def self.call(socket : HTTP::WebSocket, context : HTTP::Server::Context)
-      new(socket, context).call_with_callbacks
+    # Initialize a new instance and invoke `#subscribe_with_callbacks` on it.
+    def self.subscribe(socket : HTTP::WebSocket, context : HTTP::Server::Context)
+      new(socket, context).subscribe_with_callbacks
     end
 
     # Call `#on_open` and bind to the `socket`'s events. Read more @ [API docs](https://crystal-lang.org/api/0.23.1/HTTP/WebSocket.html).
-    def call
+    def subscribe
       on_open
 
       socket.on_message do |message|
@@ -107,12 +107,12 @@ module Rest
     end
 
     # :nodoc:
-    def call_with_callbacks
-      before && around { call } && after
+    def subscribe_with_callbacks
+      before && around { subscribe } && after
     end
 
-    # Before `#call` callback.
-    # Should return truthy value or the call sequence would halt.
+    # Before `#subscribe` callback.
+    # Should return truthy value or the subscribe sequence would halt.
     #
     # OPTIMIZE: See [this issue](https://github.com/crystal-lang/crystal/issues/5203).
     def before
@@ -125,14 +125,14 @@ module Rest
       end
     end
 
-    # Around `#call` wrapper.
+    # Around `#subscribe` wrapper.
     # If returns falsey value, `#after` is not called.
     def around(&block)
       yield
       true
     end
 
-    # After `#call` callback.
+    # After `#subscribe` callback.
     # NOTE: Remeber that once the body is printed, the request cannot be modified.
     def after
     end
@@ -146,4 +146,4 @@ module Rest
   end
 end
 
-require "./web_socket_action/*"
+require "./channel/*"
