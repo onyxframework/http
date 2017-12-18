@@ -45,6 +45,8 @@ module Rest
   # router = Rest::Router.new do |r|
   #   r.ws "/notifications" do |socket, env|
   #     UserNotifications.subscribe(socket, env)
+  #     # Or
+  #     UserNotifications.call(socket, env)
   #   end
   # end
   #
@@ -85,6 +87,11 @@ module Rest
     # Initialize a new instance and invoke `#subscribe_with_callbacks` on it.
     def self.subscribe(socket : HTTP::WebSocket, context : HTTP::Server::Context)
       new(socket, context).subscribe_with_callbacks
+    end
+
+    # ditto
+    def self.call(socket, context)
+      subscribe(socket, context)
     end
 
     # Call `#on_open` and bind to the `socket`'s events. Read more in [Crystal API docs](https://crystal-lang.org/api/0.23.1/HTTP/WebSocket.html).
