@@ -1,16 +1,14 @@
-# Rest
+<img src="https://user-images.githubusercontent.com/7955682/34129522-75a7bd5c-e455-11e7-9d64-d207b35c24d0.png" width="256">
 
-Rest (*noun*) is a yet another modular web framework. ¯\\\_(ツ)\_/¯
+Prism is a tiny but powerful Crystal web framework.
 
-> Take some Rest! 🍻
-
-[![Build Status](https://travis-ci.org/vladfaust/rest.cr.svg?branch=master)](https://travis-ci.org/vladfaust/rest.cr) [![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://vladfaust.com/rest.cr) [![Dependencies](https://shards.rocks/badge/github/vladfaust/rest.cr/status.svg)](https://shards.rocks/github/vladfaust/rest.cr) [![GitHub release](https://img.shields.io/github/release/vladfaust/rest.cr.svg)](https://github.com/vladfaust/rest.cr/releases)
+[![Build Status](https://travis-ci.org/vladfaust/prism.svg?branch=master)](https://travis-ci.org/vladfaust/prism) [![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://vladfaust.com/prism) [![Dependencies](https://shards.rocks/badge/github/vladfaust/prism/status.svg)](https://shards.rocks/github/vladfaust/prism) [![GitHub release](https://img.shields.io/github/release/vladfaust/prism.svg)](https://github.com/vladfaust/prism/releases)
 
 ## Why
 
-- Because I love modularity and hate Singletons.
-- Because I want simple params validation and typecasting.
-- Because I don't want many shards for Restful essentials like CORS and authorization.
+- Because I believe that a singleton *configuration* for an applicaiton is anti-pattern, e.g. what if you want multiple HTTP servers in one process?
+- Because I want *simple* params validation and typecasting.
+- Because I don't want many shards for Restful *essentials* like CORS and authorization.
 
 ## Installation
 
@@ -18,22 +16,22 @@ Add this to your application's `shard.yml`:
 
 ```yaml
 dependencies:
-  rest:
-    github: vladfaust/rest.cr
+  prism:
+    github: vladfaust/prism
 ```
 
 This shard follows [Semantic Versioning v2.0.0](http://semver.org/).
 
 ## Usage
 
-Please refer to the documentation available online @ [vladfaust.com/rest.cr](https://vladfaust.com/rest.cr).
+Please refer to the documentation available online at [vladfaust.com/prism](https://vladfaust.com/prism).
 
-The most of the `Rest` components can be used separately.
+### Basic example
 
 ```crystal
-require "rest"
+require "prism"
 
-struct GetUser < Rest::Action
+struct GetUser < Prism::Action
   include Params # Allow to declare params
 
   params do
@@ -49,7 +47,7 @@ struct GetUser < Rest::Action
   end
 end
 
-router = Rest::Router.new do |r|
+router = Prism::Router.new do |r|
   r.get "/" do |env|
     env.response.print("Hello world!")
   end
@@ -64,22 +62,22 @@ router = Rest::Router.new do |r|
 end
 
 handlers = [
-  Rest::Logger.new(logger),
+  Prism::Logger.new(logger),
   router,
 ]
 
-server = Rest::Server.new("localhost", 5000, handlers, logger)
+server = Prism::Server.new("localhost", 5000, handlers, logger)
 server.listen
 
-#  INFO -- :    Rest server v0.1.0 is working at http://localhost:5000
+#  INFO -- :    Prism server vX.Y.Z is listening on http://localhost:5000
 ```
 
 ### Auth
 
-`Rest::Authable`, `Rest::ProcHandler` and `Rest::Action::Auth` allow to define authentication logic in no time!
+`Prism::Authable`, `Prism::ProcHandler` and `Prism::Action::Auth` allow to define authentication logic in no time!
 
 ```crystal
-class Auth < Rest::Authable
+class Auth < Prism::Authable
   @user : User? = nil
   getter! user
 
@@ -92,7 +90,7 @@ class Auth < Rest::Authable
   end
 end
 
-struct SecureAction < Rest::Action
+struct SecureAction < Prism::Action
   include Auth
 
   auth! # Halt 401 unless authorized
@@ -104,7 +102,7 @@ struct SecureAction < Rest::Action
 end
 
 # Add this handler to handlers list before or after router
-auth = Rest::ProcHandler.new do |handler, context|
+auth = Prism::ProcHandler.new do |handler, context|
   if (token = context.request.query_params.to_h["token"]?)
     context.request.auth = Auth.new(token) # This
   end
@@ -119,9 +117,9 @@ A soft auth could be applied as well, just do not do `auth!`; in this case, you'
 Easy peazy:
 
 ```crystal
-require "rest/channel"
+require "prism/channel"
 
-class Notifications < Rest::Channel
+class Notifications < Prism::Channel
   @@subscriptions = Array(self).new # It's a custom code
 
   # It's a custom code as well
@@ -141,7 +139,7 @@ class Notifications < Rest::Channel
   end
 end
 
-router = Rest::Router.new do |r|
+router = Prism::Router.new do |r|
   r.ws "/notifications" do |socket, env|
     Notifications.subscribe(socket, env)
   end
@@ -154,7 +152,7 @@ Notifications.notify("A message") # How do you like that?!
 
 ## Contributing
 
-1. Fork it ( https://github.com/vladfaust/rest.cr/fork )
+1. Fork it ( https://github.com/vladfaust/prism/fork )
 2. Create your feature branch (git checkout -b my-new-feature)
 3. Commit your changes (git commit -am 'Add some feature')
 4. Push to the branch (git push origin my-new-feature)

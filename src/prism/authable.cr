@@ -1,10 +1,10 @@
-module Rest
+module Prism
   # An inheriting class will be marked as auth(*enticate*)able.
   #
   # ```
-  # require "rest/authable"
+  # require "prism/authable"
   #
-  # class Auth < Rest::Authable
+  # class Auth < Prism::Authable
   #   getter user : User?
   #
   #   def initialize(@token : String?)

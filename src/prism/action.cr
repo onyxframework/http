@@ -2,13 +2,13 @@ require "http/server"
 require "json"
 require "./callbacks"
 
-module Rest
+module Prism
   # A callable HTTP action with `Callbacks` included.
   #
   # NOTE: *(From [API](https://crystal-lang.org/api/0.23.1/HTTP/Server/Response.html)) The response #status_code and #headers must be configured before writing the response body. Once response output is written, changing the status and #headers properties has no effect.*
   #
   # ```
-  # struct MyAction < Rest::Action
+  # struct MyAction < Prism::Action
   #   def call
   #     text("ok")
   #   end
@@ -23,7 +23,7 @@ module Rest
   # ```
   abstract struct Action
     macro inherited
-      include Rest::Callbacks
+      include Prism::Callbacks
 
       before do
         copy_body; true # TODO: Ability to prevent copying

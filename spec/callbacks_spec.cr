@@ -1,7 +1,7 @@
 require "./spec_helper"
-require "../src/rest/callbacks"
+require "../src/prism/callbacks"
 
-module Rest::CallbacksSpec
+module Prism::CallbacksSpec
   class SimpleClass
     include Callbacks
 
@@ -43,7 +43,7 @@ module Rest::CallbacksSpec
     end
   end
 
-  describe Rest::Callbacks do
+  describe Prism::Callbacks do
     it do
       instance = SimpleClass.new
       instance.call

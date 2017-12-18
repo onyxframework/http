@@ -3,13 +3,13 @@ require "json"
 
 require "./callbacks"
 
-module Rest
+module Prism
   # A callable websocket Channel with `Callbacks` included.
   #
   # ```
-  # require "rest/web_socket_action"
+  # require "prism/web_socket_action"
   #
-  # class UserNotifications < Rest::Channel
+  # class UserNotifications < Prism::Channel
   #   include Auth
   #   include Params
   #
@@ -40,9 +40,9 @@ module Rest
   #   end
   # end
   #
-  # require "rest/router"
+  # require "prism/router"
   #
-  # router = Rest::Router.new do |r|
+  # router = Prism::Router.new do |r|
   #   r.ws "/notifications" do |socket, env|
   #     UserNotifications.subscribe(socket, env)
   #     # Or
@@ -56,7 +56,7 @@ module Rest
   # ```
   class Channel
     macro inherited
-      include Rest::Callbacks
+      include Prism::Callbacks
     end
 
     # Called once when a new socket is opened.

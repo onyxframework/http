@@ -1,9 +1,9 @@
 require "./spec_helper"
-require "../src/rest/params"
+require "../src/prism/params"
 
-module Rest::Params::Specs
+module Prism::Params::Specs
   class SimpleAction
-    include Rest::Params
+    include Prism::Params
 
     params do
       param :id, Int32, validate: ->(id : Int32) {

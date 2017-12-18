@@ -1,5 +1,5 @@
 require "shard"
 
-module Rest
+module Prism
   VERSION = Shard.version
 end

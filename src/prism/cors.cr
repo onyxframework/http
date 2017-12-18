@@ -1,13 +1,13 @@
 require "http/server/handler"
 
-module Rest
+module Prism
   # Extracted from [kemalyst](https://github.com/kemalyst/kemalyst/blob/master/src/kemalyst/handler/cors.cr).
   #
   # See [CORS on Wiki](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing).
   #
   # ```
-  # require "rest/cors"
-  # cors = Rest::CORS.new(allow_headers: %w(accept content-type authorization))
+  # require "prism/cors"
+  # cors = Prism::CORS.new(allow_headers: %w(accept content-type authorization))
   # ```
   class CORS
     include HTTP::Handler

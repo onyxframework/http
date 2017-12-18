@@ -1,4 +1,4 @@
-module Rest
+module Prism
   # This module allows to define callbacks.
   #
   # Example usage:

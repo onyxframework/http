@@ -1,9 +1,9 @@
 require "./spec_helper"
-require "../src/rest/action"
+require "../src/prism/action"
 
-struct Rest::Action
+struct Prism::Action
   module Specs
-    struct OkAction < Rest::Action
+    struct OkAction < Prism::Action
       def call
         status(205)
         text("ok")
@@ -23,7 +23,7 @@ struct Rest::Action
     end
   end
 
-  struct JsonAction < Rest::Action
+  struct JsonAction < Prism::Action
     def call
       json({"foo" => "bar"})
     end
@@ -37,7 +37,7 @@ struct Rest::Action
     end
   end
 
-  struct HaltAction < Rest::Action
+  struct HaltAction < Prism::Action
     class_property unwanted_calls_count = 0
 
     def call
@@ -64,7 +64,7 @@ struct Rest::Action
     end
   end
 
-  struct BodyAction < Rest::Action
+  struct BodyAction < Prism::Action
     class_property last_body : String? = nil
 
     def call
@@ -85,7 +85,7 @@ struct Rest::Action
     end
   end
 
-  struct CallbacksAction < Rest::Action
+  struct CallbacksAction < Prism::Action
     class_property buffer = [] of String
 
     def before

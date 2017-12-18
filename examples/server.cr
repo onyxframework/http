@@ -7,7 +7,7 @@
 # http://localhost:5000/users
 # http://localhost:5000/users/1?token=abc
 
-require "../src/rest"
+require "../src/prism"
 
 PORT = 5001
 
@@ -25,7 +25,7 @@ end
 USERS = [User.new(1, "Foo", "abc"), User.new(2, "Bar", "xyz")]
 
 # This class will be injected into request when auth handler is called (see below)
-class Auth < Rest::Authable
+class Auth < Prism::Authable
   getter user : User?
 
   def initialize(@token : String?)
@@ -36,7 +36,7 @@ class Auth < Rest::Authable
   end
 end
 
-auth = Rest::ProcHandler.new do |handler, context|
+auth = Prism::ProcHandler.new do |handler, context|
   if (token = context.request.query_params.to_h["token"]?)
     context.request.auth = Auth.new(token) # This
   end
@@ -45,14 +45,14 @@ auth = Rest::ProcHandler.new do |handler, context|
 end
 
 # It's a simple action which prints `USERS.to_json` into the response
-struct IndexUsers < Rest::Action
+struct IndexUsers < Prism::Action
   def call
     json(USERS)
   end
 end
 
 # This is a more complicated action, but still simple
-struct GetUser < Rest::Action
+struct GetUser < Prism::Action
   include Params # Allow to declare params
   include Auth   # Add `auth!` macro and `auth` getter
 
@@ -76,9 +76,9 @@ struct GetUser < Rest::Action
   end
 end
 
-router = Rest::Router.new do |r|
+router = Prism::Router.new do |r|
   r.get "/" do |env|
-    env.response.print("Get some Rest!")
+    env.response.print("Hello from Prism!")
   end
 
   r.get "/users" do |env|
@@ -93,10 +93,10 @@ end
 logger = Logger.new(STDOUT)
 
 handlers = [
-  Rest::Logger.new(logger),
+  Prism::Logger.new(logger),
   auth,
   router,
 ]
 
-server = Rest::Server.new("localhost", PORT, handlers, logger)
+server = Prism::Server.new("localhost", PORT, handlers, logger)
 server.listen

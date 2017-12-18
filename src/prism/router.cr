@@ -3,15 +3,15 @@ require "http/web_socket"
 require "./ext/http/request/action"
 require "./ext/http/request/path_params"
 
-module Rest
+module Prism
   # Routes a request's path, injecting matching `ContextProc` into `context.request.action` and path params into `context.request.path_params`.
   #
   # Always calls next handler.
   #
   # ```
-  # require "rest/router"
+  # require "prism/router"
   #
-  # router = Rest::Router.new do
+  # router = Prism::Router.new do
   #   get "/" do |context|
   #     context.response.print("Hello world!")
   #   end
@@ -35,7 +35,7 @@ module Rest
     #
     # ```
     # # The simplest router
-    # router = Rest::Router.new do |r|
+    # router = Prism::Router.new do |r|
     #   r.get "/" do |env|
     #     env.response.print "Hello world!"
     #   end
@@ -63,7 +63,7 @@ module Rest
     # Draw a route for *path* and *methods*.
     #
     # ```
-    # router = Rest::Router.new do |r|
+    # router = Prism::Router.new do |r|
     #   r.on "/foo", methods: %w(get post) do |context|
     #     context.response.print("Hello from #{context.request.method} /foo!")
     #   end
@@ -83,7 +83,7 @@ module Rest
       # Draw a route for *path* with `{{method.upcase.id}}` method.
       #
       # ```
-      # router = Rest::Router.new do
+      # router = Prism::Router.new do
       #   {{method.id}} "/bar" do |context|
       #     context.response.print("Hello from {{method.upcase.id}} /bar!")
       #   end
@@ -99,7 +99,7 @@ module Rest
     # NOTE: Such route will be accessible **only** via `ws://` or `wss://` schemes!
     #
     # ```
-    # router = Rest::Router.new do |r|
+    # router = Prism::Router.new do |r|
     #   r.ws "/foo/:bar" do |socket, context|
     #     socket.send("Hello WS!")
     #   end

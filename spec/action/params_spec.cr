@@ -1,9 +1,9 @@
 require "../spec_helper"
-require "../../src/rest/action"
-require "../../src/rest/action/params"
+require "../../src/prism/action"
+require "../../src/prism/action/params"
 
-module Rest::Action::Params::Spec
-  struct RestAction < Rest::Action
+module Prism::Action::Params::Spec
+  struct PrismAction < Prism::Action
     include Params
 
     params do
@@ -23,29 +23,29 @@ module Rest::Action::Params::Spec
     end
   end
 
-  describe RestAction do
+  describe PrismAction do
     context "with valid params" do
-      response = handle_request(RestAction, Req.new(method: "GET", resource: "/?id=42&value=43"))
+      response = handle_request(PrismAction, Req.new(method: "GET", resource: "/?id=42&value=43"))
 
       it "is ok" do
         response.body.should eq "ok"
       end
 
       it "has id in params" do
-        RestAction.last_params[:id].should eq 42
+        PrismAction.last_params[:id].should eq 42
       end
 
       it "has value in params" do
-        RestAction.last_params[:value].should eq 43
+        PrismAction.last_params[:value].should eq 43
       end
 
       it "doesn't have time in params" do
-        RestAction.last_params[:time].should eq nil
+        PrismAction.last_params[:time].should eq nil
       end
     end
 
     context "with missing params" do
-      response = handle_request(RestAction, Req.new(method: "GET", resource: "/?value=43"))
+      response = handle_request(PrismAction, Req.new(method: "GET", resource: "/?value=43"))
 
       it "updates status" do
         response.status_code.should eq 400
@@ -57,7 +57,7 @@ module Rest::Action::Params::Spec
     end
 
     context "with invalid params types" do
-      response = handle_request(RestAction, Req.new(method: "GET", resource: "/?id=foo"))
+      response = handle_request(PrismAction, Req.new(method: "GET", resource: "/?id=foo"))
 
       it "updates status" do
         response.status_code.should eq 400
@@ -69,7 +69,7 @@ module Rest::Action::Params::Spec
     end
 
     context "with invalid params" do
-      response = handle_request(RestAction, Req.new(method: "GET", resource: "/?id=41"))
+      response = handle_request(PrismAction, Req.new(method: "GET", resource: "/?id=41"))
 
       it "updates status" do
         response.status_code.should eq 400

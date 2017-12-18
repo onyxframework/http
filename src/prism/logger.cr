@@ -3,12 +3,12 @@ require "logger"
 require "colorize"
 require "time_format"
 
-module Rest
+module Prism
   # `HTTP::Handler` which logs requests colorfully into specified *logger*.
   #
   # ```
-  # require "rest/logger"
-  # logger = Rest::Logger.new(Logger.new(STDOUT))
+  # require "prism/logger"
+  # logger = Prism::Logger.new(Logger.new(STDOUT))
   #
   # #   INFO -- :     GET /users 200 102μs
   # #   INFO -- :     GET /favicon.ico 404 52μs

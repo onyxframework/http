@@ -1,8 +1,7 @@
 require "../ext/http/request/auth"
 
-module Rest
-  class Channel
-    # Auth module for `Channel`. `auth!` closes the socket if unauthorized.
+module Prism
+  struct Action
     module Auth
       def auth
         context.request.auth
@@ -12,19 +11,14 @@ module Rest
         auth.try &.auth
       end
 
-      # Invoke `#auth.auth` or close the socket
+      # Invoke `#auth.auth` and `halt!(401)` if returns falsey value.
       macro auth!
         def auth
           context.request.auth.not_nil!
         end
 
         before do
-          if context.request.auth.try(&.auth)
-            true
-          else
-            socket.close("Unauthorized")
-            false
-          end
+          context.request.auth.try(&.auth) || halt!(401)
         end
       end
     end

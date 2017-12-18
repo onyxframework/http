@@ -1,11 +1,11 @@
 require "http/server/handler"
 
-module Rest
+module Prism
   # `HTTP::Handler` which calls the *proc* on `#call`.
   #
   # ```
-  # require "rest/proc_handler"
-  # secret = Rest::ProcHandler.new do |handler, context|
+  # require "prism/proc_handler"
+  # secret = Prism::ProcHandler.new do |handler, context|
   #   if context.request.query_params.to_h["secret"]?.try &.== ENV["SECRET"]
   #     handler.call_next(context)
   #   end

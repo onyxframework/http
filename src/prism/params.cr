@@ -2,16 +2,16 @@ require "./ext/from_s"
 require "./ext/json/lexer"
 require "json"
 
-module Rest
+module Prism
   # Request params access and validation module.
   #
   # Extracts params from (nearly) all possible sources and casts them accordingly (invoking `Type.from_s`) into a `NamedTuple`.
   #
   # ```
-  # require "rest/action/params"
+  # require "prism/action/params"
   #
   # class SimpleAction
-  #   include Rest::Params
+  #   include Prism::Params
   #
   #   params do
   #     param :foo, Int32?
@@ -38,23 +38,23 @@ module Rest
   #
   # Params parsing order (latter rewrites previous):
   #
-  # 1. Path params (only if `"rest/ext/http/request/path_params"` is required **before**)
+  # 1. Path params (only if `"prism/ext/http/request/path_params"` is required **before**)
   # 2. Request query params
   # 3. Multipart form data (only if `"Content-Type"` is `"multipart/form-data"`)
   # 4. Body params (only if `"Content-Type"` is `"application/x-www-form-urlencoded"`)
   # 5. JSON body (only if `"Content-Type"` is `"application/json"`)
   #
-  # NOTE: If `"Content-Type"` header is  `"application/x-www-form-urlencoded"` or `"application/json"`, the request body will be tried to read (and it's a known fact that it can be read only once). If used in `Rest::Action`, make sure to call `Rest::Action#copy_body` before.
+  # NOTE: If `"Content-Type"` header is  `"application/x-www-form-urlencoded"` or `"application/json"`, the request body will be tried to read (and it's a known fact that it can be read only once). If used in `Prism::Action`, make sure to call `Prism::Action#copy_body` before.
   #
   # If you want to implement your own type cast, extend it with `.from_s` method (see `Time.from_s` for example).
   #
-  # If included into `Rest::Action`, will automatically inject `parse_params` into `Action#before` callback:
+  # If included into `Prism::Action`, will automatically inject `parse_params` into `Action#before` callback:
   #
   # ```
-  # require "rest/action"
-  # require "rest/action/params"
+  # require "prism/action"
+  # require "prism/action/params"
   #
-  # struct MyRestAction < Rest::Action
+  # struct MyPrismAction < Prism::Action
   #   include Params
   #
   #   params do

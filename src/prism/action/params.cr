@@ -1,13 +1,12 @@
 require "../params"
 
-module Rest
-  class Channel
-    # Params module for `Channel`. Closes the socket on validation error.
+module Prism
+  struct Action
     module Params
-      include Rest::Params
+      include Prism::Params
 
       macro params(&block)
-        Rest::Params.params do
+        Prism::Params.params do
           {{yield}}
         end
 
@@ -17,10 +16,9 @@ module Rest
         before do
           begin
             @params = self.class.parse_params(context)
-            true
           rescue ex : InvalidParamTypeError | ParamNotFoundError | InvalidParamError
-            socket.close(ex.message)
-            false
+            context.response.status_code = 400
+            context.response.print(ex.message)
           end
         end
       end
