@@ -1,8 +1,10 @@
 require "http/server"
 require "json"
 
+require "./callbacks"
+
 module Rest
-  # A callable websocket Channel.
+  # A callable websocket Channel with `Callbacks` included.
   #
   # ```
   # require "rest/web_socket_action"
@@ -51,6 +53,10 @@ module Rest
   # UserNotifications.notify(user, "You've got a message!") # Damn it's cool
   # ```
   class Channel
+    macro inherited
+      include Rest::Callbacks
+    end
+
     # Called once when a new socket is opened.
     def on_open
     end
@@ -108,33 +114,7 @@ module Rest
 
     # :nodoc:
     def subscribe_with_callbacks
-      before && around { subscribe } && after
-    end
-
-    # Before `#subscribe` callback.
-    # Should return truthy value or the subscribe sequence would halt.
-    #
-    # OPTIMIZE: See [this issue](https://github.com/crystal-lang/crystal/issues/5203).
-    def before
-      # See definition below
-    end
-
-    macro inherited
-      def before
-        true
-      end
-    end
-
-    # Around `#subscribe` wrapper.
-    # If returns falsey value, `#after` is not called.
-    def around(&block)
-      yield
-      true
-    end
-
-    # After `#subscribe` callback.
-    # NOTE: Remeber that once the body is printed, the request cannot be modified.
-    def after
+      with_callbacks { subscribe }
     end
 
     getter context : ::HTTP::Server::Context

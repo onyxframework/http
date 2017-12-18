@@ -1,8 +1,9 @@
 require "http/server"
 require "json"
+require "./callbacks"
 
 module Rest
-  # A callable HTTP action with callbacks.
+  # A callable HTTP action with `Callbacks` included.
   #
   # NOTE: *(From [API](https://crystal-lang.org/api/0.23.1/HTTP/Server/Response.html)) The response #status_code and #headers must be configured before writing the response body. Once response output is written, changing the status and #headers properties has no effect.*
   #
@@ -12,7 +13,7 @@ module Rest
   #     text("ok")
   #   end
   #
-  #   def after
+  #   after do
   #     p "MyAction: ok"
   #   end
   # end
@@ -21,6 +22,14 @@ module Rest
   # # => "ok"
   # ```
   abstract struct Action
+    macro inherited
+      include Rest::Callbacks
+
+      before do
+        copy_body; true # TODO: Ability to prevent copying
+      end
+    end
+
     abstract def call
 
     # Initialize and invoke `#call` with `#before`, `#around` and `#after` callbacks.
@@ -30,34 +39,7 @@ module Rest
 
     # :nodoc:
     def call_with_callbacks
-      before && around { call } && after
-    end
-
-    # Before `#call` callback.
-    # Should return truthy value or the call sequence would halt.
-    # Call `#copy_body` by default.
-    #
-    # OPTIMIZE: See [this issue](https://github.com/crystal-lang/crystal/issues/5203).
-    def before
-      # See definition below
-    end
-
-    macro inherited
-      def before
-        copy_body; true
-      end
-    end
-
-    # Around `#call` wrapper.
-    # If returns falsey value, `#after` is not called.
-    def around(&block)
-      yield
-      true
-    end
-
-    # After `#call` callback.
-    # NOTE: Remeber that once the body is printed, the request cannot be modified.
-    def after
+      with_callbacks { call }
     end
 
     # Body `String` version. The request `IO` body is still available.

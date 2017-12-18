@@ -17,10 +17,8 @@ module Rest
           context.request.auth.not_nil!
         end
 
-        def before
-          if previous_def
-            context.request.auth.try(&.auth) || halt!(401)
-          end
+        before do
+          context.request.auth.try(&.auth) || halt!(401)
         end
       end
     end

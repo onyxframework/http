@@ -18,14 +18,12 @@ module Rest
           context.request.auth.not_nil!
         end
 
-        def before
-          if previous_def
-            if context.request.auth.try(&.auth)
-              true
-            else
-              socket.close("Unauthorized")
-              false
-            end
+        before do
+          if context.request.auth.try(&.auth)
+            true
+          else
+            socket.close("Unauthorized")
+            false
           end
         end
       end
