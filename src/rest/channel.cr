@@ -22,13 +22,13 @@ module Rest
   #   end
   #
   #   def self.notify(user : User, payload : String)
-  #     if socket = @@subscribtions[user]?
+  #     if socket = @@subscriptions[user]?
   #       socket.notify(payload)
   #     end
   #   end
   #
   #   def on_open
-  #     @@subscribtions[auth.user] = self
+  #     @@subscriptions[auth.user] = self
   #   end
   #
   #   def notify(payload : String)
@@ -36,7 +36,7 @@ module Rest
   #   end
   #
   #   def on_close
-  #     @@subscribtions[auth.user] = nil
+  #     @@subscriptions[auth.user] = nil
   #   end
   # end
   #
@@ -87,7 +87,7 @@ module Rest
       new(socket, context).subscribe_with_callbacks
     end
 
-    # Call `#on_open` and bind to the `socket`'s events. Read more @ [API docs](https://crystal-lang.org/api/0.23.1/HTTP/WebSocket.html).
+    # Call `#on_open` and bind to the `socket`'s events. Read more in [Crystal API docs](https://crystal-lang.org/api/0.23.1/HTTP/WebSocket.html).
     def subscribe
       on_open
 
