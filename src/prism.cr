@@ -1,5 +1,5 @@
 require "./prism/*"
 
-# Prism is a tiny but powerful web framework.
+# Prism is an expressive modular web framework.
 module Prism
 end
