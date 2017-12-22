@@ -44,7 +44,7 @@ struct GetUser < Prism::Action
   include Params # Enable params in this action
 
   params do
-    param :id, Int32, validate: ->(i : Int32) { i > 0 } # Require "id" parameter and cast it to Int32
+    param :id, Int32, validate: {min!: 0} # Require "id" parameter, cast it to Int32 and validate it is greater than 0
     param :display_info, Bool? # This parameter is optional
   end
 

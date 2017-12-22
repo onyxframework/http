@@ -26,13 +26,14 @@ module Prism::Params
   end
 
   class InvalidParamError < Exception
-    getter name
+    getter name, message
 
-    MESSAGE_TEMPLATE = "Parameter \"%{name}\" is invalid"
+    MESSAGE_TEMPLATE = "Parameter \"%{name}\" %{message}"
 
-    def initialize(@name : String)
+    def initialize(@name : String, @message : String = "is invalid")
       super(MESSAGE_TEMPLATE % {
-        name: @name,
+        name:    @name,
+        message: @message,
       })
     end
   end

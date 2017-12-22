@@ -19,15 +19,7 @@ module Prism::Params
       )
     end
 
-    # OPTIMIZE
-    {% param = INTERNAL__PRISM_PARAMS.find { |p| p[:name] == name } %}
-    {% if param && (validation_proc = param[:validation]) %}
-      begin
-        {{validation_proc.id}}.call(%temp) || raise "Invalid"
-      rescue
-        raise InvalidParamError.new({{name.id.stringify}})
-      end
-    {% end %}
+    validate({{name}}, %temp)
 
     _temp_params[{{name}}] = %temp
   end

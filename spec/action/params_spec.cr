@@ -7,9 +7,7 @@ module Prism::Action::Params::Spec
     include Params
 
     params do
-      param :id, Int32, validate: ->(id : Int32) do
-        id >= 42
-      end
+      param :id, Int32, validate: {min: 42}
       param :value, Int32?
       param :time, Time?
     end
@@ -76,7 +74,7 @@ module Prism::Action::Params::Spec
       end
 
       it "halts" do
-        response.body.should eq "Parameter \"id\" is invalid"
+        response.body.should eq "Parameter \"id\" must be greater or equal to 42"
       end
     end
   end

@@ -26,10 +26,10 @@ module Prism::Params
                 end
 
       INTERNAL__PRISM_PARAMS.push({
-        name:       name,
-        type:       _type,
-        nilable:    nilable,
-        validation: options[:validate],
+        name:        name,
+        type:        _type,
+        nilable:     nilable,
+        validations: options[:validate],
       })
     %}
   end

@@ -6,9 +6,7 @@ module Prism::Params::Specs
     include Prism::Params
 
     params do
-      param :id, Int32, validate: ->(id : Int32) {
-        id >= 42
-      }
+      param :id, Int32, validate: {min: 42}
       param :value, Int32?
       param :time, Time?
       param :float_value, Float64?
