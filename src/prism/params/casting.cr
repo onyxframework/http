@@ -20,7 +20,7 @@ module Prism::Params
     end
 
     # OPTIMIZE
-    {% param = REST___PARAMS.find { |p| p[:name] == name } %}
+    {% param = INTERNAL__PRISM_PARAMS.find { |p| p[:name] == name } %}
     {% if param && (validation_proc = param[:validation]) %}
       begin
         {{validation_proc.id}}.call(%temp) || raise "Invalid"

@@ -25,7 +25,7 @@ module Prism::Params
                   options[:nilable]
                 end
 
-      REST___PARAMS.push({
+      INTERNAL__PRISM_PARAMS.push({
         name:       name,
         type:       _type,
         nilable:    nilable,

@@ -3,8 +3,8 @@ module Prism::Params
     # Parse and validate params. Raise `InvalidParamTypeError` or `ParamNotFoundError` on failure.
     def self.parse_params(context)
       _temp_params = {
-        {% for param in REST___PARAMS %}
-          {{param[:name]}} => nil.as({{REST___PARAMS.map(&.[:type]).push("String").push("Nil").join(" | ").id}}),
+        {% for param in INTERNAL__PRISM_PARAMS %}
+          {{param[:name]}} => nil.as({{INTERNAL__PRISM_PARAMS.map(&.[:type]).push("String").push("Nil").join(" | ").id}}),
         {% end %}
       }
 
@@ -13,7 +13,7 @@ module Prism::Params
         context.request.path_params.try &.each do |key, value|
           {% begin %}
             case key
-            {% for param in REST___PARAMS %}
+            {% for param in INTERNAL__PRISM_PARAMS %}
               when {{param[:name].id.stringify}}
                 cast(value, {{param[:name]}}, {{param[:type]}})
             {% end %}
@@ -26,7 +26,7 @@ module Prism::Params
       context.request.query_params.to_h.each do |key, value|
         {% begin %}
           case key
-          {% for param in REST___PARAMS %}
+          {% for param in INTERNAL__PRISM_PARAMS %}
             when {{param[:name].id.stringify}}
               cast(value, {{param[:name]}}, {{param[:type]}})
           {% end %}
@@ -40,7 +40,7 @@ module Prism::Params
         HTTP::FormData.parse(context.request) do |part|
           {% begin %}
             case part.name
-            {% for param in REST___PARAMS %}
+            {% for param in INTERNAL__PRISM_PARAMS %}
               when {{param[:name].id.stringify}}
                 temp = part.body.gets_to_end.gsub("\r\n", "").to_s
                 cast(temp, {{param[:name]}}, {{param[:type]}})
@@ -50,7 +50,7 @@ module Prism::Params
         end
       when /application\/x-www-form-urlencoded/
         HTTP::Params.parse(context.request.body.not_nil!.gets_to_end) do |key, value|
-          {% for param in REST___PARAMS %}
+          {% for param in INTERNAL__PRISM_PARAMS %}
             if key == {{param[:name].id.stringify}}
               cast(value, {{param[:name]}}, {{param[:type]}})
             end
@@ -58,7 +58,7 @@ module Prism::Params
         end
       when /application\/json/
         json = JSON.parse(context.request.body.not_nil!)
-        {% for param in REST___PARAMS %}
+        {% for param in INTERNAL__PRISM_PARAMS %}
           if value = json[{{param[:name].id.stringify}}]?
             cast(value, {{param[:name]}}, {{param[:type]}})
           end
@@ -66,7 +66,7 @@ module Prism::Params
       end
 
       # Raise if a param is not found anywhere
-      {% for param in REST___PARAMS %}
+      {% for param in INTERNAL__PRISM_PARAMS %}
         {% unless param[:nilable] %}
           raise ParamNotFoundError.new({{param[:name].id.stringify}}) unless _temp_params[{{param[:name]}}]?
         {% end %}

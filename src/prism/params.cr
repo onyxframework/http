@@ -77,7 +77,7 @@ module Prism::Params
   # end
   # ```
   macro params(&block)
-    REST___PARAMS = [] of NamedTuple
+    INTERNAL__PRISM_PARAMS = [] of NamedTuple
 
     {{yield}}
 
@@ -87,7 +87,7 @@ module Prism::Params
 
   private macro define_params_tuple
     alias ParamsTuple = NamedTuple(
-      {% for param in REST___PARAMS %}
+      {% for param in INTERNAL__PRISM_PARAMS %}
         "{{param[:name].id}}": {{param[:type].id}}
       {% end %}
     )
