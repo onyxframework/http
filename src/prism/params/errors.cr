@@ -1,4 +1,5 @@
 module Prism::Params
+  # Raised when a param cannot be casted to the desired type.
   class InvalidParamTypeError < Exception
     getter name
     getter expected_type
@@ -13,6 +14,7 @@ module Prism::Params
     end
   end
 
+  # Raised when a param is not present.
   class ParamNotFoundError < Exception
     getter name
 
@@ -25,6 +27,7 @@ module Prism::Params
     end
   end
 
+  # Raised when a param is invalid.
   class InvalidParamError < Exception
     getter name, message
 

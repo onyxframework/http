@@ -19,7 +19,7 @@
 #       size:   (3..32),
 #       regex:  /\w+/,
 #       custom: ->(name : String) {
-#         error!("doesn't meet condition") unless some_condition?(name)
+#         error!(:name, "doesn't meet condition") unless some_condition?(name)
 #       },
 #     }
 #     param :age, Int32?, validate: {in: (18..150)}
@@ -96,6 +96,7 @@ module Prism::Params::Validation
     {% end %}
   end
 
+  # Raise `InvalidParamError` for param *name* with *description*.
   macro error!(name, description)
     raise InvalidParamError.new({{name.id.stringify}}, {{description}})
   end
