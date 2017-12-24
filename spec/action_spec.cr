@@ -41,7 +41,7 @@ struct Prism::Action
     class_property unwanted_calls_count = 0
 
     def call
-      halt!(404, "Not found")
+      halt!(404)
 
       @@unwanted_calls_count += 1
       text("ok")
@@ -55,12 +55,40 @@ struct Prism::Action
       response.status_code.should eq 404
     end
 
-    it "prints message" do
-      response.body.should eq "Not found"
+    it "prints default message" do
+      response.body.should eq "Not Found"
     end
 
     it "stops execution" do
       HaltAction.unwanted_calls_count.should eq 0
+    end
+  end
+
+  struct TextHaltAction < Prism::Action
+    def call
+      halt!(404, "Nope")
+    end
+  end
+
+  describe TextHaltAction do
+    response = handle_request(TextHaltAction)
+
+    it "prints specified response" do
+      response.body.should eq("Nope")
+    end
+  end
+
+  struct JSONHaltAction < Prism::Action
+    def call
+      halt!(403, {error: "Oops"})
+    end
+  end
+
+  describe JSONHaltAction do
+    response = handle_request(JSONHaltAction)
+
+    it "prints JSON response" do
+      response.body.should eq(%Q[{"error":"Oops"}])
     end
   end
 

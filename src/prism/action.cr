@@ -69,17 +69,37 @@ module Prism
     end
 
     # Set HTTP *status*, close the response and **stop** the execution.
-    # Optionally specify *message*, otherwise print a default HTTP message for this *status*.
+    # Optionally specify *response*, otherwise print a default HTTP response for this *status*.
     #
     # ```
     # def call
-    #   halt!(500, "Something's wrong!")
-    #   text("ok") # => This line will not be called
+    #   halt!(403) # Will print "Unauthorized" into the response body
+    #   text("ok") # This line will not be called
+    # end
+    #
+    # def call
+    #   halt!(500, "Something's wrong!") # Will print "Something's wrong!" into the response body
+    # end
+    #
+    # def call
+    #   halt!(409, {error: "Oops"}) # Will print "Oops" and set content type to JSON
+    # end
+    #
+    # def call
+    #   halt!(403, PaymentError) # Will call #to_json on PaymentError
     # end
     # ```
-    macro halt!(status, message = nil)
+    macro halt!(status, response = nil)
       status({{status.id}})
-      text({{message}} || HTTP.default_status_message_for({{status.id}}))
+
+      {% if response.is_a?(StringLiteral) %}
+        text({{response}})
+      {% elsif response.is_a?(NilLiteral) %}
+        text(HTTP.default_status_message_for({{status.id}}))
+      {% else %}
+        json({{response}})
+      {% end %}
+
       return false
     end
 
