@@ -22,7 +22,7 @@ require "./params/**"
 #   end
 #
 #   def self.call(context)
-#     params = parse_params(context)
+#     params = parse_params(context, limit: 1.gb) # Limit is default to 8 MB
 #
 #     p params[:foo].class
 #     # => Int32?
@@ -46,7 +46,7 @@ require "./params/**"
 # 4. Body params (only if `"Content-Type"` is `"application/x-www-form-urlencoded"`)
 # 5. JSON body (only if `"Content-Type"` is `"application/json"`)
 #
-# NOTE: If `"Content-Type"` header is  `"application/x-www-form-urlencoded"` or `"application/json"`, the request body will be tried to read (and it's a known fact that it can be read only once). If used in `Prism::Action`, make sure to call `Prism::Action#copy_body` before.
+# Parsing will replace original request body with its shrinked copy IO (defaults to 8 MB).
 #
 # If you want to implement your own type cast, extend it with `.from_s` method (see `Time.from_s` for example).
 #

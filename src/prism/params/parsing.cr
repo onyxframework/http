@@ -1,7 +1,19 @@
 module Prism::Params
   private macro define_parse_params
-    # Parse and validate params. Raise `InvalidParamTypeError` or `ParamNotFoundError` on failure.
-    def self.parse_params(context)
+    # 8 MB ought to be enough for anybody.
+    DEFAULT_MAX_BODY_SIZE = UInt64.new(8 * 1024 ** 2)
+
+    # Will copy context request body into `IO::Memory` and return this io, preserving original request body.
+    private def self.copy_body(context, limit)
+      if body = context.request.body
+        string = body.gets(limit)
+        context.request.body = IO::Memory.new.tap { |io| io << string; io.rewind }
+        return IO::Memory.new.tap { |io| io << string; io.rewind }
+      end
+    end
+
+    # Parse and validate params. Limit body size to *limit*. Raise `InvalidParamTypeError` or `ParamNotFoundError` on failure.
+    def self.parse_params(context, limit : UInt64 = DEFAULT_MAX_BODY_SIZE)
       _temp_params = {
         {% for param in INTERNAL__PRISM_PARAMS %}
           {{param[:name]}} => nil.as({{INTERNAL__PRISM_PARAMS.map(&.[:type]).push("String").push("Nil").join(" | ").id}}),
@@ -37,6 +49,8 @@ module Prism::Params
       # 3-5. Extract params from the body
       case context.request.headers["Content-Type"]?
       when /multipart\/form-data/
+        copy = copy_body(context, limit)
+
         HTTP::FormData.parse(context.request) do |part|
           {% begin %}
             case part.name
@@ -48,8 +62,10 @@ module Prism::Params
             end
           {% end %}
         end
+
+        context.request.body = copy
       when /application\/x-www-form-urlencoded/
-        HTTP::Params.parse(context.request.body.not_nil!.gets_to_end) do |key, value|
+        HTTP::Params.parse(copy_body(context, limit).not_nil!.gets_to_end) do |key, value|
           {% for param in INTERNAL__PRISM_PARAMS %}
             if key == {{param[:name].id.stringify}}
               cast(value, {{param[:name]}}, {{param[:type]}})
@@ -57,7 +73,7 @@ module Prism::Params
           {% end %}
         end
       when /application\/json/
-        json = JSON.parse(context.request.body.not_nil!)
+        json = JSON.parse(copy_body(context, limit).not_nil!)
         {% for param in INTERNAL__PRISM_PARAMS %}
           if value = json[{{param[:name].id.stringify}}]?
             cast(value, {{param[:name]}}, {{param[:type]}})
