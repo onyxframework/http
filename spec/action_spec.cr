@@ -35,6 +35,10 @@ struct Prism::Action
     it "prints JSON" do
       response.body.should eq %Q[{"foo":"bar"}]
     end
+
+    pending "sets content type header" do
+      response.content_type.should eq("application/json; charset=utf-8")
+    end
   end
 
   struct HaltAction < Prism::Action
