@@ -1,22 +1,26 @@
-<img src="https://user-images.githubusercontent.com/7955682/34129522-75a7bd5c-e455-11e7-9d64-d207b35c24d0.png" width="256">
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/7955682/34328806-bc11f268-e8fa-11e7-9c7d-2c852578546f.png" width="512" />
+</p>
+<p align="center">
+   Prism is an expressive action-oriented modular web framework.
+</p>
+<p align="center">
+   <a href="https://crystal-lang.org/">
+      <img src="https://img.shields.io/badge/built%20with-crystal-000000.svg?style=flat-square" /></a>
+   <a href="https://travis-ci.org/vladfaust/prism">
+      <img src="https://img.shields.io/travis/vladfaust/prism/master.svg?style=flat-square" /></a>
+   <a href="https://vladfaust.com/prism">
+      <img src="https://img.shields.io/badge/docs-available-brightgreen.svg?style=flat-square" /></a>
+   <a href="https://github.com/vladfaust/prism/releases">
+      <img src="https://img.shields.io/github/release/vladfaust/prism.svg?style=flat-square" /></a>
+</p>
 
-Prism is an expressive modular web framework.
+## Features
 
-[![Build Status](https://travis-ci.org/vladfaust/prism.svg?branch=master)](https://travis-ci.org/vladfaust/prism) [![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://vladfaust.com/prism) [![Dependencies](https://shards.rocks/badge/github/vladfaust/prism/status.svg)](https://shards.rocks/github/vladfaust/prism) [![GitHub release](https://img.shields.io/github/release/vladfaust/prism.svg)](https://github.com/vladfaust/prism/releases)
-
-## Why
-
-- Because *modular* approach is better than singleton configurations.
-- Because params need *easy* validation and typecasting.
-- Because *essentials* like CORS and authorization should be in one place.
-
-## Contents
-
-1. [Installation](#installation)
-2. [Usage](#usage)
-   1. [Basic example with params](#basic-example-with-params)
-   2. [Auth](#auth)
-   3. [⚡️ Websockets](#websockets)
+- Modular approach avoiding singleton configurations.
+- Safe params typecasting and validation.
+- Expressive actions definition.
+- ⚡️ Websockets built-in.
 
 ## Installation
 
@@ -30,137 +34,63 @@ dependencies:
 
 This shard follows [Semantic Versioning v2.0.0](http://semver.org/).
 
-## Usage
+## Basic example
 
 Please refer to the documentation available online at [vladfaust.com/prism](https://vladfaust.com/prism).
 
-### Basic example with params
-
 ```crystal
-require "logger"
 require "prism"
 
-struct GetUser < Prism::Action
-  include Params # Enable params in this action
+struct KnockKnock < Prism::Action
+  include Params
 
   params do
-    param :id, Int32, validate: {min!: 0} # Require "id" parameter, cast it to Int32 and validate it is greater than 0
-    param :display_info, Bool? # This parameter is optional
+    param :who, String
+    param :times, Int32, validate: {max: 10}
   end
 
   def call
-    typeof(params[:id]) # => Int32
-    typeof(params[:display_info]) # => Bool?
-
-    user = User.where(id: params[:id])
-    halt!(404, "User not found") unless user # Will abort further execution
-
-    user.info = "blah" if params[:display_info]
-
-    # Print JSON represenation of the user (call `#to_json` on it)
-    json(user)
+    params[:times].times do
+      text("Knock-knock #{who}\n")
+    end
   end
 end
 
 router = Prism::Router.new do |r|
-  r.get "/" do |env|
-    env.response.print("Hello world!") # Simple
-  end
-
-  r.get "/users/:id" do |env|
-    GetUser.call(env) # Action call, :id will be casted to Int32 param (see above)
-  end
-
-  r.on "/users/:id", methods: %w(post put) do |env|
-    typeof(env.request.path_params) # => Hash(String, String), no typecasting
-    env.response.print("Will update user #{env.request.path_params["id"]}")
+  r.get "/:who" do |env|
+    KnockKnock.call(env)
   end
 end
 
 logger = Logger.new(STDOUT)
+log_handler = Prism::Logger.new(logger)
+handlers = [log_handler, router]
 
-server = Prism::Server.new("localhost", 5000, [Prism::Logger.new(logger), router], logger)
+server = Prism::Server.new("localhost", 5000, handlers, logger)
 server.listen
 
 #  INFO -- :   Prism server v0.1.0 is listening on http://localhost:5000...
 ```
 
-### Auth
+## Websockets example
 
-`Prism::Authable`, `Prism::ProcHandler` together allow to define authentication logic in no time!
-
-```crystal
-class Auth < Prism::Authable
-  @user : User? = nil
-  getter! user
-
-  def initialize(@token : String)
-  end
-
-  # This method will be lazily called on `auth!` (see below)
-  def auth
-    @user = find_user_by_token(@token)
-  end
-end
-
-struct StrictAction < Prism::Action
-  include Auth # Enable auth in this action
-
-  auth! # Halt 401 unless authorized
-
-  def call
-    # Basically, `auth.user` equals to `context.request.auth.not_nil!.user` (see below)
-    json(auth.user) # Yep, just like that
-  end
-end
-
-struct ConditionalAction < Prism::Action
-  include Auth
-
-  def call
-    if auth?
-      json(auth.user)
-    else
-      text("Hey, you're not authed")
-    end
-  end
-end
-
-# Add this handler to handlers list before or after router
-# Will extract token from "?token=xyz" query param
-auth = Prism::ProcHandler.new do |handler, context|
-  if (token = context.request.query_params.to_h["token"]?)
-    context.request.auth = Auth.new(token) # No magic, just science
-  end
-
-  handler.call_next(context)
-end
-```
-
-### Websockets
-
-We call them Channels for convenience.
+We call them *Channels* for convenience.
 
 ```crystal
-require "prism/channel"
+require "prism"
 
 class Notifications < Prism::Channel
-  @@subscriptions = Array(self).new # It's a custom code
+  @@subscriptions = Array(self).new
 
-  # It's a custom code as well
   def self.notify(message)
-    @@subscriptions.each do |sub|
-      sub.socket.send(message)
-    end
+    @@subscriptions.each &.socket.send(message)
   end
 
-  # This is one of the default callbacks
   def on_open
-    socket.send("Hola")
+    socket.send("Hello")
     @@subscriptions.push(self)
   end
 
-  # ditto
   def on_close
     @@subscriptions.delete(self)
   end
@@ -174,10 +104,8 @@ end
 
 # Later in the code...
 
-Notifications.notify("A message") # Will notify all subscribers
+Notifications.notify("Something happened!") # Will notify all subscribers binded to this particular Crystal process
 ```
-
-Remember that websockets are bound to this particular Crystal process only!
 
 ## Contributing
 
