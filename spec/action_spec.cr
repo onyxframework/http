@@ -68,19 +68,14 @@ struct Prism::Action
     class_property last_body : String? = nil
 
     def call
-      @@last_body = body
-      text(context.request.body.not_nil!.gets_to_end)
+      text(body)
     end
   end
 
   describe BodyAction do
     response = handle_request(BodyAction, Req.new("GET", "/", body: "foo"))
 
-    it "copies to #body" do
-      BodyAction.last_body.should eq "foo"
-    end
-
-    it "preserves original body" do
+    it do
       response.body.should eq "foo"
     end
   end

@@ -24,10 +24,6 @@ module Prism
   abstract struct Action
     macro inherited
       include Prism::Callbacks
-
-      before do
-        copy_body; true # TODO: Ability to prevent copying
-      end
     end
 
     abstract def call
@@ -42,21 +38,27 @@ module Prism
       with_callbacks { call }
     end
 
-    # Body `String` version. The request `IO` body is still available.
-    getter body : String?
+    # Will **not** raise on exceed, defaults to 8 MB.
+    class_property max_body_size = UInt64.new(8 * 1024 ** 2)
 
-    # Copies the request body into `#body`, preserving the original `IO` as is.
-    # By default is invoked in `#before` callback.
-    def copy_body
-      if @context.request.body
-        io = IO::Memory.new
-        IO.copy(@context.request.body.not_nil!, io)
-        io.rewind
-        @body = io.gets_to_end
-        io.rewind
-        @context.request.body = io
-        @body
-      end
+    @body : String?
+
+    # Lazy string version of request body (read *max_body_size* bytes on the first call).
+    #
+    # ```
+    # # Action A
+    # def call
+    #   body                 # => "foo"
+    #   context.request.body # => nil
+    # end
+    #
+    # # Action B
+    # def call
+    #   context.request.body # => Not nil
+    # end
+    # ```
+    def body
+      @body ||= context.request.body.try &.gets(limit: self.class.max_body_size)
     end
 
     # Current context.
