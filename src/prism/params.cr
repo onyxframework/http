@@ -69,6 +69,8 @@ require "./params/**"
 # end
 # ```
 module Prism::Params
+  include Validation
+
   # An **essential** params definition block.
   #
   # ```

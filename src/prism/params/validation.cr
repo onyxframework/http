@@ -32,7 +32,7 @@
 # ```
 #
 # NOTE: A `#nil?` validation will be run at first if the param is defined as non-nilable.
-module Prism::Params
+module Prism::Params::Validation
   private macro validate(name, value)
     {% param = INTERNAL__PRISM_PARAMS.find { |p| p[:name] == name } %}
 

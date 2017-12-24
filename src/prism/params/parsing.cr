@@ -1,8 +1,15 @@
 module Prism::Params
-  private macro define_parse_params
-    # 8 MB ought to be enough for anybody.
-    DEFAULT_MAX_BODY_SIZE = UInt64.new(8 * 1024 ** 2)
+  # 8 MB ought to be enough for anybody.
+  DEFAULT_MAX_BODY_SIZE = UInt64.new(8 * 1024 ** 2)
 
+  # Parse and validate params from a body limited to *limit* bytes. Returns `NamedTuple` of params.
+  #
+  # Will raise `InvalidParamTypeError`, `InvalidParamError` or `ParamNotFoundError` on failure.
+  def self.parse_params(context, limit : UInt64 = DEFAULT_MAX_BODY_SIZE)
+    raise "Call params macro before!"
+  end
+
+  private macro define_parse_params
     # Will copy context request body into `IO::Memory` and return this io, preserving original request body.
     private def self.copy_body(context, limit)
       if body = context.request.body
@@ -12,7 +19,6 @@ module Prism::Params
       end
     end
 
-    # Parse and validate params. Limit body size to *limit*. Raise `InvalidParamTypeError` or `ParamNotFoundError` on failure.
     def self.parse_params(context, limit : UInt64 = DEFAULT_MAX_BODY_SIZE)
       _temp_params = {
         {% for param in INTERNAL__PRISM_PARAMS %}
