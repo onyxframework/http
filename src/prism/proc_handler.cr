@@ -16,8 +16,7 @@ module Prism
 
     @proc : ::Proc(self, HTTP::Server::Context, Void)
 
-    # Initialize a new `ProcHandler` which will call *proc* in `#call`.
-    # If the *proc* result is a falsey value, stop the further execution.
+    # Initialize a new `ProcHandler` which will call *proc* in `#call`. Do not forget to call `handler.call_next(context)`.
     def initialize(&proc : self, HTTP::Server::Context -> _)
       @proc = proc
     end

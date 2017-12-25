@@ -96,7 +96,7 @@ module Prism
 
     # Draw a WebSocket route for *path*.
     #
-    # NOTE: Such route will be accessible **only** via `ws://` or `wss://` schemes!
+    # A request is currently determined as websocket by `"Upgrade": "websocket"` header.
     #
     # ```
     # router = Prism::Router.new do |r|
