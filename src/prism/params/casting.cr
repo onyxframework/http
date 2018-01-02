@@ -1,5 +1,5 @@
 module Prism::Params
-  private macro cast(value, name, type _type)
+  private macro cast(value, name, type _type, proc)
     {%
       __type = _type.is_a?(Generic) ? _type.type_vars.first.resolve : _type.resolve
     %}
@@ -20,6 +20,10 @@ module Prism::Params
     end
 
     validate({{name}}, %temp)
+
+    {% if proc %}
+      %temp = {{proc.id}}.call(%temp) if %temp
+    {% end %}
 
     _temp_params[{{name}}] = %temp
   end

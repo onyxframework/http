@@ -10,7 +10,7 @@ module Prism::Params::Specs
       param :value, Int32?
       param :time, Time?
       param :float_value, Float64?
-      param :"kebab-param", String?
+      param :"kebab-param", String?, proc: ->(p : String) { p.upcase }
     end
 
     @@last_params = uninitialized ParamsTuple
@@ -44,7 +44,7 @@ module Prism::Params::Specs
       end
 
       it "has kebab-param in params" do
-        SimpleAction.last_params["kebab-param"].should eq "foo"
+        SimpleAction.last_params["kebab-param"].should eq "FOO"
       end
     end
 

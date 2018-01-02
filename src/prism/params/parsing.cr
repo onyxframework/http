@@ -33,7 +33,7 @@ module Prism::Params
             case key
             {% for param in INTERNAL__PRISM_PARAMS %}
               when {{param[:name].id.stringify}}
-                cast(value, {{param[:name]}}, {{param[:type]}})
+                cast(value, {{param[:name]}}, {{param[:type]}}, {{param[:proc]}})
             {% end %}
             end
           {% end %}
@@ -46,7 +46,7 @@ module Prism::Params
           case key
           {% for param in INTERNAL__PRISM_PARAMS %}
             when {{param[:name].id.stringify}}
-              cast(value, {{param[:name]}}, {{param[:type]}})
+              cast(value, {{param[:name]}}, {{param[:type]}}, {{param[:proc]}})
           {% end %}
           end
         {% end %}
@@ -63,7 +63,7 @@ module Prism::Params
             {% for param in INTERNAL__PRISM_PARAMS %}
               when {{param[:name].id.stringify}}
                 temp = part.body.gets_to_end.gsub("\r\n", "").to_s
-                cast(temp, {{param[:name]}}, {{param[:type]}})
+                cast(temp, {{param[:name]}}, {{param[:type]}}, {{param[:proc]}})
             {% end %}
             end
           {% end %}
@@ -74,7 +74,7 @@ module Prism::Params
         HTTP::Params.parse(copy_body(context, limit).not_nil!.gets_to_end) do |key, value|
           {% for param in INTERNAL__PRISM_PARAMS %}
             if key == {{param[:name].id.stringify}}
-              cast(value, {{param[:name]}}, {{param[:type]}})
+              cast(value, {{param[:name]}}, {{param[:type]}}, {{param[:proc]}})
             end
           {% end %}
         end
@@ -82,7 +82,7 @@ module Prism::Params
         json = JSON.parse(copy_body(context, limit).not_nil!)
         {% for param in INTERNAL__PRISM_PARAMS %}
           if value = json[{{param[:name].id.stringify}}]?
-            cast(value, {{param[:name]}}, {{param[:type]}})
+            cast(value, {{param[:name]}}, {{param[:type]}}, {{param[:proc]}})
           end
         {% end %}
       end
