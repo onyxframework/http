@@ -1,30 +1,30 @@
 module Prism::Params
-  private macro cast(value, name, type _type, proc)
+  private macro cast(param, value)
     {%
-      __type = _type.is_a?(Generic) ? _type.type_vars.first.resolve : _type.resolve
+      __type = param[:type].is_a?(Generic) ? param[:type].type_vars.first.resolve : param[:type].resolve
     %}
 
-    %temp = uninitialized {{_type.id}}
+    %temp = uninitialized {{param[:type].id}}
 
     begin
       %temp = {{__type}}.from_s({{value.id}}.to_s)
     rescue ArgumentError
       {%
-        expected_type = _type.is_a?(Generic) ? _type.type_vars.join(" or ") : _type.stringify
+        expected_type = param[:type].is_a?(Generic) ? param[:type].type_vars.join(" or ") : param[:type].stringify
       %}
 
       raise InvalidParamTypeError.new(
-        name: {{name.id.stringify}},
+        name: {{param[:name].id.stringify}},
         expected_type: {{expected_type}},
       )
     end
 
-    validate({{name}}, %temp)
+    validate({{param}}, %temp)
 
-    {% if proc %}
-      %temp = {{proc.id}}.call(%temp) if %temp
+    {% if param[:proc] %}
+      %temp = {{param[:proc].id}}.call(%temp) if %temp
     {% end %}
 
-    _temp_params[{{name}}] = %temp
+    _temp_params[{{param[:name]}}] = %temp
   end
 end

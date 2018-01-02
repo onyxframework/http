@@ -33,9 +33,7 @@
 #
 # NOTE: A `#nil?` validation will be run at first if the param is defined as non-nilable.
 module Prism::Params::Validation
-  private macro validate(name, value)
-    {% param = INTERNAL__PRISM_PARAMS.find { |p| p[:name] == name } %}
-
+  private macro validate(param, value)
     {% if validations = param[:validations] %}
       unless {{value}}.nil?
         value = {{value}}.not_nil!
@@ -44,48 +42,48 @@ module Prism::Params::Validation
           case size = {{validations[:size].id}}
           when Int32
             unless value.size == size
-              error!({{name}}, "must have exact size of #{size}")
+              error!({{param[:name]}}, "must have exact size of #{size}")
             end
           when Range
             unless (size).includes?(value.size)
-              error!({{name}}, "must have size in range of #{size}")
+              error!({{param[:name]}}, "must have size in range of #{size}")
             end
           end
         {% end %}
 
         {% if validations[:in] %}
           unless ({{validations[:in]}}).includes?(value)
-            error!({{name}}, "must be included in {{validations[:in].id}}")
+            error!({{param[:name]}}, "must be included in {{validations[:in].id}}")
           end
         {% end %}
 
         {% if validations[:min] %}
           unless value >= {{validations[:min]}}
-            error!({{name}}, "must be greater or equal to {{validations[:min].id}}")
+            error!({{param[:name]}}, "must be greater or equal to {{validations[:min].id}}")
           end
         {% end %}
 
         {% if validations[:max] %}
           unless value <= {{validations[:max]}}
-            error!({{name}}, "must be less or equal to {{validations[:max].id}}")
+            error!({{param[:name]}}, "must be less or equal to {{validations[:max].id}}")
           end
         {% end %}
 
         {% if validations[:min!] %}
           unless value > {{validations[:min!]}}
-            error!({{name}}, "must be greater than {{validations[:min!].id}}")
+            error!({{param[:name]}}, "must be greater than {{validations[:min!].id}}")
           end
         {% end %}
 
         {% if validations[:max!] %}
           unless value < {{validations[:max!]}}
-            error!({{name}}, "must be less than {{validations[:max!].id}}")
+            error!({{param[:name]}}, "must be less than {{validations[:max!].id}}")
           end
         {% end %}
 
         {% if validations[:regex] %}
           unless {{validations[:regex]}}.match(value)
-            error!({{name}}, "must match {{validations[:regex].id}}")
+            error!({{param[:name]}}, "must match {{validations[:regex].id}}")
           end
         {% end %}
 
