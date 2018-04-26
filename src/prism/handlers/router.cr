@@ -24,9 +24,10 @@ require "../ext/http/request/path_params"
 # ```
 class Prism::Handlers::Router
   include HTTP::Handler
-  alias ContextProc = ::Proc(HTTP::Server::Context, Nil)
-  alias WebSocketProc = ::Proc(HTTP::WebSocket, HTTP::Server::Context, Nil)
-  alias Node = ContextProc | HTTP::WebSocketHandler
+
+  private alias ContextProc = ::Proc(HTTP::Server::Context, Nil)
+  private alias WebSocketProc = ::Proc(HTTP::WebSocket, HTTP::Server::Context, Nil)
+  private alias Node = ContextProc | HTTP::WebSocketHandler
 
   # Default cache capacity. The cache is being cleared afterwards.
   CACHE_CAPACITY = 10_000
