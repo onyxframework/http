@@ -46,7 +46,7 @@ module Prism::Action::Params::Spec
       response = handle_request(PrismAction, Req.new(method: "GET", resource: "/?value=43"))
 
       it "updates status" do
-        response.status_code.should eq 400
+        response.status_code.should eq 422
       end
 
       it "halts" do
@@ -58,7 +58,7 @@ module Prism::Action::Params::Spec
       response = handle_request(PrismAction, Req.new(method: "GET", resource: "/?id=foo"))
 
       it "updates status" do
-        response.status_code.should eq 400
+        response.status_code.should eq 422
       end
 
       it "halts" do
@@ -70,7 +70,7 @@ module Prism::Action::Params::Spec
       response = handle_request(PrismAction, Req.new(method: "GET", resource: "/?id=41"))
 
       it "updates status" do
-        response.status_code.should eq 400
+        response.status_code.should eq 422
       end
 
       it "halts" do

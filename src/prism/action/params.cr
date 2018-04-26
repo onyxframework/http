@@ -17,7 +17,7 @@ module Prism
           begin
             @params = self.class.parse_params(context, self.class.max_body_size)
           rescue ex : InvalidParamTypeError | ParamNotFoundError | InvalidParamError
-            context.response.status_code = 400
+            context.response.status_code = 422
             context.response.print(ex.message)
           end
         end
