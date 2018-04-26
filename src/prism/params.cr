@@ -1,7 +1,6 @@
 require "json"
 
 require "./ext/from_s"
-require "./ext/json/lexer"
 
 require "./params/**"
 
