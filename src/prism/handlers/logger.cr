@@ -24,7 +24,7 @@ class Prism::Handlers::Logger
   def call(context)
     time = Time.now
 
-    websocket = context.request.headers["Upgrade"]? == "websocket"
+    websocket = context.request.headers.includes_word?("Upgrade", "Websocket")
 
     if websocket
       method = "WS".rjust(7).colorize(WS_COLOR).mode(:bold)

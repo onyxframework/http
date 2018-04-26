@@ -45,7 +45,7 @@ class Prism::Handlers::Router
   end
 
   def call(context : HTTP::Server::Context)
-    if context.request.headers["Upgrade"]? == "websocket"
+    if context.request.headers.includes_word?("Upgrade", "Websocket")
       result = @tree.find("/ws" + context.request.path)
     else
       result = @tree.find("/" + context.request.method.downcase + context.request.path)
@@ -95,7 +95,7 @@ class Prism::Handlers::Router
 
   # Draw a WebSocket route for *path*.
   #
-  # A request is currently determined as websocket by `"Upgrade": "websocket"` header.
+  # A request is currently determined as websocket by `"Upgrade": "Websocket"` header.
   #
   # ```
   # router = Prism::Handlers::Router.new do |r|
