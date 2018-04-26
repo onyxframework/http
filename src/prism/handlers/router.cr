@@ -7,6 +7,8 @@ require "../ext/http/request/path_params"
 #
 # Always calls next handler.
 #
+# Has a built-in Hash cache with default capacity equals to `CACHE_CAPACITY`.Thanks [@samueleaton](https://github.com/samueleaton) for the idea.
+#
 # ```
 # require "prism/handlers/router"
 #
@@ -26,11 +28,15 @@ class Prism::Handlers::Router
   alias WebSocketProc = ::Proc(HTTP::WebSocket, HTTP::Server::Context, Nil)
   alias Node = ContextProc | HTTP::WebSocketHandler
 
+  # Default cache capacity. The cache is being cleared afterwards.
+  CACHE_CAPACITY = 10_000
+
   # :nodoc:
   HTTP_METHODS = %w(get post put patch delete options)
   @tree = Radix::Tree(Node).new
+  @cached_tree = {} of String => Radix::Result(Node)
 
-  # Initialize a new router and yield it. You can define routes in *&block*.
+  # Initialize a new router with *cache_capacity* default to 10k and yield it. You should then define routes in *&block*.
   #
   # ```
   # # The simplest router
@@ -40,15 +46,15 @@ class Prism::Handlers::Router
   #   end
   # end
   # ```
-  def initialize(&block)
+  def initialize(@cache_capacity = CACHE_CAPACITY, &block)
     yield self
   end
 
   def call(context : HTTP::Server::Context)
     if context.request.headers.includes_word?("Upgrade", "Websocket")
-      result = @tree.find("/ws" + context.request.path)
+      result = wrapped_search("/ws" + context.request.path)
     else
-      result = @tree.find("/" + context.request.method.downcase + context.request.path)
+      result = wrapped_search("/" + context.request.method.downcase + context.request.path)
     end
 
     if result.found?
@@ -57,6 +63,21 @@ class Prism::Handlers::Router
     end
 
     call_next(context)
+  end
+
+  private def wrapped_search(path)
+    if cached_result = @cached_tree[path]?
+      return cached_result
+    else
+      result = @tree.find(path)
+
+      if result.found?
+        @cached_tree.clear if @cached_tree.size > @cache_capacity
+        @cached_tree[path] = result
+      end
+
+      return result
+    end
   end
 
   # Draw a route for *path* and *methods*.
