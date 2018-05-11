@@ -4,20 +4,20 @@ require "../../src/prism/handlers/router/cachers/simple"
 
 class Prism::Handlers::Router
   module Specs
-    router = Prism::Handlers::Router.new do |r|
-      r.get "/users/:id" do |env|
+    router = Prism::Handlers::Router.new do
+      get "/users/:id" do |env|
         env.response.print("id = #{env.request.path_params.not_nil!["id"]}")
       end
 
-      r.post "/foo" do |env|
+      post "/foo" do |env|
         env.response.print("foo")
       end
 
-      r.ws "/foo/:bar" do |socket, env|
+      ws "/foo/:bar" do |socket, env|
         socket.send "Hello!"
       end
 
-      r.on "/baz", methods: %w(put options) do |env|
+      on "/baz", methods: %w(put options) do |env|
         env.response.print("#{env.request.method} /baz")
       end
     end
@@ -89,8 +89,8 @@ class Prism::Handlers::Router
       context "with Simple cacher" do
         cacher = Prism::Handlers::Router::Cachers::Simple.new(10_000)
 
-        router = Prism::Handlers::Router.new(cacher) do |r|
-          r.get "/" do |env|
+        router = Prism::Handlers::Router.new(cacher) do
+          get "/" do |env|
             env.response.print("Hello!")
           end
         end

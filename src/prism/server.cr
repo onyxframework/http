@@ -12,8 +12,8 @@ module Prism
   # require "prism/logger"
   # require "prism/server"
   #
-  # router = Prism::Router.new do |r|
-  #   r.get "/" do |env|
+  # router = Prism::Router.new do
+  #   get "/" do |env|
   #     env.response.print("Hello world!")
   #   end
   # end

@@ -20,19 +20,19 @@ end
 
 simple_cacher = Prism::Handlers::Router::Cachers::Simple.new(100_000)
 
-simply_cached_router = Prism::Handlers::Router.new(simple_cacher) do |r|
-  r.get "/foo/:number" do |env|
+simply_cached_router = Prism::Handlers::Router.new(simple_cacher) do
+  get "/foo/:number" do |env|
   end
 
-  r.get "/bar" do |env|
+  get "/bar" do |env|
   end
 end
 
-non_cached_router = Prism::Handlers::Router.new do |r|
-  r.get "/foo/:number" do |env|
+non_cached_router = Prism::Handlers::Router.new do
+  get "/foo/:number" do |env|
   end
 
-  r.get "/bar" do |env|
+  get "/bar" do |env|
   end
 end
 

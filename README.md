@@ -56,8 +56,8 @@ struct KnockKnock < Prism::Action
   end
 end
 
-router = Prism::Handlers::Router.new do |r|
-  r.get "/:who" do |env|
+router = Prism::Handlers::Router.new do
+  get "/:who" do |env|
     KnockKnock.call(env)
   end
 end
@@ -96,8 +96,8 @@ class Notifications < Prism::Channel
   end
 end
 
-router = Prism::Handlers::Router.new do |r|
-  r.ws "/notifications" do |socket, env|
+router = Prism::Handlers::Router.new do
+  ws "/notifications" do |socket, env|
     Notifications.subscribe(socket, env)
   end
 end

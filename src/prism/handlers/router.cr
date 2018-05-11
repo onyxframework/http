@@ -38,20 +38,25 @@ class Prism::Handlers::Router
   #
   # ```
   # # The simplest router
-  # router = Prism::Handlers::Router.new do |r|
-  #   r.get "/" do |env|
+  # router = Prism::Handlers::Router.new do
+  #   get "/" do |env|
   #     env.response.print "Hello world!"
   #   end
   # end
   #
   # # Add some caching
   # cacher = Prism::Handlers::Router::Cachers::Static.new(10_000)
-  # router = Prism::Handlers::Router.new(cacher) do |r|
+  # router = Prism::Handlers::Router.new(cacher) do
   #   # ditto
   # end
   # ```
-  def initialize(@cacher : Cacher? = nil, &block)
-    yield self
+  def initialize(@cacher : Cacher? = nil)
+  end
+
+  def self.new(cacher = nil)
+    instance = Router.new(cacher)
+    with instance yield
+    instance
   end
 
   def call(context : HTTP::Server::Context)
