@@ -12,9 +12,9 @@ module Prism::Params
             {{key.stringify}}: (if value = param["{{key}}"]?
               if value.value.is_a?(Hash)
                 {% if value < NamedTuple %}
-                  {{value}}.from_param(value, path.push({{key.stringify}}))
+                  {{value}}.from_param(value, path.dup.push({{key.stringify}}))
                 {% else %}
-                  {{value.union_types.first}}.from_param(value, path.push({{key.stringify}}))
+                  {{value.union_types.first}}.from_param(value, path.dup.push({{key.stringify}}))
                 {% end %}
               else
                 raise Prism::Params::InvalidParamTypeError.new({{key.id.stringify}}, "Object", value.value.class.name)

@@ -1,3 +1,4 @@
+require "http/request"
 require "./param"
 require "./named_tuple/from_param"
 require "../ext/json/any/dig"

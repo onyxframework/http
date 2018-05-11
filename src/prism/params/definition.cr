@@ -114,7 +114,7 @@ module Prism::Params
     %}
 
     # Damn hacks
-    alias ParamsTuple = NamedTuple({{"#{hash}".gsub(/\"/, "\"").gsub(%r[=> {(.*), "__nilable" => true(.*)}], "=> {\\1\\2 | Nil ").gsub(/ \=>/, ":")[1..-2].id}})
+    alias ParamsTuple = NamedTuple({{"#{hash}".gsub(/\"/, "\"").gsub(%r[=> {(.*), "__nilable" => true(.*)}[,}]], "=> {\\1\\2} | Nil ").gsub(%r[=> {(.*)"__nilable" => true, (.*)}[,}]], "=> {\\1\\2} | Nil ").gsub(/ \=>/, ":")[1..-2].id}})
   end
 
   private macro define_param_type
