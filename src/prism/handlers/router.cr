@@ -2,12 +2,13 @@ require "radix"
 require "http/web_socket"
 require "../ext/http/request/action"
 require "../ext/http/request/path_params"
+require "./router/cacher"
 
 # Routes a request's path, injecting matching `ContextProc` into `context.request.action` and path params into `context.request.path_params`.
 #
 # Always calls next handler.
 #
-# Has a built-in Hash cache with default capacity equals to `CACHE_CAPACITY`.Thanks [@samueleaton](https://github.com/samueleaton) for the idea.
+# See `Cacher` for known caching implementations.
 #
 # ```
 # require "prism/handlers/router"
@@ -29,15 +30,11 @@ class Prism::Handlers::Router
   private alias WebSocketProc = ::Proc(HTTP::WebSocket, HTTP::Server::Context, Nil)
   private alias Node = ContextProc | HTTP::WebSocketHandler
 
-  # Default cache capacity. The cache is being cleared afterwards.
-  CACHE_CAPACITY = 10_000
-
   # :nodoc:
   HTTP_METHODS = %w(get post put patch delete options)
   @tree = Radix::Tree(Node).new
-  @cached_tree = {} of String => Radix::Result(Node)
 
-  # Initialize a new router with *cache_capacity* default to 10k and yield it. You should then define routes in *&block*.
+  # Initialize a new router with optional *cacher* and yield it. You should then define routes in *&block*.
   #
   # ```
   # # The simplest router
@@ -46,16 +43,24 @@ class Prism::Handlers::Router
   #     env.response.print "Hello world!"
   #   end
   # end
+  #
+  # # Add some caching
+  # cacher = Prism::Handlers::Router::Cachers::Static.new(10_000)
+  # router = Prism::Handlers::Router.new(cacher) do |r|
+  #   # ditto
+  # end
   # ```
-  def initialize(@cache_capacity = CACHE_CAPACITY, &block)
+  def initialize(@cacher : Cacher? = nil, &block)
     yield self
   end
 
   def call(context : HTTP::Server::Context)
     if context.request.headers.includes_word?("Upgrade", "Websocket")
-      result = wrapped_search("/ws" + context.request.path)
+      path = "/ws" + context.request.path
+      result = @cacher ? @cacher.not_nil!.find(@tree, path) : @tree.find(path)
     else
-      result = wrapped_search("/" + context.request.method.downcase + context.request.path)
+      path = "/" + context.request.method.downcase + context.request.path
+      result = @cacher ? @cacher.not_nil!.find(@tree, path) : @tree.find(path)
     end
 
     if result.found?
@@ -64,21 +69,6 @@ class Prism::Handlers::Router
     end
 
     call_next(context)
-  end
-
-  private def wrapped_search(path)
-    if cached_result = @cached_tree[path]?
-      return cached_result
-    else
-      result = @tree.find(path)
-
-      if result.found?
-        @cached_tree.clear if @cached_tree.size > @cache_capacity
-        @cached_tree[path] = result
-      end
-
-      return result
-    end
   end
 
   # Draw a route for *path* and *methods*.

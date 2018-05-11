@@ -1,5 +1,6 @@
 require "../spec_helper"
 require "../../src/prism/handlers/router"
+require "../../src/prism/handlers/router/cachers/simple"
 
 class Prism::Handlers::Router
   module Specs
@@ -82,6 +83,22 @@ class Prism::Handlers::Router
 
         it "doesn't update path params" do
           context.request.path_params.should be_nil
+        end
+      end
+
+      context "with Simple cacher" do
+        cacher = Prism::Handlers::Router::Cachers::Simple.new(10_000)
+
+        router = Prism::Handlers::Router.new(cacher) do |r|
+          r.get "/" do |env|
+            env.response.print("Hello!")
+          end
+        end
+
+        context = dummy_context(Req.new("GET", "/"))
+
+        it "works" do
+          router.call(context)
         end
       end
     end
