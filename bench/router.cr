@@ -51,7 +51,7 @@ Benchmark.ips do |x|
   end
 end
 
-puts "\n\nRunning dynamic paths (random from #{DYNAMIC_ROUTES_NUMBER} known paths)...\n\n"
+puts "\nRunning dynamic paths (random from #{DYNAMIC_ROUTES_NUMBER} known paths)...\n\n"
 
 Benchmark.ips do |x|
   x.report("simply cached router with dynamic paths") do
@@ -63,7 +63,7 @@ Benchmark.ips do |x|
   end
 end
 
-puts "\n\nRunning absolutely random paths (caching is useless)...\n\n"
+puts "\nRunning absolutely random paths (caching is useless)...\n\n"
 
 Benchmark.ips do |x|
   x.report("simply cached router with random paths") do
@@ -75,4 +75,4 @@ Benchmark.ips do |x|
   end
 end
 
-puts "\n\n✔️ Done benchmarking router"
+puts "\n✔️ Done benchmarking router"
