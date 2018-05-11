@@ -16,8 +16,15 @@ require "./params/**"
 #
 #   params do
 #     param :foo, Int32?
-#     param :name, String, validate: ->(name : String?) { name.size >= 3 }
+#     param :name, String, validate: {size: {min: 3}}
 #     param "kebab-case-time", Time?
+#     param :bar, nilable: true do # Nested params are supported too
+#       param :baz do
+#         param :qux, String?
+#       end
+#
+#       param :quux, Int32, proc: (quux : Int32) -> { quux * 2 }
+#     end
 #   end
 #
 #   def self.call(context)
@@ -31,6 +38,9 @@ require "./params/**"
 #
 #     p params["kebab-case-time"].class
 #     # => Time?
+#
+#     p params[:bar]?.try &.[:baz][:qux].class
+#     # => String?
 #   end
 # end
 # ```
@@ -79,18 +89,12 @@ module Prism::Params
   # ```
   macro params(&block)
     INTERNAL__PRISM_PARAMS = [] of NamedTuple
+    INTERNAL__PRISM_PARAMS_PARENTS = {current_value: [] of Symbol, nilable: {} of Array(Symbol) => Bool}
 
     {{yield}}
 
     define_params_tuple
+    define_param_type
     define_parse_params
-  end
-
-  private macro define_params_tuple
-    alias ParamsTuple = NamedTuple(
-      {% for param in INTERNAL__PRISM_PARAMS %}
-        "{{param[:name].id}}": {{param[:type].id}}
-      {% end %}
-    )
   end
 end

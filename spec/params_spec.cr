@@ -11,6 +11,14 @@ module Prism::Params::Specs
       param :time, Time?
       param :float_value, Float64?
       param :"kebab-param", String?, proc: ->(p : String) { p.upcase }
+
+      param :nest1, nilable: true do
+        param :nest2 do
+          param :bar, Int32, validate: {max: 42}
+        end
+
+        param :foo, String?, proc: ->(p : String) { p.downcase }
+      end
     end
 
     @@last_params = uninitialized ParamsTuple
@@ -25,7 +33,7 @@ module Prism::Params::Specs
 
   describe SimpleAction do
     context "with valid params" do
-      response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&value=42&time=1506952232&kebab-param=foo"))
+      response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&value=42&time=1506952232&kebab-param=foo&nest1[nest2][bar]=41&nest1[foo]=BAR"))
 
       it "doesn't halt" do
         response.body.should eq "ok"
@@ -46,25 +54,13 @@ module Prism::Params::Specs
       it "has kebab-param in params" do
         SimpleAction.last_params["kebab-param"].should eq "FOO"
       end
-    end
 
-    describe "testing certain content types" do
-      context "JSON" do
-        response = handle_request(SimpleAction, Req.new(
-          method: "POST",
-          resource: "/",
-          body: {
-            id:          42,
-            float_value: 0.000000000001,
-          }.to_json,
-          headers: HTTP::Headers{
-            "Content-Type" => "application/json",
-          }
-        ))
+      it "has nest1 -> nest2 -> bar in params" do
+        SimpleAction.last_params[:nest1]?.try &.[:nest2]?.try &.[:bar].should eq 41
+      end
 
-        it "properly parses float" do
-          SimpleAction.last_params[:float_value].should eq 0.000000000001
-        end
+      it "has nest1 foo in params" do
+        SimpleAction.last_params[:nest1]?.try &.[:foo].should eq "bar"
       end
     end
 
@@ -106,6 +102,35 @@ module Prism::Params::Specs
       it "raises" do
         expect_raises(InvalidParamError) do
           response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=41"))
+        end
+      end
+    end
+
+    describe "testing certain content types" do
+      context "JSON" do
+        response = handle_request(SimpleAction, Req.new(
+          method: "POST",
+          resource: "/",
+          body: {
+            id:          42,
+            float_value: 0.000000000001,
+            nest1:       {
+              nest2: {
+                bar: 41,
+              },
+            },
+          }.to_json,
+          headers: HTTP::Headers{
+            "Content-Type" => "application/json",
+          }
+        ))
+
+        it "properly parses float" do
+          SimpleAction.last_params[:float_value].should eq 0.000000000001
+        end
+
+        it "has nested params" do
+          SimpleAction.last_params[:nest1]?.try &.[:nest2]?.try &.[:bar].should eq 41
         end
       end
     end
