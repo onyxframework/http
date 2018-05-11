@@ -1,25 +1,23 @@
 require "./spec_helper"
 require "../src/prism/action"
 
-struct Prism::Action
-  module Specs
-    struct OkAction < Prism::Action
-      def call
-        status(205)
-        text("ok")
-      end
+abstract struct Prism::Action
+  struct OkAction < Prism::Action
+    def call
+      status(205)
+      text("ok")
+    end
+  end
+
+  describe OkAction do
+    response = handle_request(OkAction)
+
+    it "prints ok" do
+      response.body.should eq "ok"
     end
 
-    describe OkAction do
-      response = handle_request(OkAction)
-
-      it "prints ok" do
-        response.body.should eq "ok"
-      end
-
-      it "updates status code" do
-        response.status_code.should eq 205
-      end
+    it "updates status code" do
+      response.status_code.should eq 205
     end
   end
 
