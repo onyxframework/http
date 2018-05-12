@@ -3,6 +3,8 @@ require "http/web_socket"
 require "./ext/http/request/action"
 require "./ext/http/request/path_params"
 require "./router/*"
+require "./action"
+require "./channel"
 
 module Prism
   # Routes a request's path, injecting matching `ContextProc` into `context.request.action` and path params into `context.request.path_params`.
@@ -97,6 +99,24 @@ module Prism
       end
     end
 
+    # Draw a route for *path* and *methods* calling *action*.
+    #
+    # ```
+    # router = Prism::Router.new do
+    #   on "/foo", methods: %w(get post), MyAction
+    # end
+    # ```
+    def on(path, methods : Array(String), action : Action.class)
+      methods.map(&.downcase).each do |method|
+        begin
+          proc = ->(env : HTTP::Server::Context) { action.call(env) }
+          @tree.add("/" + method + path, proc.as(Node))
+        rescue Radix::Tree::DuplicateError
+          raise DuplicateRouteError.new(method.upcase + " " + path)
+        end
+      end
+    end
+
     # Draw a empty (status 200) route for *path* and *methods*.
     #
     # ```
@@ -128,6 +148,17 @@ module Prism
         on(path, [{{method}}], &proc)
       end
 
+      # Draw a route for *path* with `{{method.upcase.id}}` calling *action*.
+      #
+      # ```
+      # router = Prism::Router.new do
+      #   {{method.id}} "/bar", MyAction
+      # end
+      # ```
+      def {{method.id}}(path, action : Action.class)
+        on(path, [{{method}}], action)
+      end
+
       # Draw a empty (status 200) route for *path* with `{{method.upcase.id}}` method.
       #
       # ```
@@ -154,6 +185,24 @@ module Prism
     def ws(path, &proc : WebSocketProc)
       begin
         @tree.add("/ws" + path, HTTP::WebSocketHandler.new(&proc))
+      rescue Radix::Tree::DuplicateError
+        raise DuplicateRouteError.new("WS " + path)
+      end
+    end
+
+    # Draw a WebSocket route for *path* instantiating *channel*.
+    #
+    # A request is currently determined as websocket by `"Upgrade": "Websocket"` header.
+    #
+    # ```
+    # router = Prism::Router.new do
+    #   ws "/foo/:bar", MyChannel
+    # end
+    # ```
+    def ws(path, channel : Channel.class)
+      begin
+        proc = HTTP::WebSocketHandler.new(->(socket : HTTP::WebSocket, context : HTTP::Server::Context) { MyChannel.call(socket, context) })
+        @tree.add("/ws" + path, proc.as(Node))
       rescue Radix::Tree::DuplicateError
         raise DuplicateRouteError.new("WS " + path)
       end
