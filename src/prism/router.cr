@@ -33,6 +33,9 @@ module Prism
     HTTP_METHODS = %w(get post put patch delete options)
     @tree = Radix::Tree(Node).new
 
+    # Cacher used by this router. Can be changed in the runtime.
+    property cacher
+
     # Initialize a new router with optional *cacher* and yield it. You should then define routes in *&block*.
     #
     # ```
