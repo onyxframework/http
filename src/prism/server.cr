@@ -24,10 +24,10 @@ module Prism
   # server = Prism::Server.new(handlers: [logger, router])
   # server.listen
   #
-  # #  INFO -- :   PRISM server v0.1.0 is listening on http://localhost:5000
+  # #  INFO -- :   Prism server v0.1.0 is listening on http://localhost:5000
   # #  INFO -- :     GET /? 200 61μs
   # #  INFO -- :     GET /foo? 404 166μs
-  # #  INFO -- :   PRISM server is shutting down!
+  # #  INFO -- :   Prism server is shutting down!
   # ```
   class Server < HTTP::Server
     def initialize(@host : String = "0.0.0.0", @port : Int32 = 5000, handlers : Array(HTTP::Handler)? = nil, @logger = ::Logger.new(STDOUT))
@@ -63,7 +63,7 @@ module Prism
     end
 
     def self.logo
-      "PRISM".rjust(7).colorize.mode(:bold).to_s
+      "Prism".rjust(7).to_s
     end
   end
 end
