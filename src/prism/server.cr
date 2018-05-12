@@ -1,4 +1,5 @@
 require "logger"
+require "colorize"
 require "./ext/http/request/action"
 require "./version"
 
