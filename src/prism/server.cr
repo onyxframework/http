@@ -41,7 +41,7 @@ module Prism
       end
     end
 
-    def listen
+    def listen(reuse_port = false)
       @logger.info(
         self.class.logo +
         " server " +
