@@ -56,14 +56,14 @@ struct KnockKnock < Prism::Action
   end
 end
 
-router = Prism::Handlers::Router.new do
+router = Prism::Router.new do
   get "/:who" do |env|
     KnockKnock.call(env)
   end
 end
 
 logger = Logger.new(STDOUT)
-log_handler = Prism::Handlers::Logger.new(logger)
+log_handler = Prism::Logger.new(logger)
 handlers = [log_handler, router]
 
 server = Prism::Server.new("localhost", 5000, handlers, logger)
@@ -96,7 +96,7 @@ class Notifications < Prism::Channel
   end
 end
 
-router = Prism::Handlers::Router.new do
+router = Prism::Router.new do
   ws "/notifications" do |socket, env|
     Notifications.subscribe(socket, env)
   end

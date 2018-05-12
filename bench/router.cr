@@ -1,6 +1,4 @@
-require "../src/prism/handlers/router"
-require "../src/prism/handlers/router/cachers/simple"
-require "http/server"
+require "../src/prism"
 
 RESPONSE = HTTP::Server::Response.new(IO::Memory.new)
 
@@ -18,9 +16,9 @@ def dynamic_path_request
   HTTP::Server::Context.new(HTTP::Request.new("GET", "/foo/#{rand(DYNAMIC_ROUTES_NUMBER)}"), RESPONSE)
 end
 
-simple_cacher = Prism::Handlers::Router::Cachers::Simple.new(100_000)
+simple_cacher = Prism::Router::SimpleCacher.new(100_000)
 
-simply_cached_router = Prism::Handlers::Router.new(simple_cacher) do
+simply_cached_router = Prism::Router.new(simple_cacher) do
   get "/foo/:number" do |env|
   end
 
@@ -28,7 +26,7 @@ simply_cached_router = Prism::Handlers::Router.new(simple_cacher) do
   end
 end
 
-non_cached_router = Prism::Handlers::Router.new do
+non_cached_router = Prism::Router.new do
   get "/foo/:number" do |env|
   end
 

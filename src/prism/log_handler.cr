@@ -3,18 +3,17 @@ require "logger"
 require "colorize"
 require "time_format"
 
-module Prism::Handlers
+module Prism
   # `HTTP::Handler` which logs requests colorfully into specified *logger*.
   #
   # ```
-  # require "prism/handlers/logger"
-  # logger = Prism::Handlers::Logger.new(Logger.new(STDOUT))
+  # logger = Prism::LogHandler.new(Logger.new(STDOUT))
   #
   # #   INFO -- :     GET /users 200 102μs
   # #   INFO -- :     GET /favicon.ico 404 52μs
   # #   INFO -- :    POST /users 201 3.74ms
   # ```
-  class Logger
+  class LogHandler
     include HTTP::Handler
 
     WS_COLOR = :cyan

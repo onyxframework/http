@@ -1,7 +1,7 @@
 require "../params"
 
 module Prism
-  struct Action
+  abstract struct Action
     # Params module for `Prism::Action`. It injects params parsing into `before` callback.
     #
     # Halts with 422 if `Prism::Params::InvalidParamTypeError`, `Prism::Params::ParamNotFoundError` or `Prism::Params::InvalidParamError` raised.

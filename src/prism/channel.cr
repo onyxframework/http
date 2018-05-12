@@ -1,14 +1,12 @@
 require "http/server"
 require "json"
-
 require "./callbacks"
+require "./channel/*"
 
 module Prism
   # A callable websocket Channel with `Callbacks` included.
   #
   # ```
-  # require "prism/channel"
-  #
   # class UserNotifications < Prism::Channel
   #   include Auth
   #   include Params
@@ -40,9 +38,7 @@ module Prism
   #   end
   # end
   #
-  # require "prism/handlers/router"
-  #
-  # router = Prism::Handlers::Router.new do
+  # router = Prism::Router.new do
   #   ws "/notifications" do |socket, env|
   #     UserNotifications.subscribe(socket, env)
   #     # Or

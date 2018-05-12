@@ -1,7 +1,7 @@
 require "../ext/http/request/auth"
 
 module Prism
-  struct Action
+  abstract struct Action
     # Auth module for `Prism::Action`.
     #
     # ```

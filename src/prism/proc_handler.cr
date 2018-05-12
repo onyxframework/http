@@ -1,11 +1,10 @@
 require "http/server/handler"
 
-module Prism::Handlers
+module Prism
   # `HTTP::Handler` which calls the *proc* on each `#call`.
   #
   # ```
-  # require "prism/handlers/proc"
-  # secret = Prism::Handlers::Proc.new do |handler, context|
+  # secret = Prism::ProcHandler.new do |handler, context|
   #   if context.request.query_params.to_h["secret"]?.try &.== ENV["SECRET"]
   #     handler.call_next(context)
   #   else
@@ -13,7 +12,7 @@ module Prism::Handlers
   #   end
   # end
   # ```
-  class Proc
+  class ProcHandler
     include HTTP::Handler
 
     @proc : ::Proc(self, HTTP::Server::Context, Void)

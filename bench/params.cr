@@ -1,7 +1,6 @@
-require "../src/prism/ext/http/request/path_params"
-require "../src/prism/params"
+require "../src/prism"
 
-class SimpleAction
+struct SimpleAction
   include Prism::Params
 
   params do

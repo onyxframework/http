@@ -1,10 +1,9 @@
-require "../spec_helper"
-require "../../src/prism/handlers/router"
-require "../../src/prism/handlers/router/cachers/simple"
+require "./spec_helper"
+require "./../src/prism/router"
 
-class Prism::Handlers::Router
+class Prism::Router
   module Specs
-    router = Prism::Handlers::Router.new do
+    router = Prism::Router.new do
       get "/users/:id" do |env|
         env.response.print("id = #{env.request.path_params.not_nil!["id"]}")
       end
@@ -22,7 +21,7 @@ class Prism::Handlers::Router
       end
     end
 
-    describe Prism::Handlers::Router do
+    describe Prism::Router do
       context "get /users/42" do
         context = dummy_context(Req.new("GET", "/users/42"))
         router.call(context)
@@ -87,9 +86,9 @@ class Prism::Handlers::Router
       end
 
       context "with Simple cacher" do
-        cacher = Prism::Handlers::Router::Cachers::Simple.new(10_000)
+        cacher = Prism::Router::SimpleCacher.new(10_000)
 
-        router = Prism::Handlers::Router.new(cacher) do
+        router = Prism::Router.new(cacher) do
           get "/" do |env|
             env.response.print("Hello!")
           end

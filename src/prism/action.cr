@@ -1,6 +1,7 @@
 require "http/server"
 require "json"
 require "./callbacks"
+require "./action/*"
 
 module Prism
   # A callable HTTP action with `Callbacks` included.

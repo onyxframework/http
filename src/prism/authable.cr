@@ -2,8 +2,6 @@ module Prism
   # An inheriting class will be marked as auth(*enticate*)able.
   #
   # ```
-  # require "prism/authable"
-  #
   # class Auth < Prism::Authable
   #   getter user : User?
   #

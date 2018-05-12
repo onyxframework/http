@@ -1,10 +1,10 @@
 require "radix"
 require "http/web_socket"
-require "../ext/http/request/action"
-require "../ext/http/request/path_params"
-require "./router/cacher"
+require "./ext/http/request/action"
+require "./ext/http/request/path_params"
+require "./router/*"
 
-module Prism::Handlers
+module Prism
   # Routes a request's path, injecting matching `ContextProc` into `context.request.action` and path params into `context.request.path_params`.
   #
   # Always calls next handler.
@@ -12,9 +12,7 @@ module Prism::Handlers
   # See `Cacher` for known caching implementations.
   #
   # ```
-  # require "prism/handlers/router"
-  #
-  # router = Prism::Handlers::Router.new do
+  # router = Prism::Router.new do
   #   get "/" do |context|
   #     context.response.print("Hello world!")
   #   end
@@ -39,15 +37,15 @@ module Prism::Handlers
     #
     # ```
     # # The simplest router
-    # router = Prism::Handlers::Router.new do
+    # router = Prism::Router.new do
     #   get "/" do |env|
     #     env.response.print "Hello world!"
     #   end
     # end
     #
     # # Add some caching
-    # cacher = Prism::Handlers::Router::Cachers::Static.new(10_000)
-    # router = Prism::Handlers::Router.new(cacher) do
+    # cacher = Prism::Router::SimpleCacher.new(10_000)
+    # router = Prism::Router.new(cacher) do
     #   # ditto
     # end
     # ```
@@ -80,7 +78,7 @@ module Prism::Handlers
     # Draw a route for *path* and *methods*.
     #
     # ```
-    # router = Prism::Handlers::Router.new do
+    # router = Prism::Router.new do
     #   on "/foo", methods: %w(get post) do |context|
     #     context.response.print("Hello from #{context.request.method} /foo!")
     #   end
@@ -100,7 +98,7 @@ module Prism::Handlers
       # Draw a route for *path* with `{{method.upcase.id}}` method.
       #
       # ```
-      # router = Prism::Handlers::Router.new do
+      # router = Prism::Router.new do
       #   {{method.id}} "/bar" do |context|
       #     context.response.print("Hello from {{method.upcase.id}} /bar!")
       #   end
@@ -116,7 +114,7 @@ module Prism::Handlers
     # A request is currently determined as websocket by `"Upgrade": "Websocket"` header.
     #
     # ```
-    # router = Prism::Handlers::Router.new do
+    # router = Prism::Router.new do
     #   ws "/foo/:bar" do |socket, context|
     #     socket.send("Hello WS!")
     #   end

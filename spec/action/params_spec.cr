@@ -1,6 +1,5 @@
 require "../spec_helper"
 require "../../src/prism/action"
-require "../../src/prism/action/params"
 
 module Prism::Action::Params::Spec
   struct PrismAction < Prism::Action

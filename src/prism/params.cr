@@ -1,3 +1,4 @@
+require "./ext/http/request/path_params"
 require "./params/**"
 
 # Request params typecasting and validation module.
@@ -5,8 +6,6 @@ require "./params/**"
 # Extracts params from (nearly) all possible sources and casts them accordingly (invoking `Type.from_param`) into a `NamedTuple`.
 #
 # ```
-# require "prism/params"
-#
 # class SimpleAction
 #   include Prism::Params
 #
@@ -45,7 +44,7 @@ require "./params/**"
 #
 # Params parsing order (latter rewrites previous):
 #
-# 1. Path params (only if `"prism/ext/http/request/path_params"` is required **before** this file);
+# 1. Path params;
 # 2. Request query params (.e.g "/?foo=42");
 # 3. Multipart form data (only if `"Content-Type"` is `"multipart/form-data"`);
 # 4. Body params (only if `"Content-Type"` is `"application/x-www-form-urlencoded"`);
@@ -58,9 +57,6 @@ require "./params/**"
 # If included into `Prism::Action`, it will automatically inject `parse_params` into `Action#before` callback:
 #
 # ```
-# require "prism/action"
-# require "prism/action/params"
-#
 # struct MyPrismAction < Prism::Action
 #   include Params
 #

@@ -9,17 +9,15 @@ module Prism
   # Example usage:
   #
   # ```
-  # require "prism/handlers/router"
-  # require "prism/handlers/logger"
-  # require "prism/server"
+  # require "prism"
   #
-  # router = Prism::Handlers::Router.new do
+  # router = Prism::Router.new do
   #   get "/" do |env|
   #     env.response.print("Hello world!")
   #   end
   # end
   #
-  # logger = Prism::Handlers::Logger.new(Logger.new(STDOUT))
+  # logger = Prism::Logger.new(Logger.new(STDOUT))
   #
   # server = Prism::Server.new(handlers: [logger, router])
   # server.listen
