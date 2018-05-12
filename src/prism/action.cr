@@ -93,7 +93,7 @@ module Prism
     macro halt!(status, response = nil)
       status({{status.id}})
 
-      {% if response.is_a?(StringLiteral) %}
+      {% if response.is_a?(StringLiteral) || response.is_a?(StringInterpolation) %}
         text({{response}})
       {% elsif response.is_a?(NilLiteral) %}
         text(HTTP.default_status_message_for({{status.id}}))
