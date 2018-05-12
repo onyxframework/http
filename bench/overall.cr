@@ -37,22 +37,6 @@ end
 cacher = Prism::Router::SimpleCacher.new(4)
 router = Prism::Router.new(cacher) do
   get "/"
-
-  get "/simple" do |env|
-    SimpleAction.call(env)
-  end
-
-  get "/foo" do |env|
-    ParamsAction.call(env)
-  end
-
-  put "/users/:user_id/update" do |env|
-    NestedParamsAction.call(env)
-  end
-end
-
-non_cached_router = Prism::Router.new do
-  get "/"
   get "/simple", SimpleAction
   get "/foo", ParamsAction
   put "/users/:user_id/update", NestedParamsAction

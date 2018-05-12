@@ -109,8 +109,7 @@ module Prism
     def on(path, methods : Array(String), action : Action.class)
       methods.map(&.downcase).each do |method|
         begin
-          proc = ->(env : HTTP::Server::Context) { action.call(env) }
-          @tree.add("/" + method + path, proc.as(Node))
+          @tree.add("/" + method + path, ContextProc.new { |c| action.call(c) }.as(Node))
         rescue Radix::Tree::DuplicateError
           raise DuplicateRouteError.new(method.upcase + " " + path)
         end
@@ -127,7 +126,7 @@ module Prism
     def on(path, methods : Array(String))
       methods.map(&.downcase).each do |method|
         begin
-          @tree.add("/" + method + path, ->(env : HTTP::Server::Context) {})
+          @tree.add("/" + method + path, ContextProc.new { })
         rescue Radix::Tree::DuplicateError
           raise DuplicateRouteError.new(method.upcase + " " + path)
         end
@@ -201,8 +200,7 @@ module Prism
     # ```
     def ws(path, channel : Channel.class)
       begin
-        proc = HTTP::WebSocketHandler.new(->(socket : HTTP::WebSocket, context : HTTP::Server::Context) { MyChannel.call(socket, context) })
-        @tree.add("/ws" + path, proc.as(Node))
+        @tree.add("/ws" + path, WebSocketProc.new { |s, c| MyChannel.call(s, c) }.as(Node))
       rescue Radix::Tree::DuplicateError
         raise DuplicateRouteError.new("WS " + path)
       end
