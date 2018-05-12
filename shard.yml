@@ -15,6 +15,3 @@ dependencies:
   time_format:
     github: vladfaust/time_format.cr
     version: ~> 0.1.0
-  shard:
-    github: maiha/shard.cr
-    version: ~> 0.2.0
