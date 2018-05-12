@@ -1,11 +1,11 @@
 require "./params/**"
 
-# Request params access and validation module.
+# Request params typecasting and validation module.
 #
 # Extracts params from (nearly) all possible sources and casts them accordingly (invoking `Type.from_param`) into a `NamedTuple`.
 #
 # ```
-# require "prism/action/params"
+# require "prism/params"
 #
 # class SimpleAction
 #   include Prism::Params
@@ -45,17 +45,17 @@ require "./params/**"
 #
 # Params parsing order (latter rewrites previous):
 #
-# 1. Path params (only if `"prism/ext/http/request/path_params"` is required **before**)
-# 2. Request query params
-# 3. Multipart form data (only if `"Content-Type"` is `"multipart/form-data"`)
-# 4. Body params (only if `"Content-Type"` is `"application/x-www-form-urlencoded"`)
-# 5. JSON body (only if `"Content-Type"` is `"application/json"`)
+# 1. Path params (only if `"prism/ext/http/request/path_params"` is required **before** this file);
+# 2. Request query params (.e.g "/?foo=42");
+# 3. Multipart form data (only if `"Content-Type"` is `"multipart/form-data"`);
+# 4. Body params (only if `"Content-Type"` is `"application/x-www-form-urlencoded"`);
+# 5. JSON body (only if `"Content-Type"` is `"application/json"`).
 #
 # Parsing will replace original request body with its shrinked copy IO (defaults to 8 MB).
 #
 # If you want to implement your own type casting, extend it with `.from_param` method (see `Int32.from_param` for example).
 #
-# If included into `Prism::Action`, will automatically inject `parse_params` into `Action#before` callback:
+# If included into `Prism::Action`, it will automatically inject `parse_params` into `Action#before` callback:
 #
 # ```
 # require "prism/action"
@@ -77,12 +77,6 @@ module Prism::Params
   include Validation
 
   # An **essential** params definition block.
-  #
-  # ```
-  # params do
-  #   param :id, Int32
-  # end
-  # ```
   macro params(&block)
     INTERNAL__PRISM_PARAMS = [] of NamedTuple
     INTERNAL__PRISM_PARAMS_PARENTS = {current_value: [] of Symbol, nilable: {} of Array(Symbol) => Bool}

@@ -2,6 +2,23 @@ require "../params"
 
 module Prism
   struct Action
+    # Params module for `Prism::Action`. It injects params parsing into `before` callback.
+    #
+    # Halts with 422 if `Prism::Params::InvalidParamTypeError`, `Prism::Params::ParamNotFoundError` or `Prism::Params::InvalidParamError` raised.
+    #
+    # ```
+    # struct MyAction < Prism::Action
+    #   include Params
+    #
+    #   params do
+    #     param :foo, Int32
+    #   end
+    #
+    #   def call
+    #     params[:foo] # => Int32
+    #   end
+    # end
+    # ```
     module Params
       include Prism::Params
 

@@ -2,7 +2,23 @@ require "../params"
 
 module Prism
   class Channel
-    # Params module for `Channel`. Closes the socket on validation error.
+    # Params module for `Prism::Channel`. It injects params parsing into `before` callback.
+    #
+    # Closes the socket if `Prism::Params::InvalidParamTypeError`, `Prism::Params::ParamNotFoundError` or `Prism::Params::InvalidParamError` raised.
+    #
+    # ```
+    # class MyChannel < Prism::Channel
+    #   include Params
+    #
+    #   params do
+    #     param :foo, Int32
+    #   end
+    #
+    #   def on_open
+    #     params[:foo] # => Int32
+    #   end
+    # end
+    # ```
     module Params
       include Prism::Params
 

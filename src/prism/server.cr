@@ -3,22 +3,22 @@ require "./ext/http/request/action"
 require "./version"
 
 module Prism
-  # A simple `HTTP::Server` wrapper utilizing `Router`.
+  # A simple `HTTP::Server` wrapper relying on `HTTP::Request::Action`.
   #
   # Example usage:
   #
   # ```
-  # require "prism/router"
-  # require "prism/logger"
+  # require "prism/handlers/router"
+  # require "prism/handlers/logger"
   # require "prism/server"
   #
-  # router = Prism::Router.new do
+  # router = Prism::Handlers::Router.new do
   #   get "/" do |env|
   #     env.response.print("Hello world!")
   #   end
   # end
   #
-  # logger = Prism::Logger.new(Logger.new(STDOUT))
+  # logger = Prism::Handlers::Logger.new(Logger.new(STDOUT))
   #
   # server = Prism::Server.new(handlers: [logger, router])
   # server.listen

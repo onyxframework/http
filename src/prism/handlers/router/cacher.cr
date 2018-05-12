@@ -1,5 +1,5 @@
 class Prism::Handlers::Router
-  # Boost `Router` performance with cache!
+  # Boost `Router` performance with caching!
   #
   # Example:
   #

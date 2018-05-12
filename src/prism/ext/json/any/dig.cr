@@ -1,5 +1,10 @@
 struct JSON::Any
-  def dig?(keys)
+  # Dig a `JSON::Any` value with *keys* path.
+  #
+  # ```
+  # {"foo" => {"bar" => 42}}.to_json.dig?(["foo", "bar"]) # => 42
+  # ```
+  def dig?(keys : Enumerable)
     raise ArgumentError.new("Keys must not be empty!") if keys.empty?
 
     if keys.size > 1

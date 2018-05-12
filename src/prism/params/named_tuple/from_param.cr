@@ -1,8 +1,9 @@
-require "../param"
+require "../abstract_param"
 require "../errors"
 
 module Prism::Params
-  # Converts `Prism::Param` to a `NamedTuple`. Intended for private use, so
+  # Converts `Prism::Param` to a `NamedTuple`. Intended for private use only, so
+
   # :nodoc:
   def NamedTuple.from_param(param : Prism::Params::AbstractParam, path : Array(String) = [] of String)
     {% begin %}

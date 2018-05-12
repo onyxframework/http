@@ -15,18 +15,18 @@ module Prism::Params
   #
   # **Nested params** (e.g. `param :user do`) can have following options:
   #
-  # - *nilable* (`false` by default)
+  # - *nilable* (`false` by default).
   #
   # **Single param** has two mandatory arguments:
   #
-  # - *name* declares an access key for the `params` tuple
-  # - *type* defines a type which the param must be casted to, otherwise validation will fail (i.e. "foo" won't cast to `Int32`)
+  # - *name* declares an access key for the `params` tuple;
+  # - *type* defines a type which the param must be casted to, otherwise validation will fail (i.e. "foo" won't cast to `Int32`). Also see `Int32.from_param` and siblings.
   #
   # **Single param** can also have some options:
   #
-  # - *nilable* declares if this param is nilable (the same effect is achieved with nilable *type*, i.e. `Int32?`)
-  # - *validate* defines validation options. See `Validation`
-  # - *proc* will be called each time the param is casted (right after validation). The param becomes the returned value, so this *proc* **must** return the same type
+  # - *nilable* declares if this param is nilable (the same effect is achieved with nilable *type*, i.e. `Int32?`);
+  # - *validate* defines validation options. See `Validation`;
+  # - *proc* will be called each time the param is casted (right after validation). The param becomes the returned value, so this *proc* **must** return the same type.
   #
   # NOTE: If a param is nilable, but is present and of invalid type, an `InvalidParamTypeError` will be raised.
   macro param(name, type _type = nil, **options, &block)

@@ -3,6 +3,12 @@ require "http/web_socket"
 
 module HTTP
   class Request
-    property action : ::Proc(HTTP::Server::Context, Nil) | HTTP::WebSocketHandler | Nil
+    @action : ::Proc(HTTP::Server::Context, Nil) | HTTP::WebSocketHandler | Nil
+
+    # An action to call in this request. It's automatically injected into `Request` when routing with `Prism::Handlers::Router`.
+    getter action
+
+    # :nodoc:
+    setter action
   end
 end

@@ -1,5 +1,9 @@
 module Prism::Params
   # A recursive param value holder.
+  #
+  # It cannot be set `private` due to `NamedTuple.from_param`, but is intended for internal use, so
+
+  # :nodoc:
   abstract struct AbstractParam
     def [](key)
       raise "Can not call AbstractParam#[] because its value is #{@value.class}" unless @value.is_a?(Hash)

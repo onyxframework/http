@@ -4,7 +4,7 @@ class Prism::Handlers::Router
   module Cachers
     # A straightforward cacher which has a limited capacity.
     #
-    # Once the capacity is reached, the cache is partially cleared in a separate fiber.
+    # Once the capacity is reached, the cache is partially cleared.
     class Simple < Cacher
       @cache = {} of String => Radix::Result(Node)
 
@@ -30,6 +30,7 @@ class Prism::Handlers::Router
         end
       end
 
+      # Force cache clearing.
       def clear
         @cache.clear
       end

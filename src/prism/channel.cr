@@ -7,7 +7,7 @@ module Prism
   # A callable websocket Channel with `Callbacks` included.
   #
   # ```
-  # require "prism/web_socket_action"
+  # require "prism/channel"
   #
   # class UserNotifications < Prism::Channel
   #   include Auth
@@ -16,7 +16,7 @@ module Prism
   #   # Will close the socket if unauthorized
   #   auth!
   #
-  #   # Will close the socket on validation error
+  #   # Will close the socket on params validation error
   #   params do
   #     param :foo, String?
   #   end
@@ -40,10 +40,10 @@ module Prism
   #   end
   # end
   #
-  # require "prism/router"
+  # require "prism/handlers/router"
   #
-  # router = Prism::Router.new do |r|
-  #   r.ws "/notifications" do |socket, env|
+  # router = Prism::Handlers::Router.new do
+  #   ws "/notifications" do |socket, env|
   #     UserNotifications.subscribe(socket, env)
   #     # Or
   #     UserNotifications.call(socket, env)
@@ -52,7 +52,7 @@ module Prism
   #
   # # Later in the code
   #
-  # UserNotifications.notify(user, "You've got a message!") # Damn it's cool
+  # UserNotifications.notify(user, "You've got a message!")
   # ```
   class Channel
     macro inherited

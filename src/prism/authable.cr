@@ -16,6 +16,7 @@ module Prism
   # end
   # ```
   abstract class Authable
+    # Must return truthy value to pass `auth!`. See `Prism::Action::Auth` and `Prism::Channel::Auth`.
     abstract def auth
   end
 end

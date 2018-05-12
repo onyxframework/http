@@ -1,6 +1,6 @@
 require "http/request"
 require "json"
-require "./param"
+require "./abstract_param"
 require "./named_tuple/from_param"
 require "../ext/from_param"
 require "../ext/json/any/dig"
@@ -11,13 +11,13 @@ module Prism::Params
 
   # Extract then cast and validate params from a body limited to *limit* bytes. Returns `NamedTuple` of params.
   #
-  # Will raise `InvalidParamTypeError`, `InvalidParamError` or `ParamNotFoundError` on failure.
+  # Could raise `InvalidParamTypeError`, `InvalidParamError` or `ParamNotFoundError` on failure.
   def self.parse_params(context, limit : UInt64 = DEFAULT_MAX_BODY_SIZE)
-    raise "Call params macro before!"
+    raise "Call #params macro before!"
   end
 
   private macro define_parse_params
-    # Will copy context request body into `IO::Memory` and return this io, preserving original request body.
+    # Will copy context request body into `IO::Memory` and return this io, **preserving** original request body.
     private def self.copy_body(context, limit)
       if body = context.request.body
         string = body.gets(limit)
@@ -29,7 +29,7 @@ module Prism::Params
     def self.parse_params(context, limit : UInt64 = DEFAULT_MAX_BODY_SIZE)
       %params = Param.new({} of String => Param)
 
-      # 1. Extract params from path params. Does not support nested params
+      # 1. Extract params from path params. Does not support nested params.
       {% if HTTP::Request.has_method?("path_params") %}
         context.request.path_params.try &.each do |key, value|
           {% begin %}
@@ -43,7 +43,7 @@ module Prism::Params
         end
       {% end %}
 
-      # 2. Extract params from the request query. Supports nested params with following syntax: `"?user[email]=foo@example.com&user[password]=qwerty"`
+      # 2. Extract params from the request query. Supports nested params with following syntax: `"?user[email]=foo@example.com&user[password]=qwerty"`.
       context.request.query_params.each do |key, value|
         {% begin %}
           case key
@@ -64,7 +64,7 @@ module Prism::Params
 
       case context.request.headers["Content-Type"]?
 
-      # 3. Extract params from the body with Content-Type set to "multipart/form-data". Supports nested params
+      # 3. Extract params from the body with Content-Type set to "multipart/form-data". Supports nested params.
       when /multipart\/form-data/
         copy = copy_body(context, limit)
 
@@ -90,7 +90,7 @@ module Prism::Params
 
         context.request.body = copy
 
-      # 4. Extract params from the body with Content-Type set to "application/x-www-form-urlencoded". Supports nested params
+      # 4. Extract params from the body with Content-Type set to "application/x-www-form-urlencoded". Supports nested params.
       when /application\/x-www-form-urlencoded/
         HTTP::Params.parse(copy_body(context, limit).not_nil!.gets_to_end) do |key, value|
           {% begin %}
@@ -110,7 +110,7 @@ module Prism::Params
           {% end %}
         end
 
-      # 5. Extract params from the body with Content-Type set to "application/json". Supports nested params
+      # 5. Extract params from the body with Content-Type set to "application/json". Supports nested params.
       when /application\/json/
         json = JSON.parse(copy_body(context, limit).not_nil!)
         {% for param in INTERNAL__PRISM_PARAMS %}
