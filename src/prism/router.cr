@@ -94,6 +94,23 @@ module Prism
       end
     end
 
+    # Draw a empty (status 200) route for *path* and *methods*.
+    #
+    # ```
+    # router = Prism::Router.new do
+    #   on "/foo", methods: %w(get post)
+    # end
+    # ```
+    def on(path, methods : Array(String))
+      methods.map(&.downcase).each do |method|
+        begin
+          @tree.add("/" + method + path, ->(env : HTTP::Server::Context) {})
+        rescue Radix::Tree::DuplicateError
+          raise DuplicateRouteError.new(method.upcase + " " + path)
+        end
+      end
+    end
+
     {% for method in HTTP_METHODS %}
       # Draw a route for *path* with `{{method.upcase.id}}` method.
       #
@@ -106,6 +123,17 @@ module Prism
       # ```
       def {{method.id}}(path, &proc : ContextProc)
         on(path, [{{method}}], &proc)
+      end
+
+      # Draw a empty (status 200) route for *path* with `{{method.upcase.id}}` method.
+      #
+      # ```
+      # router = Prism::Router.new do
+      #   {{method.id}} "/bar"
+      # end
+      # ```
+      def {{method.id}}(path)
+        on(path, [{{method}}])
       end
     {% end %}
 
