@@ -1,6 +1,8 @@
 require "http/request"
+require "json"
 require "./param"
 require "./named_tuple/from_param"
+require "../ext/from_param"
 require "../ext/json/any/dig"
 
 module Prism::Params
@@ -133,7 +135,7 @@ module Prism::Params
 
           if %param
             begin
-              %value = {{_type.id}}.from_s(%param.value.as(String))
+              %value = {{_type.id}}.from_param(%param.value.as(String))
 
               validate_param({{param}}, %value)
 

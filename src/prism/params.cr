@@ -1,12 +1,8 @@
-require "json"
-
-require "./ext/from_s"
-
 require "./params/**"
 
 # Request params access and validation module.
 #
-# Extracts params from (nearly) all possible sources and casts them accordingly (invoking `Type.from_s`) into a `NamedTuple`.
+# Extracts params from (nearly) all possible sources and casts them accordingly (invoking `Type.from_param`) into a `NamedTuple`.
 #
 # ```
 # require "prism/action/params"
@@ -57,7 +53,7 @@ require "./params/**"
 #
 # Parsing will replace original request body with its shrinked copy IO (defaults to 8 MB).
 #
-# If you want to implement your own type cast, extend it with `.from_s` method (see `Time.from_s` for example).
+# If you want to implement your own type casting, extend it with `.from_param` method (see `Int32.from_param` for example).
 #
 # If included into `Prism::Action`, will automatically inject `parse_params` into `Action#before` callback:
 #

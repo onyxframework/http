@@ -33,7 +33,7 @@ module Prism::Params::Specs
 
   describe SimpleAction do
     context "with valid params" do
-      response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&value=42&time=1506952232&kebab-param=foo&nest1[nest2][bar]=41&nest1[foo]=BAR"))
+      response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&value=42&time=1526120573870&kebab-param=foo&nest1[nest2][bar]=41&nest1[foo]=BAR"))
 
       it "doesn't halt" do
         response.body.should eq "ok"
@@ -48,7 +48,7 @@ module Prism::Params::Specs
       end
 
       it "has time in params" do
-        SimpleAction.last_params[:time].should eq Time.epoch(1506952232)
+        SimpleAction.last_params[:time].should eq Time.epoch_ms(1526120573870_i64)
       end
 
       it "has kebab-param in params" do
