@@ -57,9 +57,7 @@ struct KnockKnock < Prism::Action
 end
 
 router = Prism::Router.new do
-  get "/:who" do |env|
-    KnockKnock.call(env)
-  end
+  get "/:who", KnockKnock
 end
 
 logger = Logger.new(STDOUT)
