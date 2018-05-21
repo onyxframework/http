@@ -10,12 +10,18 @@ module Prism::Params::ValidationSpec
         size:   (3..16),
         regex:  /\w+/,
         custom: ->(name : String) {
-          error!(:name, "has reserved value") if %w(foo bar baz).includes?(name)
+          error!("has reserved value") if %w(foo bar baz).includes?(name)
         },
       }
       param :age, Int32, nilable: true, validate: {min!: 17}
       param :height, Float64?, validate: {in: (0.5..2.5)}
       param :iq, Int32?, validate: {min: 100, max!: 200}
+      param :array, Array(Int32)?, validate: {
+        size:   (1..2),
+        custom: ->(array : Array(Int32)) {
+          error!("too big") if array.any? { |i| i > 10 }
+        },
+      }
     end
 
     def self.call(context)
@@ -82,6 +88,16 @@ module Prism::Params::ValidationSpec
 
       it "validates max!" do
         assert_invalid_param("?id=42&name=kek&iq=200", "iq", "must be less than 200")
+      end
+    end
+
+    describe "#array" do
+      it "validates size" do
+        assert_invalid_param("?id=42&name=kek&array[]=1&array[]=2&array[]=3", "array", "must have size in range of 1..2")
+      end
+
+      it "validates custom" do
+        assert_invalid_param("?id=42&name=kek&array[]=1&array[]=100", "array", "too big")
       end
     end
   end

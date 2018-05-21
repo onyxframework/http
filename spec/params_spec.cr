@@ -18,7 +18,10 @@ module Prism::Params::Specs
         end
 
         param :foo, String?, proc: ->(p : String) { p.downcase }
+        param :arrayParam, Array(UInt8)?, proc: ->(a : Array(UInt8)) { a.map { |i| i * 2 } }
       end
+
+      param :important, Array(String), validate: {size: (1..10)}
     end
 
     @@last_params = uninitialized ParamsTuple
@@ -33,7 +36,7 @@ module Prism::Params::Specs
 
   describe SimpleAction do
     context "with valid params" do
-      response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&value=42&time=1526120573870&kebab-param=foo&nest1[nest2][bar]=41&nest1[foo]=BAR"))
+      response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&value=42&time=1526120573870&kebab-param=foo&nest1[nest2][bar]=41&nest1[foo]=BAR&nest1[arrayParam][]=2&nest1[arrayParam][]=3&important[]=foo&important[]=42"))
 
       it "doesn't halt" do
         response.body.should eq "ok"
@@ -59,13 +62,21 @@ module Prism::Params::Specs
         SimpleAction.last_params[:nest1]?.try &.[:nest2]?.try &.[:bar].should eq 41
       end
 
-      it "has nest1 foo in params" do
+      it "has nest1 -> foo in params" do
         SimpleAction.last_params[:nest1]?.try &.[:foo].should eq "bar"
+      end
+
+      it "has nest1 -> arrayParam in params" do
+        SimpleAction.last_params[:nest1]?.try &.[:arrayParam].should eq [4_u8, 6_u8]
+      end
+
+      it "has arrayParam in params" do
+        SimpleAction.last_params[:important].should eq ["foo", "42"]
       end
     end
 
     context "with missing insignificant param" do
-      response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42"))
+      response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&important[]=foo&important[]=42"))
 
       it "doesn't halt" do
         response.body.should eq "ok"
@@ -73,6 +84,7 @@ module Prism::Params::Specs
 
       it "returns params" do
         SimpleAction.last_params[:id].should eq 42
+        SimpleAction.last_params[:important].should eq ["foo", "42"]
       end
     end
 
@@ -87,13 +99,19 @@ module Prism::Params::Specs
     context "with invalid params type" do
       it "raises" do
         expect_raises(InvalidParamTypeError) do
-          response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=foo"))
+          response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=foo&important[]=foo"))
         end
       end
 
       it "raises" do
         expect_raises(InvalidParamTypeError) do
-          response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&value=foo"))
+          response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&important[]=foo&value=foo"))
+        end
+      end
+
+      it "raises" do
+        expect_raises(InvalidParamTypeError) do
+          response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&important[]=foo&nest1[arrayParam][]=foo"))
         end
       end
     end
@@ -101,7 +119,7 @@ module Prism::Params::Specs
     context "with invalid params" do
       it "raises" do
         expect_raises(InvalidParamError) do
-          response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=41"))
+          response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=41&important[]=foo"))
         end
       end
     end
@@ -118,7 +136,9 @@ module Prism::Params::Specs
               nest2: {
                 bar: 41,
               },
+              arrayParam: [1, 2],
             },
+            important: ["foo"],
           }.to_json,
           headers: HTTP::Headers{
             "Content-Type" => "application/json",
@@ -131,6 +151,14 @@ module Prism::Params::Specs
 
         it "has nested params" do
           SimpleAction.last_params[:nest1]?.try &.[:nest2]?.try &.[:bar].should eq 41
+        end
+
+        it "has array params" do
+          SimpleAction.last_params[:important].should eq ["foo"]
+        end
+
+        it "has nested array params" do
+          SimpleAction.last_params[:nest1]?.try &.[:arrayParam].should eq [2_u8, 4_u8]
         end
       end
     end

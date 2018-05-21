@@ -34,7 +34,7 @@ module Prism
           begin
             @params = self.class.parse_params(context)
             true
-          rescue ex : InvalidParamTypeError | ParamNotFoundError | InvalidParamError
+          rescue ex : InvalidParamTypeError | ParamNotFoundError | InvalidParamError | ProcError
             socket.close(ex.message)
             false
           end

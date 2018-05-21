@@ -20,7 +20,9 @@ module Prism::Params
   # **Single param** has two mandatory arguments:
   #
   # - *name* declares an access key for the `params` tuple;
-  # - *type* defines a type which the param must be casted to, otherwise validation will fail (i.e. "foo" won't cast to `Int32`). Also see `Int32.from_param` and siblings.
+  # - *type* defines a type which the param must be casted to, otherwise validation will fail (i.e. "foo" won't cast to `Int32`). You can declary an arbitary type, union or array (e.g. `Array(UInt16)`), must it respond to `.from_param`. See `Int.from_param` and its siblings for implementations.
+  #
+  # NOTE: Union Array type isn't supported, e.g. `param :foo, Array(Int32 | String)` is invalid because of uncertainty of how to process it, for example `["42"]` - should `"42"` stay String or be casted to Int32?
   #
   # **Single param** can also have some options:
   #
@@ -35,7 +37,7 @@ module Prism::Params
         INTERNAL__PRISM_PARAMS_PARENTS[:current_value].push(name)
 
         if options[:nilable]
-          INTERNAL__PRISM_PARAMS_PARENTS[:nilable][INTERNAL__PRISM_PARAMS_PARENTS[:current_value].select { |x| x }] = options[:nilable]
+          INTERNAL__PRISM_PARAMS_PARENTS[:nilable][INTERNAL__PRISM_PARAMS_PARENTS[:current_value].select { |x| x }.map(&.id.stringify)] = options[:nilable]
         end
       %}
 
@@ -56,13 +58,22 @@ module Prism::Params
                     options[:nilable]
                   end
 
+        array = if _type.is_a?(Generic)
+                  "#{_type.name}" =~ /Array$/ || (
+                    "#{_type.name}" =~ /Union$/ && _type.type_vars.first.is_a?(Generic) && "#{_type.type_vars.first.name}" =~ /Array$/
+                  )
+                else
+                  false
+                end
+
         INTERNAL__PRISM_PARAMS.push({
-          parents: INTERNAL__PRISM_PARAMS_PARENTS[:current_value].size > 0 ? INTERNAL__PRISM_PARAMS_PARENTS[:current_value].map { |x| x } : nil,
-          name: name,
+          parents: INTERNAL__PRISM_PARAMS_PARENTS[:current_value].size > 0 ? INTERNAL__PRISM_PARAMS_PARENTS[:current_value].map { |x| x.id.stringify } : nil,
+          name: name.id.stringify,
           type: _type,
           nilable: nilable,
           validate: options[:validate],
           proc: options[:proc],
+          array: array,
         })
       %}
     {% end %}
@@ -73,33 +84,33 @@ module Prism::Params
     {%
       tuple_hash = INTERNAL__PRISM_PARAMS.reduce({} of Object => Object) do |hash, param|
         if !param[:parents]
-          hash[param[:name].id.stringify] = param[:type]
+          hash[param[:name]] = param[:type]
         else
           if param[:parents].size == 0
-            hash[param[:name].id.stringify] = param[:type]
+            hash[param[:name]] = param[:type]
           elsif param[:parents].size == 1
-            key = param[:parents][0].id.stringify
+            key = param[:parents][0]
             hash[key] = {} of Object => Object unless hash[key]
             hash[key]["__nilable"] = true if INTERNAL__PRISM_PARAMS_PARENTS[:nilable][param[:parents]]
 
-            hash[key][param[:name].id.stringify] = param[:type]
+            hash[key][param[:name]] = param[:type]
           elsif param[:parents].size == 2
-            key = param[:parents][0].id.stringify
+            key = param[:parents][0]
             hash[key] = {} of Object => Object unless hash[key]
 
-            key1 = param[:parents][1].id.stringify
+            key1 = param[:parents][1]
             hash[key][key1] = {} of Object => Object unless hash[key][key1]
             hash[key][key1]["__nilable"] = true if INTERNAL__PRISM_PARAMS_PARENTS[:nilable][param[:parents]]
 
-            hash[key][key1][param[:name].id.stringify] = param[:type]
+            hash[key][key1][param[:name]] = param[:type]
           elsif param[:parents].size == 3
-            key = param[:parents][0].id.stringify
+            key = param[:parents][0]
             hash[key] = {} of Object => Object unless hash[key]
 
-            key1 = param[:parents][1].id.stringify
+            key1 = param[:parents][1]
             hash[key][key1] = {} of Object => Object unless hash[key][key1]
 
-            key2 = param[:parents][2].id.stringify
+            key2 = param[:parents][2]
             hash[key][key1][key2] = {} of Object => Object unless hash[key][key1][key2]
             hash[key][key1][key2]["__nilable"] = true if INTERNAL__PRISM_PARAMS_PARENTS[:nilable][param[:parents]]
 
@@ -119,10 +130,8 @@ module Prism::Params
 
   private macro define_param_type
     struct Param < AbstractParam
-      property value : {{INTERNAL__PRISM_PARAMS.map(&.[:type]).join(" | ").id}} | String | Hash(String, Param) | Nil
-
-      def initialize(@value)
-      end
+      alias Type = {{INTERNAL__PRISM_PARAMS.map(&.[:type]).join(" | ").id}} | String | Hash(String, Param) | Array(String) | JSON::Any | Nil
+      getter value : Type
     end
   end
 end

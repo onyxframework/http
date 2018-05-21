@@ -1,7 +1,5 @@
 require "http/request"
 require "json"
-require "./abstract_param"
-require "./named_tuple/from_param"
 require "../ext/from_param"
 require "../ext/json/any/dig"
 
@@ -27,23 +25,34 @@ module Prism::Params
     end
 
     def self.parse_params(context, limit : UInt64 = DEFAULT_MAX_BODY_SIZE)
-      %params = Param.new({} of String => Param)
+      params = Param.new("root", {} of String => Param)
 
-      # 1. Extract params from path params. Does not support nested params.
+      # 1. Extract params from path params.
+      # Does not support neither nested nor array params.
       {% if HTTP::Request.has_method?("path_params") %}
         context.request.path_params.try &.each do |key, value|
           {% begin %}
             case key
             {% for param in INTERNAL__PRISM_PARAMS %}
-              when {{param[:name].id.stringify}}
-                %params[{{param[:name].id.stringify}}] = Param.new(value)
+              {% unless param[:parents] %}
+                when {{param[:name]}}
+                  params.deep_set({{[param[:name]]}}, value)
+              {% end %}
             {% end %}
             end
           {% end %}
         end
       {% end %}
 
-      # 2. Extract params from the request query. Supports nested params with following syntax: `"?user[email]=foo@example.com&user[password]=qwerty"`.
+      # 2. Extract params from the request query.
+      #
+      # Supports both nested and array params with following syntax:
+      #
+      # * Nested: `"?user[email]=foo@example.com&user[password]=qwerty"`.
+      # * Array: `"?foo[]=42&foo[]=43"`.
+      # * Mixed: `"?article[tags][]=foo&article[tags][]=bar"`
+      #
+      # NOTE: It doesn't support array of objects (`"?articles[][tags]=foo&articles[][tags]=bar"`)
       context.request.query_params.each do |key, value|
         {% begin %}
           case key
@@ -51,24 +60,35 @@ module Prism::Params
             {% if param[:parents] %}
               {% path = param[:parents] ? param[:parents][0] + "[" + (param[:parents][1..-1] + [param[:name]]).join("][") + "]" : param[:name] %}
 
-              when {{path.id.stringify}}
-                %params.deep_set({{(param[:parents] + [param[:name]]).map &.id.stringify}}, Param.new(value))
+              {% if param[:array] %}
+                when {{(path + "[]")}}
+                  params.deep_push({{(param[:parents] + [param[:name]])}}, value)
+              {% else %}
+                when {{path}}
+                  params.deep_set({{param[:parents] + [param[:name]]}}, value)
+              {% end %}
             {% else %}
-              when {{param[:name].id.stringify}}
-                %params[{{param[:name].id.stringify}}] = Param.new(value)
+              {% if param[:array] %}
+                when {{param[:name] + "[]"}}
+                  params.deep_push({{[param[:name]]}}, value)
+              {% else %}
+                when {{param[:name]}}
+                  params.deep_set({{[param[:name]]}}, value)
+              {% end %}
             {% end %}
           {% end %}
           end
         {% end %}
       end
 
-      body = copy_body(context, limit)
-
-      if body
+      if context.request.body
         case context.request.headers["Content-Type"]?
 
-        # 3. Extract params from the body with Content-Type set to "multipart/form-data". Supports nested params.
+        # 3. Extract params from the body with Content-Type set to "multipart/form-data".
+        # Supports both nested and array params.
         when /multipart\/form-data/
+          body = copy_body(context, limit)
+
           HTTP::FormData.parse(context.request) do |part|
             {% begin %}
               case part.name
@@ -76,13 +96,25 @@ module Prism::Params
                 {% if param[:parents] %}
                   {% path = param[:parents] ? param[:parents][0] + "[" + (param[:parents][1..-1] + [param[:name]]).join("][") + "]" : param[:name] %}
 
-                  when {{path.id.stringify}}
-                    value = part.body.gets_to_end.gsub("\r\n", "").to_s
-                    %params.deep_set({{(param[:parents] + [param[:name]]).map &.id.stringify}}, Param.new(value))
+                  {% if param[:array] %}
+                    when {{path + "[]"}}
+                      value = part.body.gets_to_end.gsub("\r\n", "").to_s
+                      params.deep_push({{param[:parents] + [param[:name]]}}, value)
+                  {% else %}
+                    when {{path.id.stringify}}
+                      value = part.body.gets_to_end.gsub("\r\n", "").to_s
+                      params.deep_set({{param[:parents] + [param[:name]]}}, value)
+                  {% end %}
                 {% else %}
-                  when {{param[:name].id.stringify}}
-                    value = part.body.gets_to_end.gsub("\r\n", "").to_s
-                    %params[{{param[:name].id.stringify}}] = Param.new(value)
+                  {% if param[:array] %}
+                    when {{param[:name]}}
+                      value = part.body.gets_to_end.gsub("\r\n", "").to_s
+                      params.deep_push([{{param[:name]}}], value)
+                  {% else %}
+                    when {{param[:name]}}
+                      value = part.body.gets_to_end.gsub("\r\n", "").to_s
+                      params.deep_set([{{param[:name]}}], value)
+                  {% end %}
                 {% end %}
               {% end %}
               end
@@ -91,8 +123,11 @@ module Prism::Params
 
           context.request.body = body
 
-        # 4. Extract params from the body with Content-Type set to "application/x-www-form-urlencoded". Supports nested params.
+        # 4. Extract params from the body with Content-Type set to "application/x-www-form-urlencoded".
+        # Supports both nested and array params.
         when /application\/x-www-form-urlencoded/
+          body = copy_body(context, limit)
+
           HTTP::Params.parse(body.not_nil!.gets_to_end) do |key, value|
             {% begin %}
               case key
@@ -100,65 +135,120 @@ module Prism::Params
                 {% if param[:parents] %}
                   {% path = param[:parents] ? param[:parents][0] + "[" + (param[:parents][1..-1] + [param[:name]]).join("][") + "]" : param[:name] %}
 
-                  when {{path.id.stringify}}
-                    %params.deep_set({{(param[:parents] + [param[:name]]).map &.id.stringify}}, Param.new(value))
+                  {% if param[:array] %}
+                    when {{path + "[]"}}
+                      params.deep_push({{param[:parents] + [param[:name]]}}, value)
+                  {% else %}
+                    when {{path.id.stringify}}
+                      params.deep_set({{param[:parents] + [param[:name]]}}, value)
+                  {% end %}
                 {% else %}
-                  when {{param[:name].id.stringify}}
-                    %params[{{param[:name].id.stringify}}] = Param.new(value)
+                  {% if param[:array] %}
+                    when {{param[:name] + "[]"}}
+                      params.deep_push({{[param[:name]]}}, value)
+                  {% else %}
+                    when {{param[:name]}}
+                      params.deep_set({{[param[:name]]}}, value)
+                  {% end %}
                 {% end %}
               {% end %}
               end
             {% end %}
           end
 
-        # 5. Extract params from the body with Content-Type set to "application/json". Supports nested params.
+          context.request.body = body
+
+        # 5. Extract params from the body with Content-Type set to "application/json".
+        # Supports both nested and array params.
         when /application\/json/
+          body = copy_body(context, limit)
           json = JSON.parse(body.not_nil!)
 
           {% for param in INTERNAL__PRISM_PARAMS %}
-            value = json.dig?({{param[:parents] ? ((param[:parents] + [param[:name]]).map &.id.stringify) : [param[:name].id.stringify]}})
+            {%
+              _type = if param[:type].is_a?(Generic)
+                        if "#{param[:type].name}" == "::Union"
+                          ("(" + param[:type].type_vars.reject { |t| "#{t}" == "::Nil" }.join(" | ") + ")").id
+                        else
+                          param[:type].id
+                        end
+                      else
+                        param[:type].resolve
+                      end
 
-            # TODO: Extract raw types from JSON to avoid double-casting
-            if value
+              path = param[:parents] ? (param[:parents] + [param[:name]]) : [param[:name]]
+            %}
+
+            json_value = json.dig?({{path}}).try do |v|
+              {{_type.id}}.from_param(Param.new({{param[:name]}}, v.as(Param::Type), {{path}}))
+            end
+
+            if json_value
               {% if param[:parents] %}
-                %params.deep_set({{(param[:parents] + [param[:name]]).map &.id.stringify}}, Param.new(value.to_s))
+                params.deep_set({{param[:parents] + [param[:name]]}}, json_value)
               {% else %}
-                %params[{{param[:name].id.stringify}}] = Param.new(value.to_s)
+                params.deep_set({{[param[:name]]}}, json_value)
               {% end %}
             end
           {% end %}
+
+          context.request.body = body
         end
       end
 
       {% for param in INTERNAL__PRISM_PARAMS %}
-        {% _type = param[:type].is_a?(Generic) ? param[:type].type_vars.first.resolve : param[:type].resolve %}
+        {%
+          _type = if param[:type].is_a?(Generic)
+                    if "#{param[:type].name}" == "::Union"
+                      ("(" + param[:type].type_vars.reject { |t| "#{t}" == "::Nil" }.join(" | ") + ")").id
+                    else
+                      param[:type].id
+                    end
+                  else
+                    param[:type].resolve
+                  end
+        %}
 
-        {% if _type != String || param[:validate] || param[:proc] %}
-          %param = %params.dig?({{param[:parents] ? ((param[:parents] + [param[:name]]).map &.id.stringify) : [param[:name].id.stringify]}})
+        param = params.dig?({{param[:parents] ? (param[:parents] + [param[:name]]) : [param[:name]]}})
 
-          if %param
-            begin
-              %value = {{_type.id}}.from_param(%param.value.as(String))
-
-              validate_param({{param}}, %value)
-
-              {% if param[:proc] %}
-                %value = {{param[:proc].id}}.call(%value)
-              {% end %}
-
-              {% if param[:parents] %}
-                %params.deep_set({{(param[:parents] + [param[:name]]).map &.id.stringify}}, Param.new(%value))
-              {% else %}
-                %params[{{param[:name].id.stringify}}] = Param.new(%value)
-              {% end %}
-            rescue ex : ArgumentError
-              raise InvalidParamTypeError.new({{param[:name].id.stringify}}, {{_type.stringify}}, %param.value.as(String))
+        if param
+          begin
+            value = if param.value.is_a?({{_type.id}})
+              param.value
+            else
+              {{_type.id}}.from_param(param)
             end
+          rescue ex : ArgumentError
+            raise InvalidParamTypeError.new(param, {{_type.stringify}})
           end
-        {% end %}
+
+          {% if param[:validate] %}
+            begin
+              validate({{param[:validate]}}, value.as({{_type.id}}).not_nil!) if value
+            rescue ex : Validation::Error
+              raise InvalidParamError.new(param, ex.message)
+            end
+          {% end %}
+
+          {% if param[:proc] %}
+            begin
+              value = {{param[:proc].id}}.call(value.as({{_type.id}}).not_nil!) if value
+            rescue ex : Exception
+              raise ProcError.new(param, ex.message)
+            end
+          {% end %}
+
+          if value != param.value
+            {% if param[:parents] %}
+              params.deep_set({{param[:parents] + [param[:name]]}}, value.as(Param::Type))
+            {% else %}
+              params.deep_set({{[param[:name]]}}, value.as(Param::Type))
+            {% end %}
+          end
+        end
       {% end %}
 
-      ParamsTuple.from_param(%params)
+      ParamsTuple.from_param(params)
     end
   end
 end

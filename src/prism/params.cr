@@ -16,6 +16,7 @@ require "./params/**"
 #     param :bar, nilable: true do # Nested params are supported too
 #       param :baz do
 #         param :qux, String?
+#         param :qax, Array(String)? # Yep, arrays
 #       end
 #
 #       param :quux, Int32, proc: (quux : Int32) -> { quux * 2 }
@@ -36,6 +37,9 @@ require "./params/**"
 #
 #     p params[:bar]?.try &.[:baz][:qux].class
 #     # => String?
+#
+#     p params[:bar]?.try &.[:baz][:qax].class
+#     # => Array(String)?
 #   end
 # end
 # ```
@@ -50,9 +54,9 @@ require "./params/**"
 # 4. Body params (only if `"Content-Type"` is `"application/x-www-form-urlencoded"`);
 # 5. JSON body (only if `"Content-Type"` is `"application/json"`).
 #
-# Parsing will replace original request body with its shrinked copy IO (defaults to 8 MB).
+# NOTE: Parsing will replace original request body with its shrinked copy IO (defaults to 8 MB).
 #
-# If you want to implement your own type casting, extend it with `.from_param` method (see `Int32.from_param` for example).
+# If you want to implement your own type casting, extend it with `.from_param` method (see `Int.from_param` for example).
 #
 # If included into `Prism::Action`, it will automatically inject `parse_params` into `Action#before` callback:
 #
