@@ -34,13 +34,14 @@ Add this to your application's `shard.yml`:
 dependencies:
   prism:
     github: vladfaust/prism
+    version: ~> 0.2.0 # See actual version in releases
 ```
 
-This shard follows [Semantic Versioning v2.0.0](http://semver.org/).
+This shard follows [Semantic Versioning v2.0.0](http://semver.org/), so check [releases](https://github.com/vladfaust/i18n.cr/releases) and change the `version` accordingly.
 
 ## Basic example
 
-Please refer to the documentation available online at [vladfaust.com/prism](https://vladfaust.com/prism).
+Please refer to the API documentation available online at [github.vladfaust.com/prism](https://github.vladfaust.com/prism).
 
 ```crystal
 require "prism"
@@ -65,7 +66,7 @@ router = Prism::Router.new do
 end
 
 logger = Logger.new(STDOUT)
-log_handler = Prism::Logger.new(logger)
+log_handler = Prism::LogHandler.new(logger)
 handlers = [log_handler, router]
 
 server = Prism::Server.new("localhost", 5000, handlers, logger)
