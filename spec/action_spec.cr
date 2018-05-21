@@ -34,8 +34,8 @@ abstract struct Prism::Action
       response.body.should eq %Q[{"foo":"bar"}]
     end
 
-    pending "sets content type header" do
-      response.content_type.should eq("application/json; charset=utf-8")
+    it "sets content type header" do
+      response.content_type.should eq("application/json")
     end
   end
 
