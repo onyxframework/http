@@ -29,15 +29,13 @@ module Prism::Params
 
       # 1. Extract params from path params.
       # Does not support neither nested nor array params.
-      {% if HTTP::Request.has_method?("path_params") %}
+      {% if HTTP::Request.has_method?("path_params") && INTERNAL__PRISM_PARAMS.any? { |param| !param[:parents] } %}
         context.request.path_params.try &.each do |key, value|
           {% begin %}
             case key
-            {% for param in INTERNAL__PRISM_PARAMS %}
-              {% unless param[:parents] %}
-                when {{param[:name]}}
-                  params.deep_set({{[param[:name]]}}, value)
-              {% end %}
+            {% for param in INTERNAL__PRISM_PARAMS.reject { |param| param[:parents] } %}
+              when {{param[:name]}}
+                params.deep_set({{[param[:name]]}}, value)
             {% end %}
             end
           {% end %}
