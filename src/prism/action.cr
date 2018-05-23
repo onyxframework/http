@@ -130,6 +130,19 @@ module Prism
         context.response.content_type = CONTENT_TYPE_TEXT
         context.response.print(value)
       end
+
+      # Set the status to *status* and write text *value* into the response body.
+      # "Content-Type" header is set to `"{{CONTENT_TYPE_TEXT}}"`.
+      #
+      # ```
+      # def call
+      #   text(200, "ok")
+      # end
+      # ```
+      def text(status : Int, value)
+        status(status)
+        text(value)
+      end
     {% end %}
 
     private CONTENT_TYPE_JSON = "application/json; charset=utf-8"
@@ -146,6 +159,21 @@ module Prism
       def json(value)
         context.response.content_type = CONTENT_TYPE_JSON
         context.response.print(value.to_json)
+      end
+
+      # Set the status to *status*, cast *value* to JSON and write it into the response body.
+      # "Content-Type" header is set to `"{{CONTENT_TYPE_JSON}}"`.
+      #
+      # ```
+      # def call
+      #   json(201, {
+      #     object: object
+      #   })
+      # end
+      # ```
+      def json(status : Int, value)
+        status(status)
+        json(value)
       end
     {% end %}
   end

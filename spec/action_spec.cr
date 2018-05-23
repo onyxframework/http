@@ -21,6 +21,24 @@ abstract struct Prism::Action
     end
   end
 
+  struct OkActionWithStatus < Prism::Action
+    def call
+      text(205, "ok")
+    end
+  end
+
+  describe OkActionWithStatus do
+    response = handle_request(OkActionWithStatus)
+
+    it "prints ok" do
+      response.body.should eq "ok"
+    end
+
+    it "updates status code" do
+      response.status_code.should eq 205
+    end
+  end
+
   struct JsonAction < Prism::Action
     def call
       json({"foo" => "bar"})
@@ -32,6 +50,30 @@ abstract struct Prism::Action
 
     it "prints JSON" do
       response.body.should eq %Q[{"foo":"bar"}]
+    end
+
+    it "sets content type header" do
+      response.content_type.should eq("application/json")
+    end
+  end
+
+  struct JsonWithStatusAction < Prism::Action
+    def call
+      json(201, {
+        foo: "bar",
+      })
+    end
+  end
+
+  describe JsonWithStatusAction do
+    response = handle_request(JsonWithStatusAction)
+
+    it "prints JSON" do
+      response.body.should eq %Q[{"foo":"bar"}]
+    end
+
+    it "updates status code" do
+      response.status_code.should eq 201
     end
 
     it "sets content type header" do
