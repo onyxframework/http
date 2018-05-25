@@ -9,8 +9,8 @@ module Prism
     #   include Auth
     #
     #   def on_open
-    #     if auth            # Check if auth object exists in current request
-    #       user = auth.auth # Call #auth on this object, it should return a User instance
+    #     if auth?    # Check if auth object exists in current request and answers #auth
+    #       auth.user # It will return a User instance
     #     else
     #       socket.close("Unauthorized")
     #     end
@@ -18,29 +18,20 @@ module Prism
     # end
     # ```
     module Auth
-      # Return an auth object contained in the request. See `HTTP::Request.auth`.
+      # Return a non-nil auth object contained in the request, otherwise raise. See `HTTP::Request.auth`.
       def auth
-        context.request.auth
+        context.request.auth.not_nil!
       end
 
       # Safe auth check. Returns nil if auth is empty.
       def auth?
-        auth.try &.auth
+        context.request.auth.try &.auth
       end
 
-      # Invoke `#auth.auth` in `before` callback and close socket if it returns falsey value. `#auth` will return non-nil value from now.
+      # Invoke `context.request.auth.auth` in `before` callback and close socket if it returns falsey value.
       macro auth!
-        def auth
-          context.request.auth.not_nil!
-        end
-
         before do
-          if context.request.auth.try(&.auth)
-            true
-          else
-            socket.close("Unauthorized")
-            false
-          end
+          context.request.auth.try(&.auth) || (socket.close("Unauthorized"); false)
         end
       end
     end
