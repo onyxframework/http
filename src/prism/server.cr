@@ -17,9 +17,9 @@ module Prism
   #   end
   # end
   #
-  # logger = Prism::Logger.new(Logger.new(STDOUT))
+  # log_handler = Prism::LogHandler.new(Logger.new(STDOUT))
   #
-  # server = Prism::Server.new(handlers: [logger, router])
+  # server = Prism::Server.new(handlers: [log_handler, router])
   # server.listen
   #
   # #  INFO -- : Prism::Server v0.1.0 is listening on http://localhost:5000
