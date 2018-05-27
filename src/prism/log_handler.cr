@@ -4,14 +4,14 @@ require "colorize"
 require "time_format"
 
 module Prism
-  # `HTTP::Handler` which logs requests colorfully into specified *logger*.
+  # `HTTP::Handler` which debugs requests colorfully into specified *logger*.
   #
   # ```
-  # logger = Prism::LogHandler.new(Logger.new(STDOUT))
+  # logger = Prism::LogHandler.new(Logger.new(STDOUT).tap { |l| l.level = Logger::DEBUG })
   #
-  # #   INFO -- :     GET /users 200 102μs
-  # #   INFO -- :     GET /favicon.ico 404 52μs
-  # #   INFO -- :    POST /users 201 3.74ms
+  # #  DEBUG -- :     GET /users 200 102μs
+  # #  DEBUG -- :     GET /favicon.ico 404 52μs
+  # #  DEBUG -- :    POST /users 201 3.74ms
   # ```
   class LogHandler
     include HTTP::Handler
@@ -30,7 +30,7 @@ module Prism
         method = "WS".rjust(7).colorize(WS_COLOR).mode(:bold)
         resource = context.request.resource.colorize(WS_COLOR)
         progess = "pending".colorize(:dark_gray)
-        @logger.info("#{method} #{resource} #{progess}")
+        @logger.debug("#{method} #{resource} #{progess}")
       end
 
       begin
@@ -52,7 +52,7 @@ module Prism
         resource = context.request.resource.colorize(color)
         status_code = context.response.status_code.colorize(color).mode(:bold)
 
-        @logger.info("#{method} #{resource} #{status_code} #{time}")
+        @logger.debug("#{method} #{resource} #{status_code} #{time}")
       end
     end
   end
