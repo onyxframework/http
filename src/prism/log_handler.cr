@@ -22,21 +22,21 @@ module Prism
     end
 
     def call(context)
-      time = Time.now
+      if @logger.level > Logger::DEBUG
+        return call_next(context)
+      else
+        websocket = context.request.headers.includes_word?("Upgrade", "Websocket")
 
-      websocket = context.request.headers.includes_word?("Upgrade", "Websocket")
+        if websocket
+          method = "WS".rjust(7).colorize(WS_COLOR).mode(:bold)
+          resource = context.request.resource.colorize(WS_COLOR)
+          progess = "pending".colorize(:dark_gray)
+          @logger.debug("#{method} #{resource} #{progess}")
+        end
 
-      if websocket
-        method = "WS".rjust(7).colorize(WS_COLOR).mode(:bold)
-        resource = context.request.resource.colorize(WS_COLOR)
-        progess = "pending".colorize(:dark_gray)
-        @logger.debug("#{method} #{resource} #{progess}")
-      end
-
-      begin
-        call_next(context)
-      ensure
-        time = TimeFormat.auto(Time.now - time).colorize(:dark_gray)
+        elapsed = Time.measure do
+          call_next(context)
+        end
 
         color = :red
         case context.response.status_code
@@ -52,7 +52,7 @@ module Prism
         resource = context.request.resource.colorize(color)
         status_code = context.response.status_code.colorize(color).mode(:bold)
 
-        @logger.debug("#{method} #{resource} #{status_code} #{time}")
+        @logger.debug("#{method} #{resource} #{status_code} #{TimeFormat.auto(elapsed).colorize(:dark_gray)}")
       end
     end
   end
