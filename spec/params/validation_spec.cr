@@ -77,7 +77,7 @@ module Prism::Params::ValidationSpec
 
     describe "#height" do
       it "validates in" do
-        assert_invalid_param("?id=42&name=kek&height=0.1", "height", "must be included in 0.5..2.5")
+        assert_invalid_param("?id=42&name=kek&height=0.1", "height", "must be included in (0.5..2.5)")
       end
     end
 

@@ -82,7 +82,7 @@ module Prism::Params
 
   # :nodoc:
   struct JSONParam < AbstractParam
-    getter value : JSON::Type
+    getter value : JSON::Any
 
     def initialize(@name, @value, @path = [] of String)
     end
