@@ -1,10 +1,11 @@
 require "logger"
 require "colorize"
+require "http/server"
 require "./ext/http/request/action"
 require "./version"
 
 module Prism
-  # A simple `HTTP::Server` wrapper relying on `HTTP::Request::Action`.
+  # A simple TCP `HTTP::Server` wrapper relying on `HTTP::Request::Action`.
   #
   # Example usage:
   #
@@ -19,17 +20,25 @@ module Prism
   #
   # log_handler = Prism::LogHandler.new(Logger.new(STDOUT))
   #
-  # server = Prism::Server.new(handlers: [log_handler, router])
+  # server = Prism::Server.new([log_handler, router], "0.0.0.0", 5000)
   # server.listen
   #
-  # #  INFO -- : Prism::Server v0.1.0 is listening on http://localhost:5000
+  # #  INFO -- : Prism::Server v0.1.0 is listening on http://0.0.0.0:5000
   # #  INFO -- :     GET /? 200 61μs
   # #  INFO -- :     GET /foo? 404 166μs
   # #  INFO -- : Prism::Server is shutting down!
   # ```
-  class Server < HTTP::Server
-    def initialize(@host : String = "0.0.0.0", @port : Int32 = 5000, handlers : Array(HTTP::Handler)? = nil, @logger = ::Logger.new(STDOUT))
-      super(host, port, handlers) do |context|
+  #
+  # NOTE: You're not obligated to use `Prism::Server`, you can use standard `HTTP::Server` as well, just remember to handle `context.request.action`.
+  class Server
+    def initialize(
+      handlers : Array(HTTP::Handler),
+      @host = "0.0.0.0",
+      @port = 5000,
+      reuse_port = false,
+      @logger = ::Logger.new(STDOUT)
+    )
+      @tcp_server = HTTP::Server.new(handlers) do |context|
         if action = context.request.action
           action.call(context)
         else
@@ -37,9 +46,11 @@ module Prism
           context.response.print("Not Found: #{context.request.path}")
         end
       end
+
+      @tcp_server.bind_tcp(@host, @port)
     end
 
-    def listen(reuse_port = false)
+    def listen
       @logger.info(
         "Prism::Server " +
         "v#{VERSION}".colorize(:light_gray).mode(:bold).to_s +
@@ -53,7 +64,7 @@ module Prism
         exit
       end
 
-      super
+      @tcp_server.listen
     end
   end
 end

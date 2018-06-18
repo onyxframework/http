@@ -56,7 +56,7 @@ logger = Logger.new(STDOUT)
 log_handler = Prism::LogHandler.new(logger)
 handlers = [log_handler, router]
 
-server = Prism::Server.new("localhost", 5000, handlers, logger)
+server = Prism::Server.new(handlers, "localhost", 5000, true, logger)
 server.listen
 
 #  INFO -- :   Prism server v0.1.0 is listening on http://localhost:5000...
