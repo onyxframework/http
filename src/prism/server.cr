@@ -2,7 +2,6 @@ require "logger"
 require "colorize"
 require "http/server"
 require "./ext/http/request/action"
-require "./version"
 
 module Prism
   # A simple TCP `HTTP::Server` wrapper relying on `HTTP::Request::Action`.
@@ -23,7 +22,7 @@ module Prism
   # server = Prism::Server.new([log_handler, router], "0.0.0.0", 5000)
   # server.listen
   #
-  # #  INFO -- : Prism::Server v0.1.0 is listening on http://0.0.0.0:5000
+  # #  INFO -- : Prism::Server is listening on http://0.0.0.0:5000
   # #  INFO -- :     GET /? 200 61μs
   # #  INFO -- :     GET /foo? 404 166μs
   # #  INFO -- : Prism::Server is shutting down!
@@ -52,9 +51,7 @@ module Prism
 
     def listen
       @logger.info(
-        "Prism::Server " +
-        "v#{VERSION}".colorize(:light_gray).mode(:bold).to_s +
-        " is listening on " +
+        "Prism::Server is listening on " +
         "http://#{@host}:#{@port}".colorize(:light_gray).mode(:bold).to_s
       )
 

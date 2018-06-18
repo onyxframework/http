@@ -59,7 +59,7 @@ handlers = [log_handler, router]
 server = Prism::Server.new(handlers, "localhost", 5000, true, logger)
 server.listen
 
-#  INFO -- :   Prism server v0.1.0 is listening on http://localhost:5000...
+#  INFO -- :   Prism::Server is listening on http://localhost:5000...
 ```
 
 ## Websockets example
