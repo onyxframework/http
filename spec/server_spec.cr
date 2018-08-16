@@ -8,7 +8,7 @@ describe Prism::Server do
     end
   end
 
-  server = Prism::Server.new([router])
+  server = Prism::Server.new([router], name: "Test server")
 
   it "works" do
     spawn do

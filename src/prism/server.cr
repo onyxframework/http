@@ -19,21 +19,22 @@ module Prism
   #
   # log_handler = Prism::LogHandler.new(Logger.new(STDOUT))
   #
-  # server = Prism::Server.new([log_handler, router])
+  # server = Prism::Server.new([log_handler, router], name: "My API")
   # server.bind_tcp(5000)
   # server.listen
   #
-  # #  INFO -- : Prism::Server is listening on http://localhost:5000
+  # #  INFO -- : My API is listening on http://localhost:5000
   # #  INFO -- :     GET /? 200 61μs
   # #  INFO -- :     GET /foo? 404 166μs
-  # #  INFO -- : Prism::Server is shutting down!
+  # #  INFO -- : My API is shutting down!
   # ```
   #
   # NOTE: You're not obligated to use `Prism::Server`, you can use standard `HTTP::Server` as well, just remember to handle `context.request.action`.
   class Server
     def initialize(
       handlers : Array(HTTP::Handler),
-      @logger = ::Logger.new(STDOUT)
+      @logger = ::Logger.new(STDOUT),
+      @name = "Prism::Server"
     )
       @server = HTTP::Server.new(handlers) do |context|
         if action = context.request.action
@@ -48,14 +49,14 @@ module Prism
     def listen
       # It's simpler than handling "not binded" case here
       @logger.info(
-        "Prism::Server is listening on " +
+        "#{@name} is listening on " +
         "http://#{addresses.first}".colorize(:light_gray).mode(:bold).to_s +
         "..."
       ) if addresses.any?
 
       Signal::INT.trap do
         puts "\n"
-        @logger.info("Prism::Server is shutting down!")
+        @logger.info("#{@name} is shutting down!")
         exit
       end
 
