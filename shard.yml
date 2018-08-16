@@ -4,7 +4,7 @@ version: 0.2.1
 authors:
   - Vlad Faust <mail@vladfaust.com>
 
-crystal: 0.25.0
+crystal: 0.26.0
 
 license: MIT
 
