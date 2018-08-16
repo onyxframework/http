@@ -19,10 +19,11 @@ module Prism
   #
   # log_handler = Prism::LogHandler.new(Logger.new(STDOUT))
   #
-  # server = Prism::Server.new([log_handler, router], "0.0.0.0", 5000)
+  # server = Prism::Server.new([log_handler, router])
+  # server.bind_tcp(5000)
   # server.listen
   #
-  # #  INFO -- : Prism::Server is listening on http://0.0.0.0:5000
+  # #  INFO -- : Prism::Server is listening on http://localhost:5000
   # #  INFO -- :     GET /? 200 61μs
   # #  INFO -- :     GET /foo? 404 166μs
   # #  INFO -- : Prism::Server is shutting down!
@@ -32,12 +33,9 @@ module Prism
   class Server
     def initialize(
       handlers : Array(HTTP::Handler),
-      @host = "0.0.0.0",
-      @port = 5000,
-      reuse_port = false,
       @logger = ::Logger.new(STDOUT)
     )
-      @tcp_server = HTTP::Server.new(handlers) do |context|
+      @server = HTTP::Server.new(handlers) do |context|
         if action = context.request.action
           action.call(context)
         else
@@ -45,15 +43,15 @@ module Prism
           context.response.print("Not Found: #{context.request.path}")
         end
       end
-
-      @tcp_server.bind_tcp(@host, @port)
     end
 
     def listen
+      # It's simpler than handling "not binded" case here
       @logger.info(
         "Prism::Server is listening on " +
-        "http://#{@host}:#{@port}".colorize(:light_gray).mode(:bold).to_s
-      )
+        "http://#{addresses.first}".colorize(:light_gray).mode(:bold).to_s +
+        "..."
+      ) if addresses.any?
 
       Signal::INT.trap do
         puts "\n"
@@ -61,7 +59,9 @@ module Prism
         exit
       end
 
-      @tcp_server.listen
+      @server.listen
     end
+
+    forward_missing_to @server
   end
 end

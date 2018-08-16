@@ -56,10 +56,11 @@ logger = Logger.new(STDOUT)
 log_handler = Prism::LogHandler.new(logger)
 handlers = [log_handler, router]
 
-server = Prism::Server.new(handlers, "localhost", 5000, true, logger)
+server = Prism::Server.new(handlers, logger)
+server.bind_tcp(5000)
 server.listen
 
-#  INFO -- :   Prism::Server is listening on http://localhost:5000...
+#  INFO -- :   Prism::Server is listening on http://127.0.0.1:5000...
 ```
 
 ## Websockets example
