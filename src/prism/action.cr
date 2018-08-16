@@ -158,7 +158,8 @@ module Prism
       # ```
       def json(value)
         context.response.content_type = CONTENT_TYPE_JSON
-        context.response.print(value.to_json)
+        value.to_json(context.response)
+        context.response.close
       end
 
       # Set the status to *status*, cast *value* to JSON and write it into the response body.
