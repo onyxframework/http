@@ -6,7 +6,7 @@ module Prism::Action::Params::Spec
     include Params
 
     params do
-      param :id, Int32, validate: {min: 42}
+      param :id, Int32, validate: {gte: 42}
       param :value, Int32?
       param :time, Time?
     end

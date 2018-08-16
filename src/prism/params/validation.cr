@@ -4,10 +4,10 @@ module Prism::Params
   # Implemented inline validations (defined as `:validate` option on param):
   #
   # - *size* (`Range | Int32`) - Validate size;
-  # - *min* (`Comparable`) - Check if param value `>=` than min;
-  # - *max* (`Comparable`) - Check if param value `<=` than max;
-  # - *min!* (`Comparable`) - Check if param value `>` than min;
-  # - *max!* (`Comparable`) - Check if param value `<` than max;
+  # - *gte* (`Comparable`) - Check if param value is *g*reater *t*han or *e*qual (`>=`);
+  # - *lte* (`Comparable`) - Check if param value is *l*ess *t*han or *e*qual (`<=`);
+  # - *gt* (`Comparable`) - Check if param value is *g*reater *t*han (`>`);
+  # - *lt* (`Comparable`) - Check if param value is *l*ess *t*han (`<`);
   # - *in* (`Enumerable`) - Validate if param value is included in range or array etc.;
   # - *regex* (`Regex`) - Validate if param value matches regex;
   # - *custom* (`Proc`) - Custom validation, see example below.
@@ -56,27 +56,27 @@ module Prism::Params
         end
       {% end %}
 
-      {% if validations[:min] %}
-        unless {{value}} >= {{validations[:min]}}
-          error!("must be greater or equal to {{validations[:min].id}}")
+      {% if validations[:gte] %}
+        unless {{value}} >= {{validations[:gte]}}
+          error!("must be greater or equal to {{validations[:gte].id}}")
         end
       {% end %}
 
-      {% if validations[:max] %}
-        unless {{value}} <= {{validations[:max]}}
-          error!("must be less or equal to {{validations[:max].id}}")
+      {% if validations[:lte] %}
+        unless {{value}} <= {{validations[:lte]}}
+          error!("must be less or equal to {{validations[:lte].id}}")
         end
       {% end %}
 
-      {% if validations[:min!] %}
-        unless {{value}} > {{validations[:min!]}}
-          error!("must be greater than {{validations[:min!].id}}")
+      {% if validations[:gt] %}
+        unless {{value}} > {{validations[:gt]}}
+          error!("must be greater than {{validations[:gt].id}}")
         end
       {% end %}
 
-      {% if validations[:max!] %}
-        unless {{value}} < {{validations[:max!]}}
-          error!("must be less than {{validations[:max!].id}}")
+      {% if validations[:lt] %}
+        unless {{value}} < {{validations[:lt]}}
+          error!("must be less than {{validations[:lt].id}}")
         end
       {% end %}
 

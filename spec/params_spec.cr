@@ -6,7 +6,7 @@ module Prism::Params::Specs
     include Prism::Params
 
     params do
-      param :id, Int32, validate: {min: 42}
+      param :id, Int32, validate: {gte: 42}
       param :value, Int32?
       param :time, Time?
       param :float_value, Float64?
@@ -14,7 +14,7 @@ module Prism::Params::Specs
 
       param :nest1, nilable: true do
         param :nest2 do
-          param :bar, Int32, validate: {max: 42}
+          param :bar, Int32, validate: {lt: 42}
         end
 
         param :foo, String?, proc: ->(p : String) { p.downcase }
@@ -120,6 +120,12 @@ module Prism::Params::Specs
       it "raises" do
         expect_raises(InvalidParamError) do
           response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=41&important[]=foo"))
+        end
+      end
+
+      it "raises" do
+        expect_raises(InvalidParamError) do
+          response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&important[]=foo&nest1[nest2][bar]=42"))
         end
       end
     end
