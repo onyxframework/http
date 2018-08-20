@@ -1,5 +1,5 @@
 module Prism
-  # An inheriting class will be marked as auth(*enticate*)able.
+  # An auth container.
   #
   # ```
   # class Auth < Prism::Authable
@@ -8,13 +8,18 @@ module Prism
   #   def initialize(@token : String?)
   #   end
   #
-  #   def auth
+  #   def auth?
   #     @user = User.find(&.token.== @token)
   #   end
   # end
   # ```
   abstract class Authable
-    # Must return truthy value to pass `auth!`. See `Prism::Action::Auth` and `Prism::Channel::Auth`.
-    abstract def auth
+    class AuthenticationError < Exception
+    end
+
+    class AuthorizationError < Exception
+    end
+
+    abstract def auth?(*args, **nargs)
   end
 end
