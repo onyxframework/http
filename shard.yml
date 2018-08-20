@@ -15,3 +15,6 @@ dependencies:
   time_format:
     github: vladfaust/time_format.cr
     version: ~> 0.1.0
+  callbacks:
+    github: vladfaust/callbacks.cr
+    version: ~> 0.1.0

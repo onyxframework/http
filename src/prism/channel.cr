@@ -1,10 +1,10 @@
 require "http/server"
 require "json"
-require "./callbacks"
+require "callbacks"
 require "./channel/*"
 
 module Prism
-  # A callable websocket Channel with `Callbacks` included.
+  # A callable websocket Channel with [Callbacks](https://github.com/vladfaust/callbacks.cr) module included.
   #
   # ```
   # class UserNotifications < Prism::Channel
@@ -51,9 +51,7 @@ module Prism
   # UserNotifications.notify(user, "You've got a message!")
   # ```
   class Channel
-    macro inherited
-      include Prism::Callbacks
-    end
+    include Callbacks
 
     # Called once when a new socket is opened.
     def on_open
@@ -115,7 +113,7 @@ module Prism
       end
     end
 
-    # :nodoc:
+    # Subscribe to channel with [callbacks](https://github.com/vladfaust/callbacks.cr).
     def subscribe_with_callbacks
       with_callbacks { subscribe }
     end

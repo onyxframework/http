@@ -155,11 +155,11 @@ abstract struct Prism::Action
   struct CallbacksAction < Prism::Action
     class_property buffer = [] of String
 
-    def before
+    before do
       @@buffer << "before"
     end
 
-    def around
+    around do
       @@buffer << "around_before"
       yield
       @@buffer << "around_after"
@@ -169,7 +169,7 @@ abstract struct Prism::Action
       @@buffer << "call"
     end
 
-    def after
+    after do
       @@buffer << "after"
     end
   end

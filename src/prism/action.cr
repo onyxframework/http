@@ -1,10 +1,10 @@
 require "http/server"
 require "json"
-require "./callbacks"
+require "callbacks"
 require "./action/*"
 
 module Prism
-  # A callable HTTP action with `Callbacks` included.
+  # A callable HTTP action with [Callbacks](https://github.com/vladfaust/callbacks.cr) module included.
   #
   # NOTE: *(From [API](https://crystal-lang.org/api/0.23.1/HTTP/Server/Response.html)) The response #status_code and #headers must be configured before writing the response body. Once response output is written, changing the status and #headers properties has no effect.*
   #
@@ -23,13 +23,12 @@ module Prism
   # # => "ok"
   # ```
   abstract struct Action
-    macro inherited
-      include Prism::Callbacks
-    end
+    include Callbacks
 
     abstract def call
 
-    # Initialize and invoke `#call` with `#before`, `#around` and `#after` callbacks.
+    # Initialize and invoke `#call` with callbacks.
+    # Learn more about callbacks at https://github.com/vladfaust/callbacks.cr.
     def self.call(context : ::HTTP::Server::Context)
       new(context).call_with_callbacks
     end
