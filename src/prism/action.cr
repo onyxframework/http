@@ -9,7 +9,9 @@ module Prism
   # NOTE: *(From [API](https://crystal-lang.org/api/0.23.1/HTTP/Server/Response.html)) The response #status_code and #headers must be configured before writing the response body. Once response output is written, changing the status and #headers properties has no effect.*
   #
   # ```
-  # struct MyAction < Prism::Action
+  # struct MyAction
+  #   include Prism::Action
+  #
   #   def call
   #     text("ok")
   #   end
@@ -22,15 +24,19 @@ module Prism
   # MyAction.call(env)
   # # => "ok"
   # ```
-  abstract struct Action
+  module Action
     include Callbacks
 
     abstract def call
 
-    # Initialize and invoke `#call` with callbacks.
-    # Learn more about callbacks at https://github.com/vladfaust/callbacks.cr.
-    def self.call(context : ::HTTP::Server::Context)
-      new(context).call_with_callbacks
+    macro included
+      # Initialize and invoke `#call` with callbacks.
+      # Learn more about callbacks at https://github.com/vladfaust/callbacks.cr.
+      def self.call(context : ::HTTP::Server::Context)
+        new(context).call_with_callbacks
+      end
+
+      class_property max_body_size
     end
 
     # :nodoc:
@@ -39,7 +45,7 @@ module Prism
     end
 
     # Will **not** raise on exceed, defaults to 8 MB.
-    class_property max_body_size = UInt64.new(8 * 1024 ** 2)
+    @@max_body_size = UInt64.new(8 * 1024 ** 2)
 
     @body : String?
 

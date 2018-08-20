@@ -2,8 +2,9 @@ require "../spec_helper"
 require "../../src/prism/action"
 
 module Prism::Action::Params::Spec
-  struct PrismAction < Prism::Action
-    include Params
+  struct PrismAction
+    include Prism::Action
+    include Prism::Action::Params
 
     params do
       param :id, Int32, validate: {gte: 42}

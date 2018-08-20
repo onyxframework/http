@@ -1,8 +1,10 @@
 require "./spec_helper"
 require "../src/prism/action"
 
-abstract struct Prism::Action
-  struct OkAction < Prism::Action
+module Prism::Action
+  struct OkAction
+    include Prism::Action
+
     def call
       status(205)
       text("ok")
@@ -21,7 +23,9 @@ abstract struct Prism::Action
     end
   end
 
-  struct OkActionWithStatus < Prism::Action
+  struct OkActionWithStatus
+    include Prism::Action
+
     def call
       text(205, "ok")
     end
@@ -39,7 +43,9 @@ abstract struct Prism::Action
     end
   end
 
-  struct JsonAction < Prism::Action
+  struct JsonAction
+    include Prism::Action
+
     def call
       json({"foo" => "bar"})
     end
@@ -57,7 +63,9 @@ abstract struct Prism::Action
     end
   end
 
-  struct JsonWithStatusAction < Prism::Action
+  struct JsonWithStatusAction
+    include Prism::Action
+
     def call
       json(201, {
         foo: "bar",
@@ -81,7 +89,9 @@ abstract struct Prism::Action
     end
   end
 
-  struct HaltAction < Prism::Action
+  struct HaltAction
+    include Prism::Action
+
     class_property unwanted_calls_count = 0
 
     def call
@@ -108,7 +118,9 @@ abstract struct Prism::Action
     end
   end
 
-  struct TextHaltAction < Prism::Action
+  struct TextHaltAction
+    include Prism::Action
+
     def call
       halt!(404, "Nope")
     end
@@ -122,7 +134,9 @@ abstract struct Prism::Action
     end
   end
 
-  struct JSONHaltAction < Prism::Action
+  struct JSONHaltAction
+    include Prism::Action
+
     def call
       halt!(403, {error: "Oops"})
     end
@@ -136,7 +150,9 @@ abstract struct Prism::Action
     end
   end
 
-  struct BodyAction < Prism::Action
+  struct BodyAction
+    include Prism::Action
+
     class_property last_body : String? = nil
 
     def call
@@ -152,7 +168,9 @@ abstract struct Prism::Action
     end
   end
 
-  struct CallbacksAction < Prism::Action
+  struct CallbacksAction
+    include Prism::Action
+
     class_property buffer = [] of String
 
     before do

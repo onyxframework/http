@@ -7,9 +7,10 @@ module Prism
   # A callable websocket Channel with [Callbacks](https://github.com/vladfaust/callbacks.cr) module included.
   #
   # ```
-  # class UserNotifications < Prism::Channel
-  #   include Auth
-  #   include Params
+  # class UserNotifications
+  #   include Prism::Channel
+  #   include Prism::Channel::Auth
+  #   include Prism::Channel::Params
   #
   #   # Will close the socket if unauthorized
   #   auth!
@@ -50,7 +51,7 @@ module Prism
   #
   # UserNotifications.notify(user, "You've got a message!")
   # ```
-  class Channel
+  module Channel
     include Callbacks
 
     # Called once when a new socket is opened.
@@ -78,14 +79,16 @@ module Prism
     def on_close
     end
 
-    # Initialize a new instance and invoke `#subscribe_with_callbacks` on it.
-    def self.subscribe(socket : HTTP::WebSocket, context : HTTP::Server::Context)
-      new(socket, context).subscribe_with_callbacks
-    end
+    macro included
+      # Initialize a new instance and invoke `#subscribe_with_callbacks` on it.
+      def self.subscribe(socket : HTTP::WebSocket, context : HTTP::Server::Context)
+        new(socket, context).subscribe_with_callbacks
+      end
 
-    # ditto
-    def self.call(socket, context)
-      subscribe(socket, context)
+      # ditto
+      def self.call(socket, context)
+        subscribe(socket, context)
+      end
     end
 
     # Call `#on_open` and bind to the `socket`'s events. Read more in [Crystal API docs](https://crystal-lang.org/api/0.23.1/HTTP/WebSocket.html).

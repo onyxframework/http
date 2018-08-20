@@ -33,8 +33,9 @@ Please refer to the API documentation available online at [github.vladfaust.com/
 ```crystal
 require "prism"
 
-struct KnockKnock < Prism::Action
-  include Params
+struct KnockKnock
+  include Prism::Action
+  include Prism::Action::Params
 
   params do
     param :who, String
@@ -70,7 +71,9 @@ We call them *Channels* for convenience.
 ```crystal
 require "prism"
 
-class Notifications < Prism::Channel
+class Notifications
+  include Prism::Channel
+
   @@subscriptions = Array(self).new
 
   def self.notify(message)

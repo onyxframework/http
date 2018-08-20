@@ -1,13 +1,14 @@
 require "../params"
 
 module Prism
-  class Channel
+  module Channel
     # Params module for `Prism::Channel`. It injects params parsing into `before` callback.
     #
     # Closes the socket if `Prism::Params::InvalidParamTypeError`, `Prism::Params::ParamNotFoundError` or `Prism::Params::InvalidParamError` raised.
     #
     # ```
-    # class MyChannel < Prism::Channel
+    # class MyChannel
+    #   include Prism::Channel
     #   include Params
     #
     #   params do

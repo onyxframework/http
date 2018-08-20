@@ -31,8 +31,9 @@ module Prism::Action::Auth::ComplexSpec
     end
   end
 
-  struct StrictAction < Prism::Action
-    include Auth(Authable)
+  struct StrictAction
+    include Prism::Action
+    include Prism::Action::Auth(Authable)
 
     auth!(:admin, level: :god)
 
@@ -41,8 +42,9 @@ module Prism::Action::Auth::ComplexSpec
     end
   end
 
-  struct NonStrictAction < Prism::Action
-    include Auth(Authable)
+  struct NonStrictAction
+    include Prism::Action
+    include Prism::Action::Auth(Authable)
 
     def call
       begin

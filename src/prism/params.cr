@@ -58,11 +58,12 @@ require "./params/**"
 #
 # If you want to implement your own type casting, extend it with `.from_param` method (see `Int.from_param` for example).
 #
-# If included into `Prism::Action`, it will automatically inject `parse_params` into `Action#before` callback:
+# If included along with `Prism::Action`, it will automatically inject `parse_params` into `#before` callback:
 #
 # ```
-# struct MyPrismAction < Prism::Action
-#   include Params
+# struct MyPrismAction
+#   include Prism::Action
+#   include Prism::Action::Params
 #
 #   params do
 #     param :id, Int32

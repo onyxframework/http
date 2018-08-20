@@ -1,11 +1,12 @@
 require "../auth"
 
 module Prism
-  abstract struct Action
+  module Action
     # An `Action` module which adds `auth!` macro, attempting to do auth in before callback.
     #
     # ```
-    # struct StrictAction < Prism::Action
+    # struct StrictAction
+    #   include Prism::Action
     #   include Prism::Action::Auth(AuthableObject)
     #
     #   auth!(:admin) # Would try to auth before call, halt otherwise

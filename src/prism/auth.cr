@@ -22,7 +22,8 @@ module Prism
   #   end
   # end
   #
-  # struct MyAction < Prism::Action
+  # struct MyAction
+  #   include Prism::Action
   #   include Prism::Auth(AuthableObject)
   #
   #   def call

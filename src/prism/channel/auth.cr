@@ -1,11 +1,12 @@
 require "../auth"
 
 module Prism
-  class Channel
+  module Channel
     # An `Channel` module which adds `auth!` macro, attempting to do auth in before callback.
     #
     # ```
-    # class MyChannel < Prism::Channel
+    # class MyChannel
+    #   include Prism::Channel
     #   include Prism::Channel::Auth(AuthableObject)
     #
     #   auth!(:admin)
