@@ -21,7 +21,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   prism:
     github: vladfaust/prism
-    version: ~> 0.3.0
+    version: ~> 0.4.0
 ```
 
 This shard follows [Semantic Versioning v2.0.0](http://semver.org/), so check [releases](https://github.com/vladfaust/prism/releases) and change the `version` accordingly.
