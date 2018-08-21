@@ -5,18 +5,18 @@ module Prism::Params::ValidationSpec
     include Prism::Params
 
     params do
-      param :id, Int32
-      param :name, String, validate: {
+      type id : Int32
+      type name : String, validate: {
         size:   (3..16),
         regex:  /\w+/,
         custom: ->(name : String) {
           error!("has reserved value") if %w(foo bar baz).includes?(name)
         },
       }
-      param :age, Int32, nilable: true, validate: {gt: 17}
-      param :height, Float64?, validate: {in: (0.5..2.5)}
-      param :iq, Int32?, validate: {gte: 100, lt: 200}
-      param :array, Array(Int32)?, validate: {
+      type age : Int32, nilable: true, validate: {gt: 17}
+      type height : Float64?, validate: {in: (0.5..2.5)}
+      type iq : Int32?, validate: {gte: 100, lt: 200}
+      type array : Array(Int32)?, validate: {
         size:   (1..2),
         custom: ->(array : Array(Int32)) {
           error!("too big") if array.any? { |i| i > 10 }

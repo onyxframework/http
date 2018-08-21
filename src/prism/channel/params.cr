@@ -12,7 +12,7 @@ module Prism
     #   include Prism::Channel::Params
     #
     #   params do
-    #     param :foo, Int32
+    #     type foo : Int32
     #   end
     #
     #   def on_open

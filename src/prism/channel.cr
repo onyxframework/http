@@ -17,7 +17,7 @@ module Prism
   #
   #   # Will close the socket on params validation error
   #   params do
-  #     param :foo, String?
+  #     type foo : String?
   #   end
   #
   #   def self.notify(user : User, payload : String)

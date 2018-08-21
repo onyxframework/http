@@ -17,14 +17,14 @@ module Prism::Params
   #   include Prism::Params
   #
   #   params do
-  #     param :name, String, validate: {
+  #     type name : String, validate: {
   #       size:   (3..32),
   #       regex:  /\w+/,
   #       custom: ->(name : String) {
   #         error!("doesn't meet condition") unless some_condition?(name)
   #       },
   #     }
-  #     param :age, Int32?, validate: {in: (18..150)}
+  #     type age : Int32?, validate: {in: (18..150)}
   #   end
   #
   #   def self.call(context)

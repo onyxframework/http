@@ -13,7 +13,7 @@ struct ParamsAction
   include Prism::Action::Params
 
   params do
-    param :foo, String
+    type foo : String
   end
 
   def call
@@ -26,10 +26,10 @@ struct NestedParamsAction
   include Prism::Action::Params
 
   params do
-    param :user_id, Int32
-    param :settings do
-      param :email, String?
-      param :password, String?, validate: {size: (0..32)}
+    type user_id : Int32
+    type settings do
+      type email : String?
+      type password : String?, validate: {size: (0..32)}
     end
   end
 

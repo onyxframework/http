@@ -9,25 +9,25 @@ module Prism::Params
   #
   # ```
   # params do
-  #   param :user do
-  #     param :email, String, validate: {regex: /@/}
-  #     param :password, String, validate: {size: (0..32)}
-  #     param :age, Int32?
-  #     param :about_me, String? # about_me, about-me and aboutMe keys are looked up upon parsing
+  #   type user do
+  #     type email : String, validate: {regex: /@/}
+  #     type password : String, validate: {size: (0..32)}
+  #     type age : Int32?
+  #     type about_me : String? # about_me, about-me and aboutMe keys are looked up upon parsing
   #   end
   # end
   # ```
   #
-  # **Nested params** (e.g. `param :user do`) can have following options:
+  # **Nested params** (e.g. `type user do`) can have following options:
   #
-  # - *nilable* (`false` by default, change as `param :user, nilable: true do`).
+  # - *nilable* (`false` by default, change as `type user, nilable: true do`).
   #
   # **Single param** has two mandatory arguments:
   #
   # - *name* declares an access key for the `params` tuple;
   # - *type* defines a type which the param must be casted to, otherwise validation will fail (i.e. "foo" won't cast to `Int32`). You can declary an arbitary type, union or array (e.g. `Array(UInt16)`), must it respond to `.from_param`. See `Int.from_param` and its siblings for implementations.
   #
-  # NOTE: Union Array type isn't supported, e.g. `param :foo, Array(Int32 | String)` is invalid because of uncertainty of how to process it, for example `["42"]` - should `"42"` stay String or be casted to Int32?
+  # NOTE: Union Array type isn't supported, e.g. `type foo : Array(Int32 | String)` is invalid because of uncertainty of how to process it, for example `["42"]` - should `"42"` stay String or be casted to Int32?
   #
   # **Single param** can also have some options:
   #
@@ -36,10 +36,10 @@ module Prism::Params
   # - *proc* will be called each time the param is casted (right after validation). The param becomes the returned value, so this *proc* **must** return the same type.
   #
   # NOTE: If a param is nilable, but is present and of invalid type, an `InvalidParamTypeError` will be raised.
-  macro param(name, type _type = nil, **options, &block)
+  macro type(declaration, **options, &block)
     {% if block %}
       {%
-        INTERNAL__PRISM_PARAMS_PARENTS[:current_value].push(name)
+        INTERNAL__PRISM_PARAMS_PARENTS[:current_value].push(declaration.id.stringify)
 
         if options[:nilable]
           INTERNAL__PRISM_PARAMS_PARENTS[:nilable][INTERNAL__PRISM_PARAMS_PARENTS[:current_value].select { |x| x }.map(&.id.stringify)] = options[:nilable]
@@ -55,27 +55,31 @@ module Prism::Params
       %}
     {% else %}
       {%
-        raise "Expected param type" unless _type
-
         nilable = if options[:nilable] == nil
-                    "#{_type}".includes?("?") || "#{_type}".includes?("Nil")
+                    if declaration.type.is_a?(Union)
+                      declaration.type.types.map(&.stringify).includes?("::Nil")
+                    else
+                      false
+                    end
                   else
                     options[:nilable]
                   end
 
-        array = if _type.is_a?(Generic)
-                  "#{_type.name}" =~ /Array$/ || (
-                    "#{_type.name}" =~ /Union$/ && _type.type_vars.first.is_a?(Generic) && "#{_type.type_vars.first.name}" =~ /Array$/
+        array = if declaration.type.is_a?(Union)
+                  declaration.type.types.any? { |t| t.stringify == "Array" } || (
+                    declaration.type.is_a?(Union) && declaration.type.types.first.is_a?(Generic) && declaration.type.types.first.name.stringify == "Array"
                   )
+                elsif declaration.type.is_a?(Generic)
+                  declaration.type.name.stringify == "Array"
                 else
                   false
                 end
 
         INTERNAL__PRISM_PARAMS.push({
           parents: INTERNAL__PRISM_PARAMS_PARENTS[:current_value].size > 0 ? INTERNAL__PRISM_PARAMS_PARENTS[:current_value].map { |x| x.id.stringify } : nil,
-          name: name.id.stringify,
-          keys: [name.id.stringify, name.id.stringify.underscore, name.id.stringify.underscore.gsub(/_/, "-"), name.id.stringify.camelcase[0...1].downcase + name.id.stringify.camelcase[1..-1]].uniq,
-          type: _type,
+          name:     declaration.var.stringify,
+          keys:     [declaration.var.stringify, declaration.var.stringify.underscore, declaration.var.stringify.underscore.gsub(/_/, "-"), declaration.var.stringify.camelcase[0...1].downcase + declaration.var.stringify.camelcase[1..-1]].uniq,
+          type: declaration.type,
           nilable: nilable,
           validate: options[:validate],
           proc: options[:proc],
@@ -128,10 +132,12 @@ module Prism::Params
 
         hash
       end
+
+      raise "Empty params" if tuple_hash.empty?
     %}
 
     # Damn hacks
-    alias ParamsTuple = NamedTuple({{"#{hash}".gsub(/\"/, "\"").gsub(%r[=> {(.*), "__nilable" => true(.*)}[,}]], "=> {\\1\\2} | Nil,").gsub(%r[=> {(.*)"__nilable" => true, (.*)}[,}]], "=> {\\1\\2} | Nil,").gsub(/ \=>/, ":")[1..-2].id}})
+    alias ParamsTuple = NamedTuple({{"#{tuple_hash}".gsub(/\"/, "\"").gsub(%r[=> {(.*), "__nilable" => true(.*)}[,}]], "=> {\\1\\2} | Nil,").gsub(%r[=> {(.*)"__nilable" => true, (.*)}[,}]], "=> {\\1\\2} | Nil,").gsub(/ \=>/, ":")[1..-2].id}})
   end
 
   private macro define_param_type

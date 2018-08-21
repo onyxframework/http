@@ -10,16 +10,16 @@ require "./params/**"
 #   include Prism::Params
 #
 #   params do
-#     param :foo, Int32?
-#     param :name, String, validate: {size: {min: 3}}
-#     param :the_time, Time? # the_time, the-time and theTime keys are accepted
-#     param :bar, nilable: true do # Nested params are supported too
-#       param :baz do
-#         param :qux, String?
-#         param :qax, Array(String)? # Yep, arrays
+#     type foo : Int32?
+#     type name : String, validate: {size: {min: 3}}
+#     type the_time : Time? # the_time, the-time and theTime keys are accepted
+#     type bar : nilable: true do # Nested params are supported too
+#       type baz :do
+#         type qux : String?
+#         type qax : Array(String)? # Yep, arrays
 #       end
 #
-#       param :quux, Int32, proc: (quux : Int32) -> { quux * 2 }
+#       type quux : Int32, proc: (quux : Int32) -> { quux * 2 }
 #     end
 #   end
 #
@@ -66,7 +66,7 @@ require "./params/**"
 #   include Prism::Action::Params
 #
 #   params do
-#     param :id, Int32
+#     type id : Int32
 #   end
 #
 #   def call
@@ -82,7 +82,7 @@ module Prism::Params
     INTERNAL__PRISM_PARAMS = [] of NamedTuple
     INTERNAL__PRISM_PARAMS_PARENTS = {current_value: [] of Symbol, nilable: {} of Array(Symbol) => Bool}
 
-    {{yield}}
+    {{yield.id}}
 
     define_params_tuple
     define_param_type

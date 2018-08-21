@@ -6,22 +6,22 @@ module Prism::Params::Specs
     include Prism::Params
 
     params do
-      param :id, Int32, validate: {gte: 42}
-      param :value, Int32?
-      param :time, Time?
-      param :float_value, Float64?
-      param :kebab_param, String?, proc: ->(p : String) { p.upcase }
+      type id : Int32, validate: {gte: 42}
+      type value : Int32?
+      type time : Time?
+      type float_value : Float64?
+      type kebab_param : String?, proc: ->(p : String) { p.upcase }
 
-      param :nest1, nilable: true do
-        param :nest2 do
-          param :bar, Int32, validate: {lt: 42}
+      type nest1, nilable: true do
+        type nest2 do
+          type bar : Int32, validate: {lt: 42}
         end
 
-        param :foo, String?, proc: ->(p : String) { p.downcase }
-        param :array_param, Array(UInt8)?, proc: ->(a : Array(UInt8)) { a.map { |i| i * 2 } }
+        type foo : String?, proc: ->(p : String) { p.downcase }
+        type array_param : Array(UInt8)?, proc: ->(a : Array(UInt8)) { a.map { |i| i * 2 } }
       end
 
-      param :important, Array(String), validate: {size: (1..10)}
+      type important : Array(String), validate: {size: (1..10)}
     end
 
     @@last_params = uninitialized ParamsTuple

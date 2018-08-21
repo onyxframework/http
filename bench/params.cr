@@ -4,12 +4,12 @@ struct SimpleAction
   include Prism::Params
 
   params do
-    param :user, nilable: true do
-      param :email, String, validate: {regex: /@/}
-      param :password, String, validate: {size: (1..32)}
+    type user, nilable: true do
+      type email : String, validate: {regex: /@/}
+      type password : String, validate: {size: (1..32)}
     end
 
-    param :id, Int32?, validate: {min!: 0}
+    type id : Int32?, validate: {min!: 0}
   end
 
   def self.call(context)

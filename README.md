@@ -38,8 +38,8 @@ struct KnockKnock
   include Prism::Action::Params
 
   params do
-    param :who, String
-    param :how_many_times, Int32, validate: {lte: 10}
+    type who : String
+    type how_many_times : Int32, validate: {lte: 10}
   end
 
   def call

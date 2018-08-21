@@ -159,10 +159,10 @@ module Prism::Params
           {% for param in INTERNAL__PRISM_PARAMS %}
             {% for key in param[:keys] %}
               {%
-                _type = if param[:type].is_a?(Generic)
-                          if "#{param[:type].name}" == "::Union"
-                            ("(" + param[:type].type_vars.reject { |t| "#{t}" == "::Nil" }.join(" | ") + ")").id
-                          else
+                _type = if param[:type].is_a?(Union)
+                          ("(" + param[:type].types.reject { |t| "#{t}" == "::Nil" }.join(" | ") + ")").id
+                        elsif param[:type].is_a?(Generic)
+                          if param[:type].name.stringify == "Array"
                             param[:type].id
                           end
                         else
@@ -192,10 +192,10 @@ module Prism::Params
 
       {% for param in INTERNAL__PRISM_PARAMS %}
         {%
-          _type = if param[:type].is_a?(Generic)
-                    if "#{param[:type].name}" == "::Union"
-                      ("(" + param[:type].type_vars.reject { |t| "#{t}" == "::Nil" }.join(" | ") + ")").id
-                    else
+          _type = if param[:type].is_a?(Union)
+                    param[:type].types.reject { |t| "#{t}" == "::Nil" }.join(" | ").id
+                  elsif param[:type].is_a?(Generic)
+                    if param[:type].name.stringify == "Array"
                       param[:type].id
                     end
                   else

@@ -7,9 +7,9 @@ module Prism::Action::Params::Spec
     include Prism::Action::Params
 
     params do
-      param :id, Int32, validate: {gte: 42}
-      param :value, Int32?
-      param :time, Time?
+      type id : Int32, validate: {gte: 42}
+      type value : Int32?
+      type time : Time?
     end
 
     @@last_params = uninitialized ParamsTuple
