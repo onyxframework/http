@@ -132,7 +132,7 @@ module Prism::Params::Specs
 
     describe "testing certain content types" do
       context "JSON" do
-        response = handle_request(SimpleAction, Req.new(
+        request = Req.new(
           method: "POST",
           resource: "/",
           body: {
@@ -149,7 +149,13 @@ module Prism::Params::Specs
           headers: HTTP::Headers{
             "Content-Type" => "application/json",
           }
-        ))
+        )
+
+        response = handle_request(SimpleAction, request)
+
+        it "rewinds request body" do
+          (request.body.as(IO::Memory).pos == 0).should be_true
+        end
 
         it "properly parses float" do
           SimpleAction.last_params[:float_value].should eq 0.000000000001

@@ -15,15 +15,6 @@ module Prism::Params
   end
 
   private macro define_parse_params
-    # Will copy context request body into `IO::Memory` and return this io, **preserving** original request body.
-    private def self.copy_body(context, limit)
-      if body = context.request.body
-        string = body.gets(limit)
-        context.request.body = IO::Memory.new.tap { |io| io << string; io.rewind }
-        return IO::Memory.new.tap { |io| io << string; io.rewind }
-      end
-    end
-
     def self.parse_params(context, limit : UInt64 = DEFAULT_MAX_BODY_SIZE)
       params = Param.new("root", {} of String => Param)
 
@@ -89,8 +80,6 @@ module Prism::Params
         # 3. Extract params from the body with Content-Type set to "multipart/form-data".
         # Supports both nested and array params.
         when /multipart\/form-data/
-          body = copy_body(context, limit)
-
           HTTP::FormData.parse(context.request) do |part|
             {% begin %}
               case part.name
@@ -125,14 +114,12 @@ module Prism::Params
             {% end %}
           end
 
-          context.request.body = body
+          context.request.body.not_nil!.rewind
 
         # 4. Extract params from the body with Content-Type set to "application/x-www-form-urlencoded".
         # Supports both nested and array params.
         when /application\/x-www-form-urlencoded/
-          body = copy_body(context, limit)
-
-          HTTP::Params.parse(body.not_nil!.gets_to_end) do |key, value|
+          HTTP::Params.parse(context.request.body.not_nil!.gets_to_end) do |key, value|
             {% begin %}
               case key
               {% for param in INTERNAL__PRISM_PARAMS %}
@@ -162,13 +149,12 @@ module Prism::Params
             {% end %}
           end
 
-          context.request.body = body
+          context.request.body.not_nil!.rewind
 
         # 5. Extract params from the body with Content-Type set to "application/json".
         # Supports both nested and array params.
         when /application\/json/
-          body = copy_body(context, limit)
-          json = JSON.parse(body.not_nil!)
+          json = JSON.parse(context.request.body.not_nil!.gets_to_end)
 
           {% for param in INTERNAL__PRISM_PARAMS %}
             {% for key in param[:keys] %}
@@ -200,7 +186,7 @@ module Prism::Params
             {% end %}
           {% end %}
 
-          context.request.body = body
+          context.request.body.not_nil!.rewind
         end
       end
 
