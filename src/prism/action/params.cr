@@ -9,7 +9,7 @@ module Prism
     # ```
     # struct MyAction
     #   include Prism::Action
-    #   include Prism::Params
+    #   include Prism::Action::Params
     #
     #   params do
     #     param :foo, Int32

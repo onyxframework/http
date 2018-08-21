@@ -9,7 +9,7 @@ module Prism
     # ```
     # class MyChannel
     #   include Prism::Channel
-    #   include Params
+    #   include Prism::Channel::Params
     #
     #   params do
     #     param :foo, Int32
