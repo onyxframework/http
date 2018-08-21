@@ -10,7 +10,7 @@ module Prism::Params::Specs
       param :value, Int32?
       param :time, Time?
       param :float_value, Float64?
-      param :"kebab-param", String?, proc: ->(p : String) { p.upcase }
+      param :kebab_param, String?, proc: ->(p : String) { p.upcase }
 
       param :nest1, nilable: true do
         param :nest2 do
@@ -18,7 +18,7 @@ module Prism::Params::Specs
         end
 
         param :foo, String?, proc: ->(p : String) { p.downcase }
-        param :arrayParam, Array(UInt8)?, proc: ->(a : Array(UInt8)) { a.map { |i| i * 2 } }
+        param :array_param, Array(UInt8)?, proc: ->(a : Array(UInt8)) { a.map { |i| i * 2 } }
       end
 
       param :important, Array(String), validate: {size: (1..10)}
@@ -55,7 +55,7 @@ module Prism::Params::Specs
       end
 
       it "has kebab-param in params" do
-        SimpleAction.last_params["kebab-param"].should eq "FOO"
+        SimpleAction.last_params[:kebab_param].should eq "FOO"
       end
 
       it "has nest1 -> nest2 -> bar in params" do
@@ -67,7 +67,7 @@ module Prism::Params::Specs
       end
 
       it "has nest1 -> arrayParam in params" do
-        SimpleAction.last_params[:nest1]?.try &.[:arrayParam].should eq [4_u8, 6_u8]
+        SimpleAction.last_params[:nest1]?.try &.[:array_param].should eq [4_u8, 6_u8]
       end
 
       it "has arrayParam in params" do
@@ -136,9 +136,9 @@ module Prism::Params::Specs
           method: "POST",
           resource: "/",
           body: {
-            id:          42,
-            float_value: 0.000000000001,
-            nest1:       {
+            id:         42,
+            floatValue: 0.000000000001,
+            nest1:      {
               nest2: {
                 bar: 41,
               },
@@ -164,7 +164,7 @@ module Prism::Params::Specs
         end
 
         it "has nested array params" do
-          SimpleAction.last_params[:nest1]?.try &.[:arrayParam].should eq [2_u8, 4_u8]
+          SimpleAction.last_params[:nest1]?.try &.[:array_param].should eq [2_u8, 4_u8]
         end
       end
     end

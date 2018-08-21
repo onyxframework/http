@@ -12,7 +12,7 @@ require "./params/**"
 #   params do
 #     param :foo, Int32?
 #     param :name, String, validate: {size: {min: 3}}
-#     param "kebab-case-time", Time?
+#     param :the_time, Time? # the_time, the-time and theTime keys are accepted
 #     param :bar, nilable: true do # Nested params are supported too
 #       param :baz do
 #         param :qux, String?
@@ -32,7 +32,7 @@ require "./params/**"
 #     p params[:name].class
 #     # => String
 #
-#     p params["kebab-case-time"].class
+#     p params[:the_time].class
 #     # => Time?
 #
 #     p params[:bar]?.try &.[:baz][:qux].class
@@ -48,8 +48,8 @@ require "./params/**"
 #
 # Params parsing order (latter rewrites previous):
 #
-# 1. Path params;
-# 2. Request query params (.e.g "/?foo=42");
+# 1. Path params (note that when parsing path params, only keys the same as params' names are looked up, e.g. `"the_time"`);
+# 2. Request query params (.e.g "/?foo=42&theTime=0");
 # 3. Multipart form data (only if `"Content-Type"` is `"multipart/form-data"`);
 # 4. Body params (only if `"Content-Type"` is `"application/x-www-form-urlencoded"`);
 # 5. JSON body (only if `"Content-Type"` is `"application/json"`).
@@ -58,7 +58,7 @@ require "./params/**"
 #
 # If you want to implement your own type casting, extend it with `.from_param` method (see `Int.from_param` for example).
 #
-# If included along with `Prism::Action`, it will automatically inject `parse_params` into `#before` callback:
+# `Prism::Action::Params` and `Prism::Channel::Params` modules can be included to automatically add `parse_params` into `#before` callback:
 #
 # ```
 # struct MyPrismAction

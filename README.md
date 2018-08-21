@@ -39,12 +39,12 @@ struct KnockKnock
 
   params do
     param :who, String
-    param :times, Int32, validate: {max: 10}
+    param :how_many_times, Int32, validate: {lte: 10}
   end
 
   def call
-    params[:times].times do
-      text("Knock-knock #{who}\n")
+    params[:how_many_times].times do
+      text("Knock-knock #{params[:who]}\n")
     end
   end
 end
@@ -53,7 +53,7 @@ router = Prism::Router.new do
   get "/:who", KnockKnock
 end
 
-logger = Logger.new(STDOUT)
+logger = Logger.new(STDOUT, Logger::DEBUG)
 log_handler = Prism::LogHandler.new(logger)
 handlers = [log_handler, router]
 
@@ -62,6 +62,13 @@ server.bind_tcp(5000)
 server.listen
 
 #  INFO -- :   Prism::Server is listening on http://127.0.0.1:5000...
+# DEBUG -- :     GET /me 200 177μs
+```
+
+```
+curl -X GET -d "howManyTimes=2" http://127.0.0.1:5000/me
+Knock-knock me
+Knock-knock me
 ```
 
 ## Websockets example

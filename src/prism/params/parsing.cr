@@ -29,6 +29,8 @@ module Prism::Params
 
       # 1. Extract params from path params.
       # Does not support neither nested nor array params.
+      #
+      # NOTE: It only extracts params with the same key as the param's name (e.g. `param float_value` will look for `"float_value"` only, not for `"floatValue"`)
       {% if HTTP::Request.has_method?("path_params") && INTERNAL__PRISM_PARAMS.any? { |param| !param[:parents] } %}
         context.request.path_params.try &.each do |key, value|
           {% begin %}
@@ -55,23 +57,25 @@ module Prism::Params
         {% begin %}
           case key
           {% for param in INTERNAL__PRISM_PARAMS %}
-            {% if param[:parents] %}
-              {% path = param[:parents] ? param[:parents][0] + "[" + (param[:parents][1..-1] + [param[:name]]).join("][") + "]" : param[:name] %}
+            {% for key in param[:keys] %}
+              {% if param[:parents] %}
+                {% path = param[:parents] ? param[:parents][0] + "[" + (param[:parents][1..-1] + [key]).join("][") + "]" : key %}
 
-              {% if param[:array] %}
-                when {{(path + "[]")}}
-                  params.deep_push({{(param[:parents] + [param[:name]])}}, value)
+                {% if param[:array] %}
+                  when {{(path + "[]")}}
+                    params.deep_push({{(param[:parents] + [param[:name]])}}, value)
+                {% else %}
+                  when {{path}}
+                    params.deep_set({{param[:parents] + [param[:name]]}}, value)
+                {% end %}
               {% else %}
-                when {{path}}
-                  params.deep_set({{param[:parents] + [param[:name]]}}, value)
-              {% end %}
-            {% else %}
-              {% if param[:array] %}
-                when {{param[:name] + "[]"}}
-                  params.deep_push({{[param[:name]]}}, value)
-              {% else %}
-                when {{param[:name]}}
-                  params.deep_set({{[param[:name]]}}, value)
+                {% if param[:array] %}
+                  when {{key + "[]"}}
+                    params.deep_push({{[param[:name]]}}, value)
+                {% else %}
+                  when {{key}}
+                    params.deep_set({{[param[:name]]}}, value)
+                {% end %}
               {% end %}
             {% end %}
           {% end %}
@@ -91,27 +95,29 @@ module Prism::Params
             {% begin %}
               case part.name
               {% for param in INTERNAL__PRISM_PARAMS %}
-                {% if param[:parents] %}
-                  {% path = param[:parents] ? param[:parents][0] + "[" + (param[:parents][1..-1] + [param[:name]]).join("][") + "]" : param[:name] %}
+                {% for key in param[:keys] %}
+                  {% if param[:parents] %}
+                    {% path = param[:parents] ? param[:parents][0] + "[" + (param[:parents][1..-1] + [key]).join("][") + "]" : key %}
 
-                  {% if param[:array] %}
-                    when {{path + "[]"}}
-                      value = part.body.gets_to_end.gsub("\r\n", "").to_s
-                      params.deep_push({{param[:parents] + [param[:name]]}}, value)
+                    {% if param[:array] %}
+                      when {{path + "[]"}}
+                        value = part.body.gets_to_end.gsub("\r\n", "").to_s
+                        params.deep_push({{param[:parents] + [param[:name]]}}, value)
+                    {% else %}
+                      when {{path.id.stringify}}
+                        value = part.body.gets_to_end.gsub("\r\n", "").to_s
+                        params.deep_set({{param[:parents] + [param[:name]]}}, value)
+                    {% end %}
                   {% else %}
-                    when {{path.id.stringify}}
-                      value = part.body.gets_to_end.gsub("\r\n", "").to_s
-                      params.deep_set({{param[:parents] + [param[:name]]}}, value)
-                  {% end %}
-                {% else %}
-                  {% if param[:array] %}
-                    when {{param[:name]}}
-                      value = part.body.gets_to_end.gsub("\r\n", "").to_s
-                      params.deep_push([{{param[:name]}}], value)
-                  {% else %}
-                    when {{param[:name]}}
-                      value = part.body.gets_to_end.gsub("\r\n", "").to_s
-                      params.deep_set([{{param[:name]}}], value)
+                    {% if param[:array] %}
+                      when {{key}}
+                        value = part.body.gets_to_end.gsub("\r\n", "").to_s
+                        params.deep_push([{{param[:name]}}], value)
+                    {% else %}
+                      when {{key}}
+                        value = part.body.gets_to_end.gsub("\r\n", "").to_s
+                        params.deep_set([{{param[:name]}}], value)
+                    {% end %}
                   {% end %}
                 {% end %}
               {% end %}
@@ -130,23 +136,25 @@ module Prism::Params
             {% begin %}
               case key
               {% for param in INTERNAL__PRISM_PARAMS %}
-                {% if param[:parents] %}
-                  {% path = param[:parents] ? param[:parents][0] + "[" + (param[:parents][1..-1] + [param[:name]]).join("][") + "]" : param[:name] %}
+                {% for key in param[:keys] %}
+                  {% if param[:parents] %}
+                    {% path = param[:parents] ? param[:parents][0] + "[" + (param[:parents][1..-1] + [key]).join("][") + "]" : key %}
 
-                  {% if param[:array] %}
-                    when {{path + "[]"}}
-                      params.deep_push({{param[:parents] + [param[:name]]}}, value)
+                    {% if param[:array] %}
+                      when {{path + "[]"}}
+                        params.deep_push({{param[:parents] + [param[:name]]}}, value)
+                    {% else %}
+                      when {{path.id.stringify}}
+                        params.deep_set({{param[:parents] + [param[:name]]}}, value)
+                    {% end %}
                   {% else %}
-                    when {{path.id.stringify}}
-                      params.deep_set({{param[:parents] + [param[:name]]}}, value)
-                  {% end %}
-                {% else %}
-                  {% if param[:array] %}
-                    when {{param[:name] + "[]"}}
-                      params.deep_push({{[param[:name]]}}, value)
-                  {% else %}
-                    when {{param[:name]}}
-                      params.deep_set({{[param[:name]]}}, value)
+                    {% if param[:array] %}
+                      when {{key + "[]"}}
+                        params.deep_push({{[param[:name]]}}, value)
+                    {% else %}
+                      when {{key}}
+                        params.deep_set({{[param[:name]]}}, value)
+                    {% end %}
                   {% end %}
                 {% end %}
               {% end %}
@@ -163,31 +171,33 @@ module Prism::Params
           json = JSON.parse(body.not_nil!)
 
           {% for param in INTERNAL__PRISM_PARAMS %}
-            {%
-              _type = if param[:type].is_a?(Generic)
-                        if "#{param[:type].name}" == "::Union"
-                          ("(" + param[:type].type_vars.reject { |t| "#{t}" == "::Nil" }.join(" | ") + ")").id
+            {% for key in param[:keys] %}
+              {%
+                _type = if param[:type].is_a?(Generic)
+                          if "#{param[:type].name}" == "::Union"
+                            ("(" + param[:type].type_vars.reject { |t| "#{t}" == "::Nil" }.join(" | ") + ")").id
+                          else
+                            param[:type].id
+                          end
                         else
-                          param[:type].id
+                          param[:type].resolve
                         end
-                      else
-                        param[:type].resolve
-                      end
 
-              path = param[:parents] ? (param[:parents] + [param[:name]]) : [param[:name]]
-            %}
+                path = param[:parents] ? (param[:parents] + [key]) : [key]
+              %}
 
-            json_value = json.dig?({{path}}).try do |v|
-              {{_type.id}}.from_param(Param.new({{param[:name]}}, v.as(Param::Type), {{path}}))
-            end
+              json_value = json.dig?({{path}}).try do |v|
+                {{_type.id}}.from_param(Param.new({{param[:name]}}, v.as(Param::Type), {{path}}))
+              end
 
-            if json_value
-              {% if param[:parents] %}
-                params.deep_set({{param[:parents] + [param[:name]]}}, json_value)
-              {% else %}
-                params.deep_set({{[param[:name]]}}, json_value)
-              {% end %}
-            end
+              if json_value
+                {% if param[:parents] %}
+                  params.deep_set({{param[:parents] + [param[:name]]}}, json_value)
+                {% else %}
+                  params.deep_set({{[param[:name]]}}, json_value)
+                {% end %}
+              end
+            {% end %}
           {% end %}
 
           context.request.body = body

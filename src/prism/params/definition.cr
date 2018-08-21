@@ -1,6 +1,10 @@
 module Prism::Params
   # Define a single param or nested params. Must be called within the `#params` block.
   #
+  # Params must be defined with standard Crystal variable definition syntax, which is underscore (e.g. `array_param`). Upon parsing, *under_score*, *kebab-case* and *lowerCamelcase* keys are considered valid. Thus said, incoming params can include either `"array_param"`, `"array-param"` or `"arrayParam"` key.
+  #
+  # NOTE: However, only key the same as the param's name (`"array_param"`) is valid when casting from *path params*.
+  #
   # Example:
   #
   # ```
@@ -9,13 +13,14 @@ module Prism::Params
   #     param :email, String, validate: {regex: /@/}
   #     param :password, String, validate: {size: (0..32)}
   #     param :age, Int32?
+  #     param :about_me, String? # about_me, about-me and aboutMe keys are looked up upon parsing
   #   end
   # end
   # ```
   #
   # **Nested params** (e.g. `param :user do`) can have following options:
   #
-  # - *nilable* (`false` by default).
+  # - *nilable* (`false` by default, change as `param :user, nilable: true do`).
   #
   # **Single param** has two mandatory arguments:
   #
@@ -69,6 +74,7 @@ module Prism::Params
         INTERNAL__PRISM_PARAMS.push({
           parents: INTERNAL__PRISM_PARAMS_PARENTS[:current_value].size > 0 ? INTERNAL__PRISM_PARAMS_PARENTS[:current_value].map { |x| x.id.stringify } : nil,
           name: name.id.stringify,
+          keys: [name.id.stringify, name.id.stringify.underscore, name.id.stringify.underscore.gsub(/_/, "-"), name.id.stringify.camelcase[0...1].downcase + name.id.stringify.camelcase[1..-1]].uniq,
           type: _type,
           nilable: nilable,
           validate: options[:validate],
