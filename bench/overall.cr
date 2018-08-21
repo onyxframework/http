@@ -1,13 +1,16 @@
 require "../src/prism"
 
-struct SimpleAction < Prism::Action
+struct SimpleAction
+  include Prism::Action
+
   def call
     text("hello world!")
   end
 end
 
-struct ParamsAction < Prism::Action
-  include Params
+struct ParamsAction
+  include Prism::Action
+  include Prism::Action::Params
 
   params do
     param :foo, String
@@ -18,8 +21,9 @@ struct ParamsAction < Prism::Action
   end
 end
 
-struct NestedParamsAction < Prism::Action
-  include Params
+struct NestedParamsAction
+  include Prism::Action
+  include Prism::Action::Params
 
   params do
     param :user_id, Int32
@@ -45,8 +49,9 @@ end
 server = uninitialized Prism::Server
 
 spawn do
-  server = Prism::Server.new(port: 5000, handlers: [router])
-  server.listen(true)
+  server = Prism::Server.new([router])
+  server.bind_tcp(5000, reuse_port: true)
+  server.listen
 end
 
 sleep 2
