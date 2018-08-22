@@ -23,13 +23,19 @@ struct Int
           {% for n in %w(8 16 32) %}
             {% if @type.name == "UInt" + n %}
               {% found = true %}
-              return param.value.as(JSON::Any).as_i.to_u{{n.id}}
+              i = param.value.as(JSON::Any).as_i
+              raise Prism::Params::InvalidParamTypeError.new(param, {{@type.id.stringify}}) if i < UInt{{n.id}}::MIN || i > UInt{{n.id}}::MAX
+              return i.to_u{{n.id}}
             {% end %}
           {% end %}
           {% if @type.name == "UInt64" %}
-            return param.value.as(JSON::Any).as_i64.to_u64
+            i = param.value.as(JSON::Any).as_i64
+            raise Prism::Params::InvalidParamTypeError.new(param, {{@type.id.stringify}}) if i < UInt64::MIN || i > UInt64::MAX
+            return i.to_u64
           {% elsif @type.name == "UInt128" %}
-            return param.value.as(JSON::Any).as_i64.to_u128
+            i = param.value.as(JSON::Any).as_i64
+            raise Prism::Params::InvalidParamTypeError.new(param, {{@type.id.stringify}}) if i < UInt128::MIN || i > UInt128::MAX
+            return i.to_u128
           {% elsif @type.name == "Int32" %}
             return param.value.as(JSON::Any).as_i
           {% elsif @type.name == "Int64" %}
