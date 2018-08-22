@@ -9,7 +9,7 @@ module Prism::Params::Specs
       type id : Int32, validate: {gte: 42}
       type value : Int32?
       type time : Time?
-      type float_value : Float64?
+      type float_value : Float64 | Nil
       type kebab_param : String?, proc: ->(p : String) { p.upcase }
 
       type nest1, nilable: true do
