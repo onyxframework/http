@@ -11,7 +11,7 @@ module Prism::Params
       super(MESSAGE_TEMPLATE % {
         path:     path,
         expected: @expected_type,
-        given:    @param.value.class,
+        given:    @param.value.inspect,
       })
     end
   end

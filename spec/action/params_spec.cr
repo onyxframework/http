@@ -68,7 +68,7 @@ module Prism::Action::Params::Spec
       end
 
       it "halts" do
-        response.body.should eq "Parameter \"id\" is expected to be Int32 (given String)"
+        response.body.should eq "Parameter \"id\" is expected to be Int32 (given \"foo\")"
       end
     end
 
