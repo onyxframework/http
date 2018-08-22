@@ -23,6 +23,41 @@ module Prism
     module Params
       include Prism::Params
 
+      macro included
+        @@preserve_body = false
+
+        # Call to preserve body upon params parsing.
+        #
+        # Without `preserve_body`:
+        #
+        # ```
+        # struct Action
+        #   include Prism::Action::Params
+        #
+        #   def call
+        #     body # Will be empty after parsing params from form or JSON
+        #   end
+        # end
+        # ```
+        #
+        # With `preserve_body`:
+        #
+        # ```
+        # struct Action
+        #   include Prism::Action::Params
+        #
+        #   preserve_body
+        #
+        #   def call
+        #     body # Will return String even after body read while params parsing
+        #   end
+        # end
+        # ```
+        def self.preserve_body
+          @@preserve_body = true
+        end
+      end
+
       macro params(&block)
         Prism::Params.params do
           {{yield}}
@@ -33,7 +68,7 @@ module Prism
 
         before do
           begin
-            @params = self.class.parse_params(context, self.class.max_body_size)
+            @params = self.class.parse_params(context, self.class.max_body_size, @@preserve_body)
           rescue ex : InvalidParamTypeError | ParamNotFoundError | InvalidParamError | ProcError
             context.response.status_code = 422
             context.response.print(ex.message)

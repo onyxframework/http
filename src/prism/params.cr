@@ -24,7 +24,10 @@ require "./params/**"
 #   end
 #
 #   def self.call(context)
-#     params = parse_params(context, limit: 1.gb) # Limit is default to 8 MB
+#     params = parse_params(context,
+#       limit: 1.gb,         # Defaults to 8 MB
+#       preserve_body: true, # Defaults to false
+#     )
 #
 #     p params[:foo].class
 #     # => Int32?
@@ -53,8 +56,6 @@ require "./params/**"
 # 3. Multipart form data (only if `"Content-Type"` is `"multipart/form-data"`);
 # 4. Body params (only if `"Content-Type"` is `"application/x-www-form-urlencoded"`);
 # 5. JSON body (only if `"Content-Type"` is `"application/json"`).
-#
-# NOTE: Parsing will replace original request body with its shrinked copy IO (defaults to 8 MB).
 #
 # If you want to implement your own type casting, extend it with `.from_param` method (see `Int.from_param` for example).
 #

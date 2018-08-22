@@ -153,8 +153,8 @@ module Prism::Params::Specs
 
         response = handle_request(SimpleAction, request)
 
-        it "rewinds request body" do
-          (request.body.as(IO::Memory).pos == 0).should be_true
+        it "consumes request body" do
+          (request.body.as(IO::Memory).pos == 0).should eq false
         end
 
         it "properly parses float" do
