@@ -1,4 +1,5 @@
 require "./ext/http/request/path_params"
+require "./ext/null"
 require "./params/**"
 
 # Request params typecasting and validation module.
@@ -10,8 +11,8 @@ require "./params/**"
 #   include Prism::Params
 #
 #   params do
-#     type foo : Int32?
-#     type name : String, validate: {size: {min: 3}}
+#     type foo : Int32? # Equivalent of `Int32 | Nil`
+#     type name : String | Null, validate: {size: {min: 3}} # Null is different from Nil
 #     type the_time : Time? # the_time, the-time and theTime keys are accepted
 #     type bar : nilable: true do # Nested params are supported too
 #       type baz :do

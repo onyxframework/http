@@ -26,11 +26,9 @@ module Prism::Params
             end),
           {% else %}
             {{key.stringify}}: (if value = param["{{key}}"]?
-              {% _type = value.union? ? value.union_types.reject { |t| t.name == "Nil" }.first : value %}
+              raise Prism::Params::InvalidParamTypeError.new(param, {{(value.union? ? value.union_types.join(" or ") : value.stringify)}}) unless value.value.is_a?({{value.id}})
 
-              # raise Prism::Params::InvalidParamTypeError.new(param, {{(value.union? ? value.union_types.join(" or ") : value.stringify)}}) unless value.value.is_a?({{_type.id}})
-
-              value.value.as({{_type}})
+              value.value.as({{value.id}})
             else
               {% nilable = value.union? ? value.union_types.any? { |t| t.name == "Nil" } : value.is_a?(NilLiteral) %}
 

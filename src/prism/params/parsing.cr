@@ -172,22 +172,26 @@ module Prism::Params
 
           {% for param in INTERNAL__PRISM_PARAMS %}
             {% for key in param[:keys] %}
-              {%
-                _type = if param[:type].is_a?(Union)
-                          ("(" + param[:type].types.reject { |t| "#{t}" == "::Nil" }.join(" | ") + ")").id
-                        elsif param[:type].is_a?(Generic)
-                          if param[:type].name.stringify == "Array"
-                            param[:type].id
-                          end
-                        else
-                          param[:type].resolve
-                        end
+              {% path = param[:parents] ? (param[:parents] + [key]) : [key] %}
 
-                path = param[:parents] ? (param[:parents] + [key]) : [key]
-              %}
-
+              # If JSON has `null` field, it is converted to `nil` by `JSON.parse`. So we convert that `nil` to `Null`. `"null"` value is considered to be String.
+              #
+              # E.g:
+              #
+              # ```
+              # "{foo: null}"`   -> `params[:foo].is_a?(Null)   # => true
+              # "{foo: "null"}"` -> `params[:foo].is_a?(String) # => true
+              # ```
               json_value = json.dig?({{path}}).try do |v|
-                {{_type.id}}.from_param(Param.new({{param[:name]}}, v.as(Param::Type), {{path}}))
+                {% if param[:type].is_a?(Union) && param[:type].types.any? { |t| t.stringify == "Null" } %}
+                  break Null.new if v == nil
+                {% end %}
+
+                param = Param.new({{param[:name]}}, v.as(Param::Type){{", #{param[:parents]}".id if param[:parents]}})
+
+                ({{param[:type].is_a?(Union) ? param[:type].types.reject { |t| t.stringify == "Null" }.join(" | ").id : param[:type].id}}).from_param(param)
+              rescue InvalidParamTypeError
+                raise InvalidParamTypeError.new(param.not_nil!, {{param[:type].stringify}})
               end
 
               if json_value
@@ -205,34 +209,18 @@ module Prism::Params
       end
 
       {% for param in INTERNAL__PRISM_PARAMS %}
-        {%
-          _type = if param[:type].is_a?(Union)
-                    param[:type].types.reject { |t| "#{t}" == "::Nil" }.join(" | ").id
-                  elsif param[:type].is_a?(Generic)
-                    if param[:type].name.stringify == "Array"
-                      param[:type].id
-                    end
-                  else
-                    param[:type].resolve
-                  end
-        %}
-
         param = params.dig?({{param[:parents] ? (param[:parents] + [param[:name]]) : [param[:name]]}})
 
         if param
           begin
-            value = if param.value.is_a?({{_type.id}})
-              param.value
-            else
-              ({{_type.id}}).from_param(param)
-            end
+            value = ({{param[:type]}}).from_param(param)
           rescue ex : ArgumentError
-            raise InvalidParamTypeError.new(param, {{_type.stringify}})
+            raise InvalidParamTypeError.new(param, {{param[:type].stringify}})
           end
 
           {% if param[:validate] %}
             begin
-              validate({{param[:validate]}}, value.as({{_type.id}}).not_nil!) if value
+              validate({{param[:validate]}}, value.as({{param[:type]}}).not_nil!) if value && !value.is_a?(Null)
             rescue ex : Validation::Error
               raise InvalidParamError.new(param, ex.message)
             end
@@ -240,7 +228,7 @@ module Prism::Params
 
           {% if param[:proc] %}
             begin
-              value = {{param[:proc].id}}.call(value.as({{_type.id}}).not_nil!) if value
+              value = {{param[:proc].id}}.call(value.as({{param[:type]}}).not_nil!) if value && !value.is_a?(Null)
             rescue ex : Exception
               raise ProcError.new(param, ex.message)
             end

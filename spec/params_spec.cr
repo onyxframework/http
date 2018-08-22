@@ -10,18 +10,18 @@ module Prism::Params::Specs
       type value : Int32?
       type time : Time?
       type float_value : Float64 | Nil
-      type kebab_param : String?, proc: ->(p : String) { p.upcase }
+      type kebab_param : String | Null | Nil, proc: ->(p : String) { p.upcase }
 
       type nest1, nilable: true do
         type nest2 do
-          type bar : Int32, validate: {lt: 42}
+          type bar : Int32 | Null?, validate: {lt: 42}
         end
 
         type foo : String?, proc: ->(p : String) { p.downcase }
         type array_param : Array(UInt8)?, proc: ->(a : Array(UInt8)) { a.map { |i| i * 2 } }
       end
 
-      type important : Array(String), validate: {size: (1..10)}
+      type important : Array(String) | Null, validate: {size: (1..10)}
     end
 
     @@last_params = uninitialized ParamsTuple
@@ -36,7 +36,7 @@ module Prism::Params::Specs
 
   describe SimpleAction do
     context "with valid params" do
-      response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&value=42&time=1526120573870&kebab-param=foo&nest1[nest2][bar]=41&nest1[foo]=BAR&nest1[arrayParam][]=2&nest1[arrayParam][]=3&important[]=foo&important[]=42"))
+      response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&value=42&time=1526120573870&kebab-param=null&nest1[nest2][bar]=null&nest1[foo]=BAR&nest1[arrayParam][]=2&nest1[arrayParam][]=3&important[]=foo&important[]=42"))
 
       it "doesn't halt" do
         response.body.should eq "ok"
@@ -55,11 +55,11 @@ module Prism::Params::Specs
       end
 
       it "has kebab-param in params" do
-        SimpleAction.last_params[:kebab_param].should eq "FOO"
+        SimpleAction.last_params[:kebab_param].should be_a(Null)
       end
 
       it "has nest1 -> nest2 -> bar in params" do
-        SimpleAction.last_params[:nest1]?.try &.[:nest2]?.try &.[:bar].should eq 41
+        SimpleAction.last_params[:nest1]?.try &.[:nest2]?.try &.[:bar].should be_a(Null)
       end
 
       it "has nest1 -> foo in params" do
@@ -138,9 +138,10 @@ module Prism::Params::Specs
           body: {
             id:         42,
             floatValue: 0.000000000001,
+            kebabParam: "foo",
             nest1:      {
               nest2: {
-                bar: 41,
+                bar: nil,
               },
               arrayParam: [1, 2],
             },
@@ -157,12 +158,16 @@ module Prism::Params::Specs
           (request.body.as(IO::Memory).pos == 0).should eq false
         end
 
+        it "properly parses nullable param" do
+          SimpleAction.last_params[:kebab_param].should eq "FOO"
+        end
+
         it "properly parses float" do
           SimpleAction.last_params[:float_value].should eq 0.000000000001
         end
 
         it "has nested params" do
-          SimpleAction.last_params[:nest1]?.try &.[:nest2]?.try &.[:bar].should eq 41
+          SimpleAction.last_params[:nest1]?.try &.[:nest2]?.try &.[:bar].should be_a(Null)
         end
 
         it "has array params" do

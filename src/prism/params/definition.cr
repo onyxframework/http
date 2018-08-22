@@ -142,7 +142,7 @@ module Prism::Params
 
   private macro define_param_type
     struct Param < AbstractParam
-      alias Type = {{INTERNAL__PRISM_PARAMS.map(&.[:type]).join(" | ").id}} | String | Hash(String, Param) | Array(String) | JSON::Any | Nil
+      alias Type = {{INTERNAL__PRISM_PARAMS.map(&.[:type]).join(" | ").id}} | String | Hash(String, Param) | Array(String) | JSON::Any | Null | Nil
       getter value : Type
     end
   end
