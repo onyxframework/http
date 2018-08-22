@@ -224,7 +224,7 @@ module Prism::Params
             value = if param.value.is_a?({{_type.id}})
               param.value
             else
-              {{_type.id}}.from_param(param)
+              ({{_type.id}}).from_param(param)
             end
           rescue ex : ArgumentError
             raise InvalidParamTypeError.new(param, {{_type.stringify}})
