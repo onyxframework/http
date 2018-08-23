@@ -42,6 +42,7 @@ module Prism
     # :nodoc:
     def call_with_callbacks
       with_callbacks { call }
+    rescue Halt
     end
 
     # Will **not** raise on exceed, defaults to 8 MB.
@@ -106,7 +107,7 @@ module Prism
         json({{response}})
       {% end %}
 
-      return false
+      raise Halt.new
     end
 
     # Set HTTP status code.
@@ -182,6 +183,9 @@ module Prism
         json(value)
       end
     {% end %}
+
+    private class Halt < Exception
+    end
   end
 end
 
