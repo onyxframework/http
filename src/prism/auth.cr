@@ -4,48 +4,49 @@ module Prism
   # A versatile auth module.
   #
   # ```
-  # class AuthableObject < Prism::Authable
+  # class Authenticator
+  #   include Prism::Authenticator
+  #
   #   enum Scope
   #     User
   #     Admin
   #   end
   #
-  #   getter! user : User?
-  #   @user = nil
-  #
-  #   def initialize(@token : String?)
+  #   def user
+  #     user?.not_nil!
   #   end
   #
-  #   def auth?(required_scope : Scope)
-  #     @user = User.find(&.token.== @token)
-  #     raise AuthorizationError.new("Wrong scope") if @user.scope < required_scope
+  #   def user?
+  #     @user ||= User.find(&.token.== @token)
+  #   end
+  #
+  #   def initialize(@token : String?)
   #   end
   # end
   #
   # struct MyAction
   #   include Prism::Action
-  #   include Prism::Auth(AuthableObject)
+  #   include Prism::Auth(Authenticator)
   #
   #   def call
-  #     # Check if auth object exists in current request
-  #     # and answers #auth with :admin argument
-  #     if auth?(:admin)
-  #       auth.user # It would return an admin User instance
+  #     # Check if auth object exists in current request before
+  #     if auth?.try &.user?
+  #       auth.user # It would return a non-nil User instance
   #     else
   #       halt!(401)
   #     end
   #   end
   # end
   # ```
-  module Auth(AuthableType)
-    # Return a non-nil auth object contained in the request, otherwise raise. See `HTTP::Request.auth`.
+  module Auth(Authenticator)
+    # Return a non-nil authenticator object contained in the request, otherwise raise. See `HTTP::Request.auth`.
     macro auth
-      context.request.auth.not_nil!.as(AuthableType)
+      context.request.auth.not_nil!.as(Authenticator)
     end
 
-    # Safe auth check. Returns nil if `context.request.auth` is empty.
-    macro auth?(*args, **nargs)
-      context.request.auth.try &.as(AuthableType).auth?({{ *args }}{{ ", ".id if nargs.size > 0 }}{{ **nargs }})
+    # Safe authenticator object check. Returns nil if `context.request.auth` is empty.
+    macro auth?
+      context.request.auth.try &.as(Authenticator)
     end
   end
 end

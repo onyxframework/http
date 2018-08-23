@@ -2,38 +2,38 @@ require "../auth"
 
 module Prism
   module Channel
-    # An `Channel` module which adds `auth!` macro, attempting to do auth in before callback.
+    # A `Channel` module which adds `authenticate` and `authorize` macro, which try to auth* in the before callback.
     #
     # ```
     # class MyChannel
     #   include Prism::Channel
-    #   include Prism::Channel::Auth(AuthableObject)
+    #   include Prism::Channel::Auth(Authenticator)
     #
-    #   auth!(:admin)
+    #   # Would try to call `auth?.try &.authenticate(:user)`
+    #   # in before callback, close socket with "Unauthenticated" message otherwise
+    #   authenticate :user
+    #
+    #   # Would try to call `auth?.try &.authorize(permissions: {:create_posts})`
+    #   # in before callback, close socket with "Unauthorized" message otherwise
+    #   authorize permissions: {:create_posts}
     #
     #   def on_open
-    #     auth.user
+    #     auth.user # It's guaranteed to be not nil
     #   end
     # end
     # ```
-    module Auth(AuthableObject)
-      include Prism::Auth(AuthableObject)
+    module Auth(Authenticator)
+      include Prism::Auth(Authenticator)
 
-      # Invoke `auth?` in `before` callback.
-      #
-      # Possible scenarios:
-      # * `auth?` returns truthy value - the call continues;
-      # * `auth?` returns falsey value - the socket is closed with "Unauthenticated" message;
-      # * `auth?` raises `Authable::AuthenticationError` or `Authable::AuthorizationError` - the socket is closed with custom message or "Unauthenticated" / "Unauthorized" if empty.
-      macro auth!(*args, **nargs)
+      macro authenticate(*args, **nargs)
         before do
-          begin
-            auth?({{ *args }}{{ ", ".id if nargs.size > 0 }}{{ **nargs }}) || (raise Authable::AuthenticationError.new)
-          rescue e : Authable::AuthenticationError
-            socket.close(e.message ? "#{e.message}" : "Unauthenticated"); false
-          rescue e : Authable::AuthorizationError
-            socket.close(e.message ? "#{e.message}" : "Unauthorized"); false
-          end
+          auth?.try &.authenticate({{ *args }}{{ ", ".id if args.size > 0 && nargs.size > 0 }}{{ **nargs }}) || (socket.close("Unauthenticated"); false)
+        end
+      end
+
+      macro authorize(*args, **nargs)
+        before do
+          auth?.try &.authorize({{ *args }}{{ ", ".id if args.size > 0 && nargs.size > 0 }}{{ **nargs }}) || (socket.close("Unauthorized"); false)
         end
       end
     end

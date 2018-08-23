@@ -2,39 +2,38 @@ require "../auth"
 
 module Prism
   module Action
-    # An `Action` module which adds `auth!` macro, attempting to do auth in before callback.
+    # An `Action` module which adds `authenticate` and `authorize` macro, which try to auth* in the before callback.
     #
     # ```
     # struct StrictAction
     #   include Prism::Action
-    #   include Prism::Action::Auth(AuthableObject)
+    #   include Prism::Action::Auth(Authenticator)
     #
-    #   auth!(:admin) # Would try to auth before call, halt otherwise
+    #   # Would try to call `auth?.try &.authenticate(:user)`
+    #   # in before callback, `halt!(401)` otherwise
+    #   authenticate :user
+    #
+    #   # Would try to call `auth?.try &.authorize(permissions: {:create_posts})`
+    #   # in before callback, `halt!(403)` otherwise
+    #   authorize permissions: {:create_posts}
     #
     #   def call
-    #     auth.user
+    #     auth.user # It's guaranteed to be not nil
     #   end
     # end
     # ```
-    module Auth(AuthableType)
-      include Prism::Auth(AuthableType)
+    module Auth(Authenticator)
+      include Prism::Auth(Authenticator)
 
-      # Invoke `auth?` in `before` callback.
-      #
-      # Possible scenarios:
-      # * `auth?` returns truthy value - the call continues;
-      # * `auth?` returns falsey value - the call halts with 401 code;
-      # * `auth?` raises `Authable::AuthenticationError` - the call halts with 401 code and message;
-      # * `auth?` raises `Authable::AuthorizationError` - the call halts with 403 code and message.
-      macro auth!(*args, **nargs)
+      macro authenticate(*args, **nargs)
         before do
-          begin
-            auth?({{ *args }}{{ ", ".id if nargs.size > 0 }}{{ **nargs }}) || raise Authable::AuthenticationError.new
-          rescue e : Authable::AuthenticationError
-            halt!(401, "#{e.message}")
-          rescue e : Authable::AuthorizationError
-            halt!(403, "#{e.message}")
-          end
+          auth?.try &.authenticate({{ *args }}{{ ", ".id if args.size > 0 && nargs.size > 0 }}{{ **nargs }}) || halt!(401)
+        end
+      end
+
+      macro authorize(*args, **nargs)
+        before do
+          auth?.try &.authorize({{ *args }}{{ ", ".id if args.size > 0 && nargs.size > 0 }}{{ **nargs }}) || halt!(403)
         end
       end
     end

@@ -1,23 +1,25 @@
 require "../../spec_helper"
 require "../../../src/prism/action"
-require "../../../src/prism/authable"
+require "../../../src/prism/authenticator"
 require "../../../src/prism/ext/http/request/auth"
 
 module Prism::Action::Auth::SimpleSpec
-  class Authable < Prism::Authable
+  class Authenticator
+    include Prism::Authenticator
+
     def initialize(@token : String)
     end
 
-    def auth?
+    def authenticate
       @token == "authme"
     end
   end
 
   struct StrictAction
     include Prism::Action
-    include Prism::Action::Auth(Authable)
+    include Prism::Action::Auth(Authenticator)
 
-    auth!
+    authenticate
 
     def call
       context.response.print("ok")
@@ -26,10 +28,10 @@ module Prism::Action::Auth::SimpleSpec
 
   struct NonStrictAction
     include Prism::Action
-    include Prism::Action::Auth(Authable)
+    include Prism::Action::Auth(Authenticator)
 
     def call
-      if auth?
+      if auth?.try &.authenticate
         context.response.print("ok")
       else
         context.response.print("not ok")
@@ -40,7 +42,7 @@ module Prism::Action::Auth::SimpleSpec
   describe StrictAction do
     context "when authed" do
       response = handle_request(StrictAction, Req.new("GET", "/").tap do |r|
-        r.auth = Authable.new("authme")
+        r.auth = Authenticator.new("authme")
       end)
 
       it "is ok" do
@@ -60,7 +62,7 @@ module Prism::Action::Auth::SimpleSpec
   describe NonStrictAction do
     context "when authed" do
       response = handle_request(NonStrictAction, Req.new("GET", "/").tap do |r|
-        r.auth = Authable.new("authme")
+        r.auth = Authenticator.new("authme")
       end)
 
       it "is ok" do
