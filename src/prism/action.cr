@@ -132,6 +132,21 @@ module Prism
       context.response.headers[name] = value
     end
 
+    # Set response status code to *code* and "Location" header to *location*.
+    #
+    # Does **not** interrupt the call.
+    #
+    # ```
+    # def call
+    #   redirect("https://google.com")
+    #   puts "will be called"
+    # end
+    # ```
+    def redirect(location : String | URI, code = 302)
+      status(code)
+      header("Location", location.to_s)
+    end
+
     private CONTENT_TYPE_TEXT = "text/html; charset=utf-8"
 
     {% begin %}

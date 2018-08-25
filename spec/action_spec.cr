@@ -215,4 +215,23 @@ module Prism::Action
       response.headers["Custom"].should eq "42"
     end
   end
+
+  struct RedirectAction
+    include Prism::Action
+
+    def call
+      redirect(URI.parse("https://github.com/vladfaust/prism"), 301)
+      text("Doesn't halt")
+    end
+  end
+
+  describe RedirectAction do
+    response = handle_request(RedirectAction)
+
+    it do
+      response.headers["Location"].should eq "https://github.com/vladfaust/prism"
+      response.status_code.should eq 301
+      response.body.should eq "Doesn't halt"
+    end
+  end
 end
