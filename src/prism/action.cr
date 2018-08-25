@@ -121,6 +121,17 @@ module Prism
       context.response.status_code = value
     end
 
+    # Set HTTP header.
+    #
+    # ```
+    # def call
+    #   header("Content-Type", "application/json")
+    # end
+    # ```
+    def header(name, value)
+      context.response.headers[name] = value
+    end
+
     private CONTENT_TYPE_TEXT = "text/html; charset=utf-8"
 
     {% begin %}
@@ -133,7 +144,7 @@ module Prism
       # end
       # ```
       def text(value)
-        context.response.content_type = CONTENT_TYPE_TEXT
+        header("Content-Type", CONTENT_TYPE_TEXT)
         context.response.print(value)
       end
 
@@ -163,7 +174,7 @@ module Prism
       # end
       # ```
       def json(value)
-        context.response.content_type = CONTENT_TYPE_JSON
+        header("Content-Type", CONTENT_TYPE_JSON)
         value.to_json(context.response)
         context.response.close
       end

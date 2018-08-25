@@ -59,7 +59,7 @@ module Prism::Action
     end
 
     it "sets content type header" do
-      response.content_type.should eq("application/json")
+      response.headers["Content-Type"].should eq "application/json; charset=utf-8"
     end
   end
 
@@ -85,7 +85,7 @@ module Prism::Action
     end
 
     it "sets content type header" do
-      response.content_type.should eq("application/json")
+      response.headers["Content-Type"].should eq "application/json; charset=utf-8"
     end
   end
 
@@ -197,6 +197,22 @@ module Prism::Action
 
     it do
       CallbacksAction.buffer.should eq ["before", "around_before", "call", "around_after", "after"]
+    end
+  end
+
+  struct HeaderAction
+    include Prism::Action
+
+    def call
+      header("Custom", "42")
+    end
+  end
+
+  describe HeaderAction do
+    response = handle_request(HeaderAction)
+
+    it do
+      response.headers["Custom"].should eq "42"
     end
   end
 end
