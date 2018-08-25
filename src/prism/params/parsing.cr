@@ -18,9 +18,15 @@ module Prism::Params
     # Will copy context request body into `IO::Memory` and return this io, **preserving** original request body.
     def self.copy_body(context, limit)
       if body = context.request.body
-        string = body.gets(limit)
-        context.request.body = IO::Memory.new.tap { |io| io << string; io.rewind }
-        return IO::Memory.new.tap { |io| io << string; io.rewind }
+        io = IO::Memory.new
+
+        IO.copy(body, io, limit)
+        IO.copy(io, body)
+
+        body.rewind
+        io.rewind
+
+        return io
       end
     end
 
@@ -132,7 +138,7 @@ module Prism::Params
         when /application\/x-www-form-urlencoded/
           body = copy_body(context, limit) if preserve_body
 
-          HTTP::Params.parse(context.request.body.not_nil!.gets_to_end) do |key, value|
+          HTTP::Params.parse(context.request.body.not_nil!.gets(limit).not_nil!) do |key, value|
             {% begin %}
               case key
               {% for param in INTERNAL__PRISM_PARAMS %}
@@ -168,7 +174,7 @@ module Prism::Params
         # Supports both nested and array params.
         when /application\/json/
           body = copy_body(context, limit) if preserve_body
-          json = JSON.parse(context.request.body.not_nil!.gets_to_end)
+          json = JSON.parse(context.request.body.not_nil!.gets(limit).not_nil!)
 
           {% for param in INTERNAL__PRISM_PARAMS %}
             {% for key in param[:keys] %}
