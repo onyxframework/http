@@ -159,7 +159,7 @@ module Prism::Params::Specs
         end
 
         it "properly parses nullable param" do
-          SimpleAction.last_params[:kebab_param].should eq "FOO"
+          SimpleAction.last_params[:kebab_param].not_nil!.should eq "FOO"
         end
 
         it "properly parses float" do

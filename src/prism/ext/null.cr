@@ -34,4 +34,11 @@ struct Null
     return self.new if param.value.is_a?(Null) || param.value == "null" || param.value == "NULL"
     raise Prism::Params::InvalidParamTypeError.new(param, {{@type.id.stringify}})
   end
+
+  # Raises an exception.
+  #
+  # See also: `Object#not_nil!`.
+  def not_nil!
+    raise "Nil assertion failed (is Null)"
+  end
 end
