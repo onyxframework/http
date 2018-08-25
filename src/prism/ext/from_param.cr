@@ -2,6 +2,7 @@ require "../params/abstract_param"
 require "../params/errors"
 
 require "./array/from_param"
+require "./bool/from_param"
 require "./float/from_param"
 require "./int/from_param"
 require "./named_tuple/from_param"

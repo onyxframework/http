@@ -22,6 +22,7 @@ module Prism::Params::Specs
       end
 
       type important : Array(String) | Null, validate: {size: (1..10)}
+      type boolean : Bool | Null?
     end
 
     @@last_params = uninitialized ParamsTuple
@@ -36,7 +37,7 @@ module Prism::Params::Specs
 
   describe SimpleAction do
     context "with valid params" do
-      response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&value=42&time=1526120573870&kebab-param=null&nest1[nest2][bar]=null&nest1[foo]=BAR&nest1[arrayParam][]=2&nest1[arrayParam][]=3&important[]=foo&important[]=42"))
+      response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&value=42&time=1526120573870&kebab-param=null&nest1[nest2][bar]=null&nest1[foo]=BAR&nest1[arrayParam][]=2&nest1[arrayParam][]=3&important[]=foo&important[]=42&boolean=true"))
 
       it "doesn't halt" do
         response.body.should eq "ok"
@@ -73,10 +74,14 @@ module Prism::Params::Specs
       it "has arrayParam in params" do
         SimpleAction.last_params[:important].should eq ["foo", "42"]
       end
+
+      it "has boolean in params" do
+        SimpleAction.last_params[:boolean].should eq true
+      end
     end
 
     context "with missing insignificant param" do
-      response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&important[]=foo&important[]=42"))
+      response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&important[]=foo&important[]=42&boolean=false"))
 
       it "doesn't halt" do
         response.body.should eq "ok"
@@ -85,6 +90,7 @@ module Prism::Params::Specs
       it "returns params" do
         SimpleAction.last_params[:id].should eq 42
         SimpleAction.last_params[:important].should eq ["foo", "42"]
+        SimpleAction.last_params[:boolean].should eq false
       end
     end
 
@@ -112,6 +118,12 @@ module Prism::Params::Specs
       it "raises" do
         expect_raises(InvalidParamTypeError) do
           response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&important[]=foo&nest1[arrayParam][]=foo"))
+        end
+      end
+
+      it "raises" do
+        expect_raises(InvalidParamTypeError) do
+          response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&important[]=foo&boolean=unknown"))
         end
       end
     end
@@ -146,6 +158,7 @@ module Prism::Params::Specs
               arrayParam: [1, 2],
             },
             important: ["foo"],
+            boolean:   false,
           }.to_json,
           headers: HTTP::Headers{
             "Content-Type" => "application/json",
@@ -176,6 +189,10 @@ module Prism::Params::Specs
 
         it "has nested array params" do
           SimpleAction.last_params[:nest1]?.try &.[:array_param].should eq [2_u8, 4_u8]
+        end
+
+        it "has boolean param" do
+          SimpleAction.last_params[:boolean].should eq false
         end
       end
     end

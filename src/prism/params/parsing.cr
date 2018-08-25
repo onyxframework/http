@@ -194,7 +194,7 @@ module Prism::Params
                 raise InvalidParamTypeError.new(param.not_nil!, {{param[:type].stringify}})
               end
 
-              if json_value
+              if json_value != nil
                 {% if param[:parents] %}
                   params.deep_set({{param[:parents] + [param[:name]]}}, json_value)
                 {% else %}
