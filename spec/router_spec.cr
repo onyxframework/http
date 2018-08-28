@@ -43,8 +43,8 @@ class Prism::Router
           context.request.action.should be_a(::Proc(HTTP::Server::Context, Nil))
         end
 
-        it "sets empty path params" do
-          context.request.path_params.not_nil!.empty?.should be_true
+        it "does not set path params" do
+          context.request.path_params.should be_nil
         end
       end
 
@@ -82,22 +82,6 @@ class Prism::Router
 
         it "doesn't update path params" do
           context.request.path_params.should be_nil
-        end
-      end
-
-      context "with Simple cacher" do
-        cacher = Prism::Router::SimpleCacher.new(10_000)
-
-        router = Prism::Router.new(cacher) do
-          get "/" do |env|
-            env.response.print("Hello!")
-          end
-        end
-
-        context = dummy_context(Req.new("GET", "/"))
-
-        it "works" do
-          router.call(context)
         end
       end
     end
