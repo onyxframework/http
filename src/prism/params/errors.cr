@@ -1,68 +1,86 @@
 module Prism::Params
+  abstract class ParamError < Exception
+    getter param
+
+    def initialize(@param : AbstractParam)
+      super(build_message)
+    end
+
+    def path
+      param.path + [param.name]
+    end
+
+    abstract def build_message : String
+  end
+
   # Raised when a param cannot be casted to the desired type.
-  class InvalidParamTypeError < Exception
-    getter param, expected_type
+  class InvalidParamTypeError < ParamError
+    getter expected_type
 
     MESSAGE_TEMPLATE = "Parameter \"%{path}\" is expected to be %{expected} (given %{given})"
 
-    def initialize(@param : AbstractParam, @expected_type : String)
-      path = @param.path.empty? ? @param.name : ((@param.path + [@param.name]).join(" > "))
+    def initialize(param : AbstractParam, @expected_type : String)
+      super(param)
+    end
 
-      super(MESSAGE_TEMPLATE % {
-        path:     path,
-        expected: @expected_type,
-        given:    @param.value.inspect,
-      })
+    private def build_message
+      MESSAGE_TEMPLATE % {
+        path:     path.join(" > "),
+        expected: expected_type,
+        given:    param.value.inspect,
+      }
     end
   end
 
   # Raised when a param is not present.
-  class ParamNotFoundError < Exception
-    getter param
-
+  class ParamNotFoundError < ParamError
     MESSAGE_TEMPLATE = "Parameter \"%{path}\" is missing"
 
-    def initialize(@param : AbstractParam)
-      path = @param.path.empty? ? @param.name : ((@param.path + [@param.name]).join(" > "))
+    def initialize(param : AbstractParam)
+      super(param)
+    end
 
-      super(MESSAGE_TEMPLATE % {
-        path: path,
-      })
+    private def build_message
+      MESSAGE_TEMPLATE % {
+        path: path.join(" > "),
+      }
     end
   end
 
   # Raised when a param is invalid.
-  class InvalidParamError < Exception
-    getter param, message
+  class InvalidParamError < ParamError
+    getter detail : String
 
-    MESSAGE_TEMPLATE = "Parameter \"%{path}\" %{message}"
+    MESSAGE_TEMPLATE = "Parameter \"%{path}\" %{detail}"
 
-    def initialize(@param : AbstractParam, @message : String? = nil)
-      @message ||= "is invalid"
+    def initialize(param : AbstractParam, detail : String? = nil)
+      @detail = detail || "is invalid"
+      super(param)
+    end
 
-      path = @param.path.empty? ? @param.name : ((@param.path + [@param.name]).join(" > "))
-
-      super(MESSAGE_TEMPLATE % {
-        path:    path,
-        message: @message,
-      })
+    private def build_message
+      MESSAGE_TEMPLATE % {
+        path:    path.join(" > "),
+        detail: detail,
+      }
     end
   end
 
-  class ProcError < Exception
-    getter param, message
+  class ProcError < ParamError
+    getter detail : String
 
-    MESSAGE_TEMPLATE = "Failed to process parameter \"%{path}\": %{message}"
+    MESSAGE_TEMPLATE = "Failed to process parameter \"%{path}\": %{detail}"
 
-    def initialize(@param : AbstractParam, @message : String? = nil)
-      @message ||= "no error message"
+    def initialize(param : AbstractParam, detail : String? = nil)
+      @detail = detail || "no error message"
+      super(param)
+    end
 
-      path = @param.path.empty? ? @param.name : ((@param.path + [@param.name]).join(" > "))
-
-      super(MESSAGE_TEMPLATE % {
-        path:    path,
-        message: @message,
-      })
+    private def build_message
+      MESSAGE_TEMPLATE % {
+        path:   path,
+        detail: detail,
+      }
     end
   end
 end
