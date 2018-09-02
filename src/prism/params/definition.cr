@@ -33,7 +33,6 @@ module Prism::Params
   #
   # - *nilable* declares if this param is nilable (the same effect is achieved with nilable *type*, i.e. `Int32?`);
   # - *validate* defines validation options. See `Validation`;
-  # - *proc* will be called each time the param is casted (right after validation). The param becomes the returned value, so this *proc* **must** return the same type.
   #
   # NOTE: If a param is nilable, but is present and of invalid type, an `InvalidParamTypeError` will be raised.
   macro type(declaration, **options, &block)
@@ -82,7 +81,6 @@ module Prism::Params
           type: declaration.type,
           nilable: nilable,
           validate: options[:validate],
-          proc: options[:proc],
           array: array,
         })
       %}

@@ -20,7 +20,7 @@ require "./params/**"
 #         type qax : Array(String)? # Yep, arrays
 #       end
 #
-#       type quux : Int32, proc: (quux : Int32) -> { quux * 2 }
+#       type quux : Int32
 #     end
 #   end
 #
