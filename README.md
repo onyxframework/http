@@ -7,11 +7,7 @@
 [![Awesome](https://github.com/vladfaust/awesome/blob/badge-flat-alternative/media/badge-flat-alternative.svg)](https://github.com/veelenga/awesome-crystal)
 [![vladfaust.com](https://img.shields.io/badge/style-.com-lightgrey.svg?longCache=true&style=flat-square&label=vladfaust&colorB=0a83d8)](https://vladfaust.com)
 
-Prism is an expressive web framework with a speed of light. Features:
-
-- ⚡️ **Efficiency** based on [Crystal](https://crystal-lang.org) performance
-- ✨ **Expressiveness** with powerful DSL and lesser code
-- 💼 **Safety** with strictly typed params
+A lightning-fast and strictly-typed web framework for [Crystal](https://crystal-lang.org).
 
 ## Installation
 
