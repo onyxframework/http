@@ -12,6 +12,12 @@ A lightning-fast and strictly-typed web framework for [Crystal](https://crystal-
 
 [![Become Patron](https://vladfaust.com/img/patreon-small.svg)](https://www.patreon.com/vladfaust)
 
+## Projects using Prism
+
+* [Crystal Jobs](https://crystaljobs.org)
+* [Crystal World](https://github.com/vladfaust/crystalworld)
+* *add yours!*
+
 ## Installation
 
 Add this to your application's `shard.yml`:
