@@ -10,15 +10,15 @@ module Prism::Params::Specs
       type value : Int32?
       type time : Time?
       type float_value : Float64 | Nil
-      type kebab_param : String | Null | Nil, proc: ->(p : String) { p.upcase }
+      type kebab_param : String | Null | Nil
 
       type nest1, nilable: true do
         type nest2 do
           type bar : Int32 | Null?, validate: {lt: 42}
         end
 
-        type foo : String?, proc: ->(p : String) { p.downcase }
-        type array_param : Array(UInt8)?, proc: ->(a : Array(UInt8)) { a.map { |i| i * 2 } }
+        type foo : String?
+        type array_param : Array(UInt8)?
       end
 
       type important : Array(String) | Null, validate: {size: (1..10)}
@@ -64,11 +64,11 @@ module Prism::Params::Specs
       end
 
       it "has nest1 -> foo in params" do
-        SimpleAction.last_params[:nest1]?.try &.[:foo].should eq "bar"
+        SimpleAction.last_params[:nest1]?.try &.[:foo].should eq "BAR"
       end
 
       it "has nest1 -> arrayParam in params" do
-        SimpleAction.last_params[:nest1]?.try &.[:array_param].should eq [4_u8, 6_u8]
+        SimpleAction.last_params[:nest1]?.try &.[:array_param].should eq [2_u8, 3_u8]
       end
 
       it "has arrayParam in params" do
@@ -172,7 +172,7 @@ module Prism::Params::Specs
         end
 
         it "properly parses nullable param" do
-          SimpleAction.last_params[:kebab_param].not_nil!.should eq "FOO"
+          SimpleAction.last_params[:kebab_param].not_nil!.should eq "foo"
         end
 
         it "properly parses float" do
@@ -188,7 +188,7 @@ module Prism::Params::Specs
         end
 
         it "has nested array params" do
-          SimpleAction.last_params[:nest1]?.try &.[:array_param].should eq [2_u8, 4_u8]
+          SimpleAction.last_params[:nest1]?.try &.[:array_param].should eq [1_u8, 2_u8]
         end
 
         it "has boolean param" do

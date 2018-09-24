@@ -48,21 +48,4 @@ module Prism::Params
       })
     end
   end
-
-  class ProcError < Exception
-    getter param, message
-
-    MESSAGE_TEMPLATE = "Failed to process parameter \"%{path}\": %{message}"
-
-    def initialize(@param : AbstractParam, @message : String? = nil)
-      @message ||= "no error message"
-
-      path = @param.path.empty? ? @param.name : ((@param.path + [@param.name]).join(" > "))
-
-      super(MESSAGE_TEMPLATE % {
-        path:    path,
-        message: @message,
-      })
-    end
-  end
 end
