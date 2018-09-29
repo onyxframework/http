@@ -44,7 +44,7 @@ struct KnockKnock
 
   params do
     type who : String
-    type how_many_times : Int32, validate: {lte: 10}
+    type how_many_times : Int32
   end
 
   def call

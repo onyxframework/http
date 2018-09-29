@@ -6,7 +6,7 @@ module Prism::Params::Specs
     include Prism::Params
 
     params do
-      type id : Int32, validate: {gte: 42}
+      type id : Int32
       type value : Int32?
       type time : Time?
       type float_value : Float64 | Nil
@@ -14,14 +14,14 @@ module Prism::Params::Specs
 
       type nest1, nilable: true do
         type nest2 do
-          type bar : Int32 | Null?, validate: {lt: 42}
+          type bar : Int32 | Null?
         end
 
         type foo : String?, proc: ->(p : String) { p.downcase }
         type array_param : Array(UInt8)?, proc: ->(a : Array(UInt8)) { a.map { |i| i * 2 } }
       end
 
-      type important : Array(String) | Null, validate: {size: (1..10)}
+      type important : Array(String) | Null
       type boolean : Bool | Null?
     end
 
@@ -124,20 +124,6 @@ module Prism::Params::Specs
       it "raises" do
         expect_raises(InvalidParamTypeError) do
           response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&important[]=foo&boolean=unknown"))
-        end
-      end
-    end
-
-    context "with invalid params" do
-      it "raises" do
-        expect_raises(InvalidParamError) do
-          response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=41&important[]=foo"))
-        end
-      end
-
-      it "raises" do
-        expect_raises(InvalidParamError) do
-          response = handle_request(SimpleAction, Req.new(method: "GET", resource: "/?id=42&important[]=foo&nest1[nest2][bar]=42"))
         end
       end
     end

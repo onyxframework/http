@@ -4,7 +4,7 @@ module Prism
   module Channel
     # Params module for `Prism::Channel`. It injects params parsing into `before` callback.
     #
-    # Closes the socket if `Prism::Params::InvalidParamTypeError`, `Prism::Params::ParamNotFoundError` or `Prism::Params::InvalidParamError` raised.
+    # Closes the socket if `Prism::Params::InvalidParamTypeError` or `Prism::Params::ParamNotFoundError` raised.
     #
     # ```
     # class MyChannel
@@ -35,7 +35,7 @@ module Prism
           begin
             @params = self.class.parse_params(context)
             true
-          rescue ex : InvalidParamTypeError | ParamNotFoundError | InvalidParamError | ProcError
+          rescue ex : InvalidParamTypeError | ParamNotFoundError | ProcError
             socket.close(ex.message)
             false
           end

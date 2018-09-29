@@ -9,7 +9,7 @@ module Prism::Params
 
   # Extract then cast and validate params from a body limited to *limit* bytes. Returns `NamedTuple` of params.
   #
-  # Could raise `InvalidParamTypeError`, `InvalidParamError` or `ParamNotFoundError` on failure.
+  # Could raise `InvalidParamTypeError` or `ParamNotFoundError` on failure.
   def self.parse_params(context, limit : UInt64 = DEFAULT_MAX_BODY_SIZE)
     raise "Call #params macro before!"
   end
@@ -223,14 +223,6 @@ module Prism::Params
           rescue ex : ArgumentError
             raise InvalidParamTypeError.new(param, {{param[:type].stringify}})
           end
-
-          {% if param[:validate] %}
-            begin
-              validate({{param[:validate]}}, value.as({{param[:type]}}).not_nil!) if value && !value.is_a?(Null)
-            rescue ex : Validation::Error
-              raise InvalidParamError.new(param, ex.message)
-            end
-          {% end %}
 
           {% if param[:proc] %}
             begin
