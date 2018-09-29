@@ -33,7 +33,7 @@ module Prism
   #     if auth?.try &.user?
   #       auth.user # It would return a non-nil User instance
   #     else
-  #       halt!(401)
+  #       halt(401)
   #     end
   #   end
   # end

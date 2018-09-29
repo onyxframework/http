@@ -10,11 +10,11 @@ module Prism
     #   include Prism::Action::Auth(Authenticator)
     #
     #   # Would try to call `auth?.try &.authenticate(:user)`
-    #   # in before callback, `halt!(401)` otherwise
+    #   # in before callback, `halt(401)` otherwise
     #   authenticate :user
     #
     #   # Would try to call `auth?.try &.authorize(permissions: {:create_posts})`
-    #   # in before callback, `halt!(403)` otherwise
+    #   # in before callback, `halt(403)` otherwise
     #   authorize permissions: {:create_posts}
     #
     #   def call
@@ -27,13 +27,13 @@ module Prism
 
       macro authenticate(*args, **nargs)
         before do
-          auth?.try &.authenticate({{ *args }}{{ ", ".id if args.size > 0 && nargs.size > 0 }}{{ **nargs }}) || halt!(401)
+          auth?.try &.authenticate({{ *args }}{{ ", ".id if args.size > 0 && nargs.size > 0 }}{{ **nargs }}) || halt(401)
         end
       end
 
       macro authorize(*args, **nargs)
         before do
-          auth?.try &.authorize({{ *args }}{{ ", ".id if args.size > 0 && nargs.size > 0 }}{{ **nargs }}) || halt!(403)
+          auth?.try &.authorize({{ *args }}{{ ", ".id if args.size > 0 && nargs.size > 0 }}{{ **nargs }}) || halt(403)
         end
       end
     end
