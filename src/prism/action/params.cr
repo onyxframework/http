@@ -4,7 +4,7 @@ module Prism
   module Action
     # Params module for `Prism::Action`. It injects params parsing into `before` callback.
     #
-    # Halts with 422 if `Prism::Params::InvalidParamTypeError`, `Prism::Params::ParamNotFoundError` or `Prism::Params::InvalidParamError` raised.
+    # Halts with 422 if `Prism::Params::InvalidParamTypeError` or `Prism::Params::ParamNotFoundError` raised.
     #
     # ```
     # struct MyAction
@@ -69,7 +69,7 @@ module Prism
         before do
           begin
             @params = self.class.parse_params(context, self.class.max_body_size, @@preserve_body)
-          rescue ex : InvalidParamTypeError | ParamNotFoundError | InvalidParamError | ProcError
+          rescue ex : InvalidParamTypeError | ParamNotFoundError | ProcError
             context.response.status_code = 422
             context.response.print(ex.message)
           end

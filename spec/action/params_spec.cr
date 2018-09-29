@@ -9,7 +9,7 @@ module Prism::Action::Params::Spec
     preserve_body
 
     params do
-      type id : Int32, validate: {gte: 42}
+      type id : Int32
       type value : Int32?
       type time : Time?
     end
@@ -69,18 +69,6 @@ module Prism::Action::Params::Spec
 
       it "halts" do
         response.body.should eq "Parameter \"id\" is expected to be Int32 (given \"foo\")"
-      end
-    end
-
-    context "with invalid params" do
-      response = handle_request(PrismAction, Req.new(method: "GET", resource: "/?id=41"))
-
-      it "updates status" do
-        response.status_code.should eq 422
-      end
-
-      it "halts" do
-        response.body.should eq "Parameter \"id\" must be greater or equal to 42"
       end
     end
 

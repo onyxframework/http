@@ -77,8 +77,6 @@ require "./params/**"
 # end
 # ```
 module Prism::Params
-  include Validation
-
   # An **essential** params definition block.
   macro params(&block)
     INTERNAL__PRISM_PARAMS = [] of NamedTuple
