@@ -80,23 +80,23 @@ module Prism
     #
     # ```
     # def call
-    #   halt!(403) # Will print "Unauthorized" into the response body
+    #   halt(403)  # Will print "Unauthorized" into the response body
     #   text("ok") # This line will not be called
     # end
     #
     # def call
-    #   halt!(500, "Something's wrong!") # Will print "Something's wrong!" into the response body
+    #   halt(500, "Something's wrong!") # Will print "Something's wrong!" into the response body
     # end
     #
     # def call
-    #   halt!(409, {error: "Oops"}) # Will print "Oops" and set content type to JSON
+    #   halt(409, {error: "Oops"}) # Will print "Oops" and set content type to JSON
     # end
     #
     # def call
-    #   halt!(403, PaymentError) # Will call #to_json on PaymentError
+    #   halt(403, PaymentError) # Will call #to_json on PaymentError
     # end
     # ```
-    macro halt!(status, response = nil)
+    macro halt(status, response = nil)
       status({{status.id}})
 
       {% if response.is_a?(StringLiteral) || response.is_a?(StringInterpolation) %}

@@ -95,7 +95,7 @@ module Prism::Action
     class_property unwanted_calls_count = 0
 
     def call
-      halt!(404)
+      halt(404)
 
       @@unwanted_calls_count += 1
       text("ok")
@@ -122,7 +122,7 @@ module Prism::Action
     include Prism::Action
 
     def call
-      halt!(404, "Nope")
+      halt(404, "Nope")
     end
   end
 
@@ -138,7 +138,7 @@ module Prism::Action
     include Prism::Action
 
     def call
-      halt!(403, {error: "Oops"})
+      halt(403, {error: "Oops"})
     end
   end
 
