@@ -224,14 +224,6 @@ module Prism::Params
             raise InvalidParamTypeError.new(param, {{param[:type].stringify}})
           end
 
-          {% if param[:proc] %}
-            begin
-              value = {{param[:proc].id}}.call(value.as({{param[:type]}}).not_nil!) if value && !value.is_a?(Null)
-            rescue ex : Exception
-              raise ProcError.new(param, ex.message)
-            end
-          {% end %}
-
           if value != param.value
             {% if param[:parents] %}
               params.deep_set({{param[:parents] + [param[:name]]}}, value.as(Param::Type))
