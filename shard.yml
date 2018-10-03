@@ -7,6 +7,9 @@ authors:
 crystal: 0.26.0
 
 dependencies:
+  params:
+    github: vladfaust/params.cr
+    version: ~> 0.1.0
   radix:
     github: luislavena/radix
     version: ~> 0.3.8
