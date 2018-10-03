@@ -150,7 +150,7 @@ module Prism
     # end
     #
     # def call
-    #   halt(409, {error: "Oops"}) # Will print "Oops" and set content type to JSON
+    #   halt(409, {error: "Oops"}) # Will print {error: "Oops"} and set content type to JSON
     # end
     #
     # def call
@@ -200,7 +200,7 @@ module Prism
     # ```
     # def call
     #   redirect("https://google.com")
-    #   puts "will be called"
+    #   text("will be called")
     # end
     # ```
     def redirect(location : String | URI, code = 302)
