@@ -40,16 +40,15 @@ require "prism"
 
 struct KnockKnock
   include Prism::Action
-  include Prism::Action::Params
 
   params do
     type who : String
-    type how_many_times : Int32
+    type how_many : Int32
   end
 
   def call
-    params[:how_many_times].times do
-      text("Knock-knock #{params[:who]}\n")
+    how_many.times do
+      text("Knock-knock #{who}\n")
     end
   end
 end
@@ -71,7 +70,7 @@ server.listen
 ```
 
 ```
-curl -X GET -d "howManyTimes=2" http://127.0.0.1:5000/me
+curl -X GET -d "howMany=2" http://127.0.0.1:5000/me
 Knock-knock me
 Knock-knock me
 ```

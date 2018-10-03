@@ -1,42 +1,105 @@
 require "http/server"
 require "json"
 require "callbacks"
+require "params"
 require "./action/*"
 
 module Prism
-  # A callable HTTP action with [Callbacks](https://github.com/vladfaust/callbacks.cr) module included.
+  # A callable HTTP action with [Callbacks](https://github.com/vladfaust/callbacks.cr)
+  # and [Params](https://github.com/vladfaust/params.cr) included.
   #
-  # NOTE: *(From [API](https://crystal-lang.org/api/0.23.1/HTTP/Server/Response.html)) The response #status_code and #headers must be configured before writing the response body. Once response output is written, changing the status and #headers properties has no effect.*
+  # Params have special handy definition syntax, as seen in the example below:
   #
   # ```
   # struct MyAction
   #   include Prism::Action
   #
+  #   params do
+  #     type id : Int32
+  #     type foo : Array(String) | Nil
+  #     type user, nilable: true do
+  #       type name : String
+  #       type email : String?
+  #     end
+  #   end
+  #
   #   def call
-  #     text("ok")
+  #     # Will put the text into the response body
+  #     text("id = #{id}, foo = #{foo.join(", ")}, user name = #{user.not_nil!.name}")
   #   end
   #
   #   after do
-  #     p "MyAction: ok"
+  #     p "MyAction has run successfully"
   #   end
   # end
   #
   # MyAction.call(env)
-  # # => "ok"
+  # # => "MyAction has run successfully"
   # ```
+  #
+  # NOTE: Params errors aren't rescued by default, so you should define your own `ParamsErrorHandler` to handle this.
+  #
+  # NOTE: The response `#status` and `#headers` must be configured before writing the response body (i.e. calling `#text` or `#json`).
   module Action
     include Callbacks
 
+    # This method will be called wrapped by [callbacks](https://github.com/vladfaust/callbacks.cr).
     abstract def call
 
+    # Optional params definition block. It's powered by [Params](https://github.com/vladfaust/params.cr) shard.
+    #
+    # However, to avoid original cumbersome NamedTuple syntax, a new simpler syntax is implemented:
+    #
+    # ```
+    # params do
+    #   type id : Int32
+    #   type foo : Array(String) | Nil
+    #   type user, nilable: true do
+    #     type name : String
+    #     type email : String?
+    #   end
+    # end
+    #
+    # # Is essentialy the same as
+    #
+    # Params.mapping({
+    #   id:   Int32,
+    #   foo:  Array(String) | Nil,
+    #   user: {
+    #     name:  String,
+    #     email: String?,
+    #   } | Nil,
+    # })
+    # ```
+    #
+    # Params can be accessed directly by their names (e.g. `id`) both in `#call` method and callbacks.
+    macro params(&block)
+      ::Params.mapping({
+        {{run("./params/macro_parser", yield.id)}}
+      })
+
+      def self.new(context : HTTP::Server::Context)
+        # It complicated because an including object can be a struct
+        i = new(context.request, max_body_size, preserve_body)
+        i.context = context
+        i
+      end
+    end
+
     macro included
-      # Initialize and invoke `#call` with callbacks.
-      # Learn more about callbacks at https://github.com/vladfaust/callbacks.cr.
-      def self.call(context : ::HTTP::Server::Context)
+      # Initialize and invoke `#call` with [callbacks](https://github.com/vladfaust/callbacks.cr).
+      def self.call(context : HTTP::Server::Context)
         new(context).call_with_callbacks
       end
 
-      class_property max_body_size
+      # Will **not** raise on exceed when reading from body in the `#call` method, however could raise on params parsing.
+      class_getter max_body_size : UInt64 = UInt64.new(8 * 1024 ** 2)
+      protected class_setter max_body_size
+
+      # Change to `true` to preserve body upon params parsing.
+      # Has effect only in cases when params are read from body.
+      class_getter preserve_body : Bool = false
+      protected class_setter preserve_body
     end
 
     # :nodoc:
@@ -45,12 +108,9 @@ module Prism
     rescue Halt
     end
 
-    # Will **not** raise on exceed, defaults to 8 MB.
-    @@max_body_size = UInt64.new(8 * 1024 ** 2)
-
     @body : String?
 
-    # Lazy string version of request body (read *max_body_size* bytes on the first call).
+    # Lazy string version of request body (read `.max_body_size` bytes on the first call).
     #
     # ```
     # # Action A
@@ -61,18 +121,19 @@ module Prism
     #
     # # Action B
     # def call
-    #   context.request.body # => Not nil
+    #   context.request.body # => "foo"
+    #   body                 # => likely to be nil, because already read above
     # end
     # ```
     def body
       @body ||= context.request.body.try &.gets(limit: self.class.max_body_size)
     end
 
-    # Current context.
-    getter context : ::HTTP::Server::Context
+    # Current HTTP::Server context.
+    getter! context : HTTP::Server::Context
+    protected setter context
 
-    # :nodoc:
-    def initialize(@context : ::HTTP::Server::Context)
+    def initialize(@context : HTTP::Server::Context)
     end
 
     # Set HTTP *status*, close the response and **stop** the execution.
@@ -214,5 +275,3 @@ module Prism
     end
   end
 end
-
-require "./action/*"
