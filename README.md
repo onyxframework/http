@@ -61,11 +61,18 @@ logger = Logger.new(STDOUT, Logger::DEBUG)
 log_handler = Prism::LogHandler.new(logger)
 handlers = [log_handler, router]
 
-server = Prism::Server.new(handlers, logger)
+server = HTTP::Server.new(handlers) do |context|
+  if action = context.request.action
+    action.call(context)
+  else
+    context.response.status_code = 404
+    context.response.print("Not Found: #{context.request.path}")
+  end
+end
+
 server.bind_tcp(5000)
 server.listen
 
-#  INFO -- :   Prism::Server is listening on http://127.0.0.1:5000...
 # DEBUG -- :     GET /me 200 177μs
 ```
 
