@@ -75,7 +75,7 @@ module Prism
     # Params can be accessed directly by their names (e.g. `id`) both in `#call` method and callbacks.
     macro params(&block)
       ::Params.mapping({
-        {{run("./params/macro_parser", yield.id)}}
+        {{run("./ext/params/type_macro_parser", yield.id)}}
       })
 
       def self.new(context : HTTP::Server::Context)

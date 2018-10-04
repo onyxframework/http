@@ -85,7 +85,7 @@ module Prism
     # Optional params definition block. See `Action.params`.
     macro params(&block)
       ::Params.mapping({
-        {{run("./params/macro_parser", yield.id)}}
+        {{run("./ext/params/type_macro_parser", yield.id)}}
       })
 
       def self.new(socket, context)
