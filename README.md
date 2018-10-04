@@ -37,6 +37,8 @@ Please refer to the API documentation available online at [github.vladfaust.com/
 
 ```crystal
 require "prism"
+require "prism/handlers/router"
+require "prism/handlers/request_logger"
 
 struct KnockKnock
   include Prism::Action
@@ -53,13 +55,13 @@ struct KnockKnock
   end
 end
 
-router = Prism::Router.new do
+router = Prism::Handlers::Router.new do
   get "/:who", KnockKnock
 end
 
 logger = Logger.new(STDOUT, Logger::DEBUG)
-log_handler = Prism::LogHandler.new(logger)
-handlers = [log_handler, router]
+request_logger = Prism::Handlers::RequestLogger.new(logger)
+handlers = [request_logger, router]
 
 server = HTTP::Server.new(handlers) do |context|
   if action = context.request.action
@@ -108,7 +110,7 @@ class Notifications
   end
 end
 
-router = Prism::Router.new do
+router = Prism::Handlers::Router.new do
   ws "/notifications" do |socket, env|
     Notifications.subscribe(socket, env)
   end

@@ -1,14 +1,14 @@
 require "./spec_helper"
-require "./../src/prism/proc_handler"
+require "./../src/prism/handlers/proc"
 
-class Prism::ProcHandler
+class Prism::Handlers::Proc
   def call_next(context)
     context.response.print("next")
   end
 end
 
-describe Prism::ProcHandler do
-  handler = Prism::ProcHandler.new do |handler, context|
+describe Prism::Handlers::Proc do
+  handler = Prism::Handlers::Proc.new do |handler, context|
     if context.request.query_params.to_h["pass"]? == "true"
       handler.call_next(context)
     end

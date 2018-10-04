@@ -1,4 +1,4 @@
-require "../src/prism"
+require "../src/prism/handlers/router"
 
 RESPONSE = HTTP::Server::Response.new(IO::Memory.new)
 
@@ -16,7 +16,7 @@ def dynamic_path_request
   HTTP::Server::Context.new(HTTP::Request.new("GET", "/foo/#{rand(DYNAMIC_ROUTES_NUMBER)}"), RESPONSE)
 end
 
-router = Prism::Router.new do
+router = Prism::Handlers::Router.new do
   get "/foo/:number" do |env|
   end
 

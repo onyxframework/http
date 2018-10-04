@@ -1,17 +1,17 @@
 require "radix"
 require "http/web_socket"
-require "./ext/http/request/action"
-require "./ext/http/request/path_params"
-require "./action"
-require "./channel"
+require "../ext/http/request/action"
+require "../ext/http/request/path_params"
+require "../action"
+require "../channel"
 
-module Prism
+module Prism::Handlers
   # Routes a request's path, injecting matching `ContextProc` into `context.request.action` and path params into `context.request.path_params`.
   #
   # Always calls next handler.
   #
   # ```
-  # router = Prism::Router.new do
+  # router = Prism::Handlers::Router.new do
   #   get "/" do |context|
   #     context.response.print("Hello world!")
   #   end
@@ -37,14 +37,14 @@ module Prism
     #
     # ```
     # # The simplest router
-    # router = Prism::Router.new do
+    # router = Prism::Handlers::Router.new do
     #   get "/" do |env|
     #     env.response.print "Hello world!"
     #   end
     # end
     # ```
     def self.new
-      instance = Router.new
+      instance = new
       with instance yield
       instance
     end
@@ -67,7 +67,7 @@ module Prism
     # Draw a route for *path* and *methods*.
     #
     # ```
-    # router = Prism::Router.new do
+    # router = Prism::Handlers::Router.new do
     #   on "/foo", methods: %w(get post) do |context|
     #     context.response.print("Hello from #{context.request.method} /foo!")
     #   end
@@ -82,7 +82,7 @@ module Prism
     # Draw a route for *path* and *methods* calling *action*.
     #
     # ```
-    # router = Prism::Router.new do
+    # router = Prism::Handlers::Router.new do
     #   on "/foo", methods: %w(get post), MyAction
     # end
     # ```
@@ -95,7 +95,7 @@ module Prism
     # Draw a empty (status 200) route for *path* and *methods*.
     #
     # ```
-    # router = Prism::Router.new do
+    # router = Prism::Handlers::Router.new do
     #   on "/foo", methods: %w(get post)
     # end
     # ```
@@ -109,7 +109,7 @@ module Prism
       # Draw a route for *path* with `{{method.upcase.id}}` method.
       #
       # ```
-      # router = Prism::Router.new do
+      # router = Prism::Handlers::Router.new do
       #   {{method.id}} "/bar" do |context|
       #     context.response.print("Hello from {{method.upcase.id}} /bar!")
       #   end
@@ -122,7 +122,7 @@ module Prism
       # Draw a route for *path* with `{{method.upcase.id}}` calling *action*.
       #
       # ```
-      # router = Prism::Router.new do
+      # router = Prism::Handlers::Router.new do
       #   {{method.id}} "/bar", MyAction
       # end
       # ```
@@ -133,7 +133,7 @@ module Prism
       # Draw a empty (status 200) route for *path* with `{{method.upcase.id}}` method.
       #
       # ```
-      # router = Prism::Router.new do
+      # router = Prism::Handlers::Router.new do
       #   {{method.id}} "/bar"
       # end
       # ```
@@ -147,7 +147,7 @@ module Prism
     # A request is currently determined as websocket by `"Upgrade": "Websocket"` header.
     #
     # ```
-    # router = Prism::Router.new do
+    # router = Prism::Handlers::Router.new do
     #   ws "/foo/:bar" do |socket, context|
     #     socket.send("Hello WS!")
     #   end
@@ -162,7 +162,7 @@ module Prism
     # A request is currently determined as websocket by `"Upgrade": "Websocket"` header.
     #
     # ```
-    # router = Prism::Router.new do
+    # router = Prism::Handlers::Router.new do
     #   ws "/foo/:bar", MyChannel
     # end
     # ```

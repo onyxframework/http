@@ -1,9 +1,9 @@
 require "./spec_helper"
-require "./../src/prism/router"
+require "./../src/prism/handlers/router"
 
-class Prism::Router
+class Prism::Handlers::Router
   module Specs
-    router = Prism::Router.new do
+    router = Prism::Handlers::Router.new do
       get "/users/:id" do |env|
         env.response.print("id = #{env.request.path_params.not_nil!["id"]}")
       end
@@ -21,7 +21,7 @@ class Prism::Router
       end
     end
 
-    describe Prism::Router do
+    describe Prism::Handlers::Router do
       context "get /users/42" do
         context = dummy_context(Req.new("GET", "/users/42"))
         router.call(context)

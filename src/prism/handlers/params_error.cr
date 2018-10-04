@@ -1,7 +1,7 @@
 require "http/server/handler"
 require "params"
 
-module Prism
+module Prism::Handlers
   # `HTTP::Handler` which catches [Params](https://github.com/vladfaust/params.cr) errors
   # (e.g. when param is missing or failed to cast).
   #
@@ -12,12 +12,12 @@ module Prism
   # because Params errors are considered normal.
   #
   # ```
-  # handler = Prism::ParamsErrorHandler.new do |error, context|
+  # handler = Prism::Handlers::ParamsError.new do |error, context|
   #   context.response.status = 400
   #   context.response.print(error.message)
   # end
   # ```
-  class ParamsErrorHandler
+  class ParamsError
     include HTTP::Handler
 
     @proc : Proc(::Params::Error, HTTP::Server::Context, Void)
