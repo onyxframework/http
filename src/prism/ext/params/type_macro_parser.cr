@@ -1,6 +1,6 @@
 # :nodoc:
-module Prism::Params
-  private class MacroParser
+module Params
+  private class TypeMacroParser
     @indent = 0
     @nilable = Hash(Int32, Bool).new
 
@@ -28,5 +28,5 @@ module Prism::Params
     end
   end
 
-  MacroParser.new.print(ARGV[0])
+  TypeMacroParser.new.print(ARGV[0])
 end
