@@ -3,22 +3,22 @@ require "logger"
 require "colorize"
 require "time_format"
 
-module Prism
+module Prism::Handlers
   # `HTTP::Handler` which debugs requests colorfully into specified *logger*.
   #
   # ```
-  # logger = Prism::LogHandler.new(Logger.new(STDOUT).tap { |l| l.level = Logger::DEBUG })
+  # logger = Prism::Handlers::RequestLogger.new(Logger.new(STDOUT).tap &.level=(Logger::DEBUG))
   #
   # #  DEBUG -- :     GET /users 200 102μs
   # #  DEBUG -- :     GET /favicon.ico 404 52μs
   # #  DEBUG -- :    POST /users 201 3.74ms
   # ```
-  class LogHandler
+  class RequestLogger
     include HTTP::Handler
 
     WS_COLOR = :cyan
 
-    def initialize(@logger : ::Logger)
+    def initialize(@logger : Logger)
     end
 
     def call(context)
