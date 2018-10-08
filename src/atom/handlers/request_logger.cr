@@ -3,11 +3,11 @@ require "logger"
 require "colorize"
 require "time_format"
 
-module Prism::Handlers
-  # `HTTP::Handler` which debugs requests colorfully into specified *logger*.
+module Atom::Handlers
+  # Debugs requests colorfully into specified *logger*.
   #
   # ```
-  # logger = Prism::Handlers::RequestLogger.new(Logger.new(STDOUT).tap &.level=(Logger::DEBUG))
+  # logger = Atom::Handlers::RequestLogger.new(Logger.new(STDOUT).tap &.level=(Logger::DEBUG))
   #
   # #  DEBUG -- :     GET /users 200 102μs
   # #  DEBUG -- :     GET /favicon.ico 404 52μs

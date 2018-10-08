@@ -1,237 +1,243 @@
 require "./spec_helper"
-require "../src/prism/action"
+require "../src/atom/action"
 
-module Prism::Action
-  struct OkAction
-    include Prism::Action
+struct OkAction
+  include Atom::Action
 
-    def call
-      status(205)
-      text("ok")
-    end
+  def call
+    status(205)
+    text("ok")
+  end
+end
+
+describe OkAction do
+  response = handle_request(OkAction)
+
+  it "prints ok" do
+    response.body.should eq "ok"
   end
 
-  describe OkAction do
-    response = handle_request(OkAction)
+  it "updates status code" do
+    response.status_code.should eq 205
+  end
+end
 
-    it "prints ok" do
-      response.body.should eq "ok"
-    end
+struct OkActionWithStatus
+  include Atom::Action
 
-    it "updates status code" do
-      response.status_code.should eq 205
-    end
+  def call
+    text(205, "ok")
+  end
+end
+
+describe OkActionWithStatus do
+  response = handle_request(OkActionWithStatus)
+
+  it "prints ok" do
+    response.body.should eq "ok"
   end
 
-  struct OkActionWithStatus
-    include Prism::Action
+  it "updates status code" do
+    response.status_code.should eq 205
+  end
+end
 
-    def call
-      text(205, "ok")
-    end
+struct JsonAction
+  include Atom::Action
+
+  def call
+    json({"foo" => "bar"})
+  end
+end
+
+describe JsonAction do
+  response = handle_request(JsonAction)
+
+  it "prints JSON" do
+    response.body.should eq %Q[{"foo":"bar"}]
   end
 
-  describe OkActionWithStatus do
-    response = handle_request(OkActionWithStatus)
+  it "sets content type header" do
+    response.headers["Content-Type"].should eq "application/json; charset=utf-8"
+  end
+end
 
-    it "prints ok" do
-      response.body.should eq "ok"
-    end
+struct JsonWithStatusAction
+  include Atom::Action
 
-    it "updates status code" do
-      response.status_code.should eq 205
-    end
+  def call
+    json(201, {
+      foo: "bar",
+    })
+  end
+end
+
+describe JsonWithStatusAction do
+  response = handle_request(JsonWithStatusAction)
+
+  it "prints JSON" do
+    response.body.should eq %Q[{"foo":"bar"}]
   end
 
-  struct JsonAction
-    include Prism::Action
-
-    def call
-      json({"foo" => "bar"})
-    end
+  it "updates status code" do
+    response.status_code.should eq 201
   end
 
-  describe JsonAction do
-    response = handle_request(JsonAction)
+  it "sets content type header" do
+    response.headers["Content-Type"].should eq "application/json; charset=utf-8"
+  end
+end
 
-    it "prints JSON" do
-      response.body.should eq %Q[{"foo":"bar"}]
-    end
+struct HaltAction
+  include Atom::Action
 
-    it "sets content type header" do
-      response.headers["Content-Type"].should eq "application/json; charset=utf-8"
-    end
+  class_property unwanted_calls_count = 0
+
+  def call
+    halt(404)
+
+    @@unwanted_calls_count += 1
+    text("ok")
+  end
+end
+
+describe HaltAction do
+  response = handle_request(HaltAction)
+
+  it "updates status code" do
+    response.status_code.should eq 404
   end
 
-  struct JsonWithStatusAction
-    include Prism::Action
-
-    def call
-      json(201, {
-        foo: "bar",
-      })
-    end
+  it "prints default message" do
+    response.body.should eq "Not Found"
   end
 
-  describe JsonWithStatusAction do
-    response = handle_request(JsonWithStatusAction)
+  it "stops execution" do
+    HaltAction.unwanted_calls_count.should eq 0
+  end
+end
 
-    it "prints JSON" do
-      response.body.should eq %Q[{"foo":"bar"}]
-    end
+struct TextHaltAction
+  include Atom::Action
 
-    it "updates status code" do
-      response.status_code.should eq 201
-    end
+  def call
+    halt(404, "Nope")
+  end
+end
 
-    it "sets content type header" do
-      response.headers["Content-Type"].should eq "application/json; charset=utf-8"
-    end
+describe TextHaltAction do
+  response = handle_request(TextHaltAction)
+
+  it "updates status code" do
+    response.status_code.should eq 404
   end
 
-  struct HaltAction
-    include Prism::Action
+  it "prints specified response" do
+    response.body.should eq("Nope")
+  end
+end
 
-    class_property unwanted_calls_count = 0
+struct JSONHaltAction
+  include Atom::Action
 
-    def call
-      halt(404)
+  def call
+    halt(403, {error: "Oops"})
+  end
+end
 
-      @@unwanted_calls_count += 1
-      text("ok")
-    end
+describe JSONHaltAction do
+  response = handle_request(JSONHaltAction)
+
+  it "updates status code" do
+    response.status_code.should eq 403
   end
 
-  describe HaltAction do
-    response = handle_request(HaltAction)
+  it "prints JSON response" do
+    response.body.should eq(%Q[{"error":"Oops"}])
+  end
+end
 
-    it "updates status code" do
-      response.status_code.should eq 404
-    end
+struct BodyAction
+  include Atom::Action
 
-    it "prints default message" do
-      response.body.should eq "Not Found"
-    end
+  class_property last_body : String? = nil
 
-    it "stops execution" do
-      HaltAction.unwanted_calls_count.should eq 0
-    end
+  def call
+    text(body)
+  end
+end
+
+describe BodyAction do
+  response = handle_request(BodyAction, Req.new("GET", "/", body: "foo"))
+
+  it do
+    response.body.should eq "foo"
+  end
+end
+
+struct CallbacksAction
+  include Atom::Action
+
+  class_property buffer = [] of String
+
+  before do
+    @@buffer << "before"
   end
 
-  struct TextHaltAction
-    include Prism::Action
-
-    def call
-      halt(404, "Nope")
-    end
+  around do
+    @@buffer << "around_before"
+    yield
+    @@buffer << "around_after"
   end
 
-  describe TextHaltAction do
-    response = handle_request(TextHaltAction)
-
-    it "prints specified response" do
-      response.body.should eq("Nope")
-    end
+  def call
+    @@buffer << "call"
   end
 
-  struct JSONHaltAction
-    include Prism::Action
-
-    def call
-      halt(403, {error: "Oops"})
-    end
+  after do
+    @@buffer << "after"
   end
+end
 
-  describe JSONHaltAction do
-    response = handle_request(JSONHaltAction)
+describe CallbacksAction do
+  response = handle_request(CallbacksAction)
 
-    it "prints JSON response" do
-      response.body.should eq(%Q[{"error":"Oops"}])
-    end
+  it do
+    CallbacksAction.buffer.should eq ["before", "around_before", "call", "around_after", "after"]
   end
+end
 
-  struct BodyAction
-    include Prism::Action
+struct HeaderAction
+  include Atom::Action
 
-    class_property last_body : String? = nil
-
-    def call
-      text(body)
-    end
+  def call
+    header("Custom", "42")
   end
+end
 
-  describe BodyAction do
-    response = handle_request(BodyAction, Req.new("GET", "/", body: "foo"))
+describe HeaderAction do
+  response = handle_request(HeaderAction)
 
-    it do
-      response.body.should eq "foo"
-    end
+  it do
+    response.headers["Custom"].should eq "42"
   end
+end
 
-  struct CallbacksAction
-    include Prism::Action
+struct RedirectAction
+  include Atom::Action
 
-    class_property buffer = [] of String
-
-    before do
-      @@buffer << "before"
-    end
-
-    around do
-      @@buffer << "around_before"
-      yield
-      @@buffer << "around_after"
-    end
-
-    def call
-      @@buffer << "call"
-    end
-
-    after do
-      @@buffer << "after"
-    end
+  def call
+    redirect(URI.parse("https://github.com/vladfaust/prism"), 301)
+    text("Doesn't halt")
   end
+end
 
-  describe CallbacksAction do
-    response = handle_request(CallbacksAction)
+describe RedirectAction do
+  response = handle_request(RedirectAction)
 
-    it do
-      CallbacksAction.buffer.should eq ["before", "around_before", "call", "around_after", "after"]
-    end
-  end
-
-  struct HeaderAction
-    include Prism::Action
-
-    def call
-      header("Custom", "42")
-    end
-  end
-
-  describe HeaderAction do
-    response = handle_request(HeaderAction)
-
-    it do
-      response.headers["Custom"].should eq "42"
-    end
-  end
-
-  struct RedirectAction
-    include Prism::Action
-
-    def call
-      redirect(URI.parse("https://github.com/vladfaust/prism"), 301)
-      text("Doesn't halt")
-    end
-  end
-
-  describe RedirectAction do
-    response = handle_request(RedirectAction)
-
-    it do
-      response.headers["Location"].should eq "https://github.com/vladfaust/prism"
-      response.status_code.should eq 301
-      response.body.should eq "Doesn't halt"
-    end
+  it do
+    response.headers["Location"].should eq "https://github.com/vladfaust/prism"
+    response.status_code.should eq 301
+    response.body.should eq "Doesn't halt"
   end
 end

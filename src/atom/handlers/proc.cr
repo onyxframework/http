@@ -1,10 +1,10 @@
 require "http/server/handler"
 
-module Prism::Handlers
-  # `HTTP::Handler` which calls the *proc* on each `#call`.
+module Atom::Handlers
+  # Calls the *proc* on each `#call`.
   #
   # ```
-  # secret = Prism::Handlers::Proc.new do |handler, context|
+  # secret = Atom::Handlers::Proc.new do |handler, context|
   #   if context.request.query_params.to_h["secret"]?.try &.== ENV["SECRET"]
   #     handler.call_next(context)
   #   else
@@ -17,7 +17,7 @@ module Prism::Handlers
 
     @proc : ::Proc(self, HTTP::Server::Context, Void)
 
-    # Initialize a new handler which will call *proc* on `#call`. Do not forget to call `handler.call_next(context)`.
+    # Initialize a new handler which will call *proc* on `#call`. Do not forget to call `handler.call_next(context)` within.
     def initialize(&proc : self, HTTP::Server::Context -> _)
       @proc = proc
     end

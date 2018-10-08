@@ -1,10 +1,12 @@
-require "http/server"
+require "http/server/context"
+require "http/web_socket"
 require "json"
 require "callbacks"
 require "params"
-require "./channel/*"
 
-module Prism
+require "./handlers/router"
+
+module Atom
   # A callable websocket Channel with [Callbacks](https://github.com/vladfaust/callbacks.cr)
   # and [Params](https://github.com/vladfaust/params.cr) included.
   #
@@ -12,7 +14,7 @@ module Prism
   #
   # ```
   # class UserNotifications
-  #   include Prism::Channel
+  #   include Atom::Channel
   #
   #   params do
   #     type id : Int32
@@ -42,12 +44,14 @@ module Prism
   #   end
   # end
   #
-  # router = Prism::Router.new do
+  # router = Atom::Handlers::Router.new do
   #   ws "/notifications" do |socket, env|
   #     UserNotifications.subscribe(socket, env)
   #     # Or
   #     UserNotifications.call(socket, env)
   #   end
+  #   # Or
+  #   ws "/notifications", UserNotifications
   # end
   #
   # # Later in the code
@@ -97,7 +101,7 @@ module Prism
     end
 
     macro included
-      {% raise "#{@type} must be a Class to include Prism::Channel" unless @type < Reference %}
+      {% raise "#{@type} must be a Class to include Atom::Channel" unless @type < Reference %}
 
       # Initialize a new instance and invoke `#subscribe_with_callbacks` on it.
       def self.subscribe(socket : HTTP::WebSocket, context : HTTP::Server::Context)
@@ -111,15 +115,34 @@ module Prism
 
       # Will **not** raise on exceed when reading from body in the `#call` method, however could raise on params parsing.
       class_getter max_body_size : UInt64 = UInt64.new(8 * 1024 ** 2)
+
+      # You can change `.max_body_size` per channel basis.
+      #
+      # ```
+      # struct MyChannel
+      #   include Atom::Channel
+      #   max_body_size = 1 * 1024 ** 3 # 1 GB
+      # end
+      # ```
       protected class_setter max_body_size
 
       # Change to `true` to preserve body upon params parsing.
       # Has effect only in cases when params are read from body.
+      # Slightly decreases performance due to IO copying.
       class_getter preserve_body : Bool = false
+
+      # You can change `.preserve_body` per action basis.
+      #
+      # ```
+      # struct MyChannel
+      #   include Atom::Channel
+      #   preserve_body = true
+      # end
+      # ```
       protected class_setter preserve_body
     end
 
-    # Call `#on_open` and bind to the `socket`'s events. Read more in [Crystal API docs](https://crystal-lang.org/api/0.23.1/HTTP/WebSocket.html).
+    # Call `#on_open` and bind to the `socket`'s events. Read more in [Crystal API docs](https://crystal-lang.org/api/latest/HTTP/WebSocket.html).
     def subscribe
       on_open
 
@@ -149,13 +172,38 @@ module Prism
       with_callbacks { subscribe }
     end
 
-    getter! context : ::HTTP::Server::Context, socket : HTTP::WebSocket
+    @context : ::HTTP::Server::Context | Nil
+    @socket : HTTP::WebSocket | Nil
+
+    def context
+      @context.not_nil!
+    end
+
+    def socket
+      @socket.not_nil!
+    end
+
     protected setter context, socket
 
     # :nodoc:
     def initialize(@socket : ::HTTP::Server::Context, @context : HTTP::WebSocket)
     end
   end
-end
 
-require "./channel/*"
+  module Handlers
+    class Router
+      # Draw a WebSocket route for *path* instantiating *channel*. See `Channel`.
+      #
+      # A request is currently determined as websocket by `"Upgrade": "Websocket"` header.
+      #
+      # ```
+      # router = Atom::Handlers::Router.new do
+      #   ws "/foo/:bar", MyChannel
+      # end
+      # ```
+      def ws(path, channel : Channel.class)
+        add("/ws" + path, WebSocketProc.new { |s, c| MyChannel.call(s, c) }.as(Node))
+      end
+    end
+  end
+end
