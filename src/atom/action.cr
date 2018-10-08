@@ -1,10 +1,11 @@
-require "http/server"
+require "http/server/context"
 require "json"
 require "callbacks"
 require "params"
-require "./action/*"
 
-module Prism
+require "./handlers/router"
+
+module Atom
   # A callable HTTP action with [Callbacks](https://github.com/vladfaust/callbacks.cr)
   # and [Params](https://github.com/vladfaust/params.cr) included.
   #
@@ -12,7 +13,7 @@ module Prism
   #
   # ```
   # struct MyAction
-  #   include Prism::Action
+  #   include Atom::Action
   #
   #   params do
   #     type id : Int32
@@ -24,8 +25,12 @@ module Prism
   #   end
   #
   #   def call
-  #     # Will put the text into the response body
+  #     # Will explicitly write the text into the response body
   #     text("id = #{id}, foo = #{foo.join(", ")}, user name = #{user.not_nil!.name}")
+  #
+  #     # Or
+  #     # Will *render* the object (see below)
+  #     render({id: id, foo: foo, user: {name: user.name, email: user.email}})
   #   end
   #
   #   after do
@@ -37,9 +42,47 @@ module Prism
   # # => "MyAction has run successfully"
   # ```
   #
-  # NOTE: Params errors aren't rescued by default, so you should define your own `ParamsErrorHandler` to handle this.
+  # By default `#render` prints the object as a text if it's a `String`, `Number` or `Bool`,
+  # an writes a JSON otherwise. `#render` can be overriden to conform with an application's needs
+  # (for example, by defining a custom `Renderer` module and including it into all actions), e.g:
   #
-  # NOTE: The response `#status` and `#headers` must be configured before writing the response body (i.e. calling `#text` or `#json`).
+  # ```
+  # # Will write a formatted JSON
+  # module CustomRenderer
+  #   def render(value)
+  #     success = (200..299) === context.response.status_code
+  #
+  #     json = JSON::Builder.new(context.response.output)
+  #     json.document do
+  #       json.object do
+  #         json.field("success", success)
+  #         json.field(success ? "data" : "error") do
+  #           value.to_json(json)
+  #         end
+  #         json.field("status", context.response.status_code)
+  #       end
+  #     end
+  #
+  #     context.response.content_type = "application/json; charset=utf-8"
+  #   end
+  # end
+  # ```
+  #
+  # Router example:
+  #
+  # ```
+  # router = Atom::Handlers::Router.new do
+  #   get "/" do |context|
+  #     MyAction.call(context)
+  #   end
+  #   # Or
+  #   get "/", MyAction
+  # end
+  # ```
+  #
+  # NOTE: Params errors aren't rescued by default, you have to handle [`Params::Error`](http://github.vladfaust.com/params.cr/Params/Error.html) yourself.
+  #
+  # NOTE: The response `#status` and `#header` must be configured before writing the response body (i.e. calling `#render`, `#text` or `#json`).
   module Action
     include Callbacks
 
@@ -94,11 +137,30 @@ module Prism
 
       # Will **not** raise on exceed when reading from body in the `#call` method, however could raise on params parsing.
       class_getter max_body_size : UInt64 = UInt64.new(8 * 1024 ** 2)
+
+      # You can change `.max_body_size` per action basis.
+      #
+      # ```
+      # struct MyAction
+      #   include Atom::Action
+      #   max_body_size = 1 * 1024 ** 3 # 1 GB
+      # end
+      # ```
       protected class_setter max_body_size
 
       # Change to `true` to preserve body upon params parsing.
       # Has effect only in cases when params are read from body.
+      # Slightly decreases performance due to IO copying.
       class_getter preserve_body : Bool = false
+
+      # You can change `.preserve_body` per action basis.
+      #
+      # ```
+      # struct MyAction
+      #   include Atom::Action
+      #   preserve_body = true
+      # end
+      # ```
       protected class_setter preserve_body
     end
 
@@ -129,44 +191,50 @@ module Prism
       @body ||= context.request.body.try &.gets(limit: self.class.max_body_size)
     end
 
+    @context : HTTP::Server::Context | Nil
+
     # Current HTTP::Server context.
-    getter! context : HTTP::Server::Context
+    def context
+      @context.not_nil!
+    end
+
     protected setter context
 
     def initialize(@context : HTTP::Server::Context)
     end
 
-    # Set HTTP *status*, close the response and **stop** the execution.
-    # Optionally specify *response*, otherwise print a default HTTP response for this *status*.
+    # :nodoc:
+    class Halt < Exception
+    end
+
+    # **Halts** the execution skipping remaining callbacks, setting *status* and rendering *payload*.
+    #
+    # If no *payload* is passed, a default HTTP message (`String`) is used instead.
+    # To avoid this, pass `nil` explicitly.
     #
     # ```
     # def call
-    #   halt(403)  # Will print "Unauthorized" into the response body
+    #   halt(403)  # Will call `#render(403, "Unauthorized")`
     #   text("ok") # This line will not be called
     # end
     #
     # def call
-    #   halt(500, "Something's wrong!") # Will print "Something's wrong!" into the response body
+    #   halt(409, {error: "Oops"}) # Will call `#render(409, {error: "Oops"})`
     # end
     #
     # def call
-    #   halt(409, {error: "Oops"}) # Will print {error: "Oops"} and set content type to JSON
-    # end
-    #
-    # def call
-    #   halt(403, PaymentError) # Will call #to_json on PaymentError
+    #   halt(500, nil) # Will call `#status(500)` only
     # end
     # ```
-    macro halt(status, response = nil)
-      status({{status.id}})
+    macro halt(status, payload = HTTP.default_status_message_for(status))
+      status = {{status}}
+      %payload = {{payload}}
 
-      {% if response.is_a?(StringLiteral) || response.is_a?(StringInterpolation) %}
-        text({{response}})
-      {% elsif response.is_a?(NilLiteral) %}
-        text(HTTP.default_status_message_for({{status.id}}))
-      {% else %}
-        json({{response}})
-      {% end %}
+      if %payload
+        render({{status}}, %payload)
+      else
+        status({{status}})
+      end
 
       raise Halt.new
     end
@@ -178,7 +246,7 @@ module Prism
     #   status(400)
     # end
     # ```
-    def status(new_status value)
+    def status(new_status value : Int32)
       context.response.status_code = value
     end
 
@@ -209,6 +277,26 @@ module Prism
     end
 
     private CONTENT_TYPE_TEXT = "text/html; charset=utf-8"
+    private CONTENT_TYPE_JSON = "application/json; charset=utf-8"
+
+    # Render *value*. By default, calls `#text` on `String`, `Number`, `Bool`
+    # and `#json` on other types.
+    #
+    # Remember that you can override it!
+    def render(value)
+      case value
+      when String, Number, Bool
+        text(value)
+      else
+        json(value)
+      end
+    end
+
+    # Call `#status` and then `#render`.
+    def render(status : Int, value)
+      status(status)
+      render(value)
+    end
 
     {% begin %}
       # Write text into the response body.
@@ -220,12 +308,11 @@ module Prism
       # end
       # ```
       def text(value)
-        header("Content-Type", CONTENT_TYPE_TEXT)
+        context.response.content_type = CONTENT_TYPE_TEXT
         context.response.print(value)
       end
 
-      # Set the status to *status* and write text *value* into the response body.
-      # "Content-Type" header is set to `"{{CONTENT_TYPE_TEXT}}"`.
+      # Call `#status` and then `#text`.
       #
       # ```
       # def call
@@ -236,12 +323,9 @@ module Prism
         status(status)
         text(value)
       end
-    {% end %}
 
-    private CONTENT_TYPE_JSON = "application/json; charset=utf-8"
-
-    {% begin %}
       # Cast *value* to JSON and write it into the response body.
+      #
       # "Content-Type" header is set to `"{{CONTENT_TYPE_JSON}}"`.
       #
       # ```
@@ -250,13 +334,14 @@ module Prism
       # end
       # ```
       def json(value)
-        header("Content-Type", CONTENT_TYPE_JSON)
-        value.to_json(context.response)
-        context.response.close
+        context.response.content_type = CONTENT_TYPE_JSON
+        json = JSON::Builder.new(context.response.output)
+        json.document do
+          value.to_json(json)
+        end
       end
 
-      # Set the status to *status*, cast *value* to JSON and write it into the response body.
-      # "Content-Type" header is set to `"{{CONTENT_TYPE_JSON}}"`.
+      # Call `#status` and then `#json`.
       #
       # ```
       # def call
@@ -270,8 +355,35 @@ module Prism
         json(value)
       end
     {% end %}
+  end
 
-    private class Halt < Exception
+  module Handlers
+    class Router
+      # Draw a route for *path* and *methods* calling *action*. See `Action`.
+      #
+      # ```
+      # router = Atom::Handlers::Router.new do
+      #   on "/foo", methods: %w(get post), MyAction
+      # end
+      # ```
+      def on(path, methods : Array(String), action : Action.class)
+        methods.map(&.downcase).each do |method|
+          add("/" + method + path, ContextProc.new { |c| action.call(c) }.as(Node))
+        end
+      end
+
+      {% for method in HTTP_METHODS %}
+        # Draw a route for *path* with `{{method.upcase.id}}` calling *action*. See `Action`.
+        #
+        # ```
+        # router = Atom::Handlers::Router.new do
+        #   {{method.id}} "/bar", MyAction
+        # end
+        # ```
+        def {{method.id}}(path, action : Action.class)
+          on(path, [{{method}}], action)
+        end
+      {% end %}
     end
   end
 end

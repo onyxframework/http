@@ -1,26 +1,40 @@
 require "radix"
+require "http/server/handler"
 require "http/web_socket"
-require "../ext/http/request/action"
-require "../ext/http/request/path_params"
-require "../action"
-require "../channel"
 
-module Prism::Handlers
-  # Routes a request's path, injecting matching `ContextProc` into `context.request.action` and path params into `context.request.path_params`.
+require "../ext/http/request/path_params"
+require "../ext/http/context/proc"
+
+module Atom::Handlers
+  # Routes a request's path, assigning matching proc to `HTTP::Server::Context#proc` and path params to `HTTP::Request#path_params`.
   #
-  # Always calls next handler.
+  # When the route is found, calls the next handler if present.
+  # So you should put a processing handler thereafter (or implement server logic).
   #
   # ```
-  # router = Prism::Handlers::Router.new do
+  # router = Atom::Handlers::Router.new do
   #   get "/" do |context|
   #     context.response.print("Hello world!")
+  #   end
+  #
+  #   ws "/" do |socket, context|
+  #     socket.on_message do |message|
+  #       # ...
+  #     end
   #   end
   # end
   #
   # server = HTTP::Server.new(5000, [router]) do |context|
-  #   action.call(context) if action = context.request.action
+  #   if proc = context.proc
+  #     proc.call(context)
+  #   else
+  #     context.response.respond_with_error("Not Found", 404)
+  #   end
   # end
   # ```
+  #
+  # This handler can be extended with `Action` and `Channel` shortcuts.
+  # See corresponding module docs for mor information.
   class Router
     include HTTP::Handler
 
@@ -37,7 +51,7 @@ module Prism::Handlers
     #
     # ```
     # # The simplest router
-    # router = Prism::Handlers::Router.new do
+    # router = Handlers::Router.new do
     #   get "/" do |env|
     #     env.response.print "Hello world!"
     #   end
@@ -49,7 +63,8 @@ module Prism::Handlers
       instance
     end
 
-    def call(context : HTTP::Server::Context)
+    # Lookup for a route and invoke `call_next` if succeeded. Raises `NotFoundError` otherwise.
+    def call(context)
       if context.request.headers.includes_word?("Upgrade", "Websocket")
         path = "/ws" + context.request.path
         result = lookup(path)
@@ -58,16 +73,16 @@ module Prism::Handlers
         result = lookup(path)
       end
 
-      context.request.action = result.payload
+      context.proc = result.payload
       context.request.path_params = result.params
 
-      call_next(context)
+      call_next(context) if @next
     end
 
     # Draw a route for *path* and *methods*.
     #
     # ```
-    # router = Prism::Handlers::Router.new do
+    # router = Handlers::Router.new do
     #   on "/foo", methods: %w(get post) do |context|
     #     context.response.print("Hello from #{context.request.method} /foo!")
     #   end
@@ -79,23 +94,10 @@ module Prism::Handlers
       end
     end
 
-    # Draw a route for *path* and *methods* calling *action*.
-    #
-    # ```
-    # router = Prism::Handlers::Router.new do
-    #   on "/foo", methods: %w(get post), MyAction
-    # end
-    # ```
-    def on(path, methods : Array(String), action : Action.class)
-      methods.map(&.downcase).each do |method|
-        add("/" + method + path, ContextProc.new { |c| action.call(c) }.as(Node))
-      end
-    end
-
     # Draw a empty (status 200) route for *path* and *methods*.
     #
     # ```
-    # router = Prism::Handlers::Router.new do
+    # router = Handlers::Router.new do
     #   on "/foo", methods: %w(get post)
     # end
     # ```
@@ -109,7 +111,7 @@ module Prism::Handlers
       # Draw a route for *path* with `{{method.upcase.id}}` method.
       #
       # ```
-      # router = Prism::Handlers::Router.new do
+      # router = Handlers::Router.new do
       #   {{method.id}} "/bar" do |context|
       #     context.response.print("Hello from {{method.upcase.id}} /bar!")
       #   end
@@ -119,21 +121,10 @@ module Prism::Handlers
         on(path, [{{method}}], &proc)
       end
 
-      # Draw a route for *path* with `{{method.upcase.id}}` calling *action*.
-      #
-      # ```
-      # router = Prism::Handlers::Router.new do
-      #   {{method.id}} "/bar", MyAction
-      # end
-      # ```
-      def {{method.id}}(path, action : Action.class)
-        on(path, [{{method}}], action)
-      end
-
       # Draw a empty (status 200) route for *path* with `{{method.upcase.id}}` method.
       #
       # ```
-      # router = Prism::Handlers::Router.new do
+      # router = Handlers::Router.new do
       #   {{method.id}} "/bar"
       # end
       # ```
@@ -147,7 +138,7 @@ module Prism::Handlers
     # A request is currently determined as websocket by `"Upgrade": "Websocket"` header.
     #
     # ```
-    # router = Prism::Handlers::Router.new do
+    # router = Handlers::Router.new do
     #   ws "/foo/:bar" do |socket, context|
     #     socket.send("Hello WS!")
     #   end
@@ -155,19 +146,6 @@ module Prism::Handlers
     # ```
     def ws(path, &proc : WebSocketProc)
       add("/ws" + path, HTTP::WebSocketHandler.new(&proc))
-    end
-
-    # Draw a WebSocket route for *path* instantiating *channel*.
-    #
-    # A request is currently determined as websocket by `"Upgrade": "Websocket"` header.
-    #
-    # ```
-    # router = Prism::Handlers::Router.new do
-    #   ws "/foo/:bar", MyChannel
-    # end
-    # ```
-    def ws(path, channel : Channel.class)
-      add("/ws" + path, WebSocketProc.new { |s, c| MyChannel.call(s, c) }.as(Node))
     end
 
     # Raised if duplicate route found.

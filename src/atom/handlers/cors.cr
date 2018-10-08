@@ -1,12 +1,12 @@
 require "http/server/handler"
 
-module Prism::Handlers
+module Atom::Handlers
   # Extracted from [kemalyst](https://github.com/kemalyst/kemalyst/blob/master/src/kemalyst/handler/cors.cr).
   #
   # See [CORS on Wiki](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing).
   #
   # ```
-  # cors = Prism::Handlers::CORS.new(allow_headers: %w(accept content-type authorization))
+  # cors = Atom::Handlers::CORS.new(allow_headers: %w(accept content-type authorization))
   # ```
   class CORS
     include HTTP::Handler

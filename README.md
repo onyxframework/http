@@ -1,22 +1,16 @@
-# ![Prism](https://user-images.githubusercontent.com/7955682/40576015-3d691524-60f8-11e8-8b6a-3d17c3bd11e6.png)
+# ⚛️ Atom::Web
 
 [![Built with Crystal](https://img.shields.io/badge/built%20with-crystal-000000.svg?style=flat-square)](https://crystal-lang.org/)
-[![Build status](https://img.shields.io/travis/vladfaust/prism/master.svg?style=flat-square)](https://travis-ci.org/vladfaust/prism)
-[![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg?style=flat-square)](https://github.vladfaust.com/prism)
-[![Releases](https://img.shields.io/github/release/vladfaust/prism.svg?style=flat-square)](https://github.com/vladfaust/prism/releases)
+[![Build status](https://img.shields.io/travis/atomframework/web/master.svg?style=flat-square)](https://travis-ci.org/atomframework/web)
+[![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg?style=flat-square)](https://atomframework.github.io/web/)
+[![Releases](https://img.shields.io/github/release/atomframework/web.svg?style=flat-square)](https://github.com/atomframework/web/releases)
 [![Awesome](https://github.com/vladfaust/awesome/blob/badge-flat-alternative/media/badge-flat-alternative.svg)](https://github.com/veelenga/awesome-crystal)
 [![vladfaust.com](https://img.shields.io/badge/style-.com-lightgrey.svg?longCache=true&style=flat-square&label=vladfaust&colorB=0a83d8)](https://vladfaust.com)
 [![Patrons count](https://img.shields.io/badge/dynamic/json.svg?label=patrons&url=https://www.patreon.com/api/user/11296360&query=$.included[0].attributes.patron_count&style=flat-square&colorB=red&maxAge=86400)](https://www.patreon.com/vladfaust)
 
-A lightning-fast and strictly-typed web framework for [Crystal](https://crystal-lang.org).
+A collection of HTTP components used in [Atom Framework](https://github.com/atomframework/atom).
 
 [![Become Patron](https://vladfaust.com/img/patreon-small.svg)](https://www.patreon.com/vladfaust)
-
-## Projects using Prism
-
-* [Crystal Jobs](https://crystaljobs.org)
-* [Crystal World](https://github.com/vladfaust/crystalworld)
-* *add yours!*
 
 ## Installation
 
@@ -24,24 +18,42 @@ Add this to your application's `shard.yml`:
 
 ```yaml
 dependencies:
-  prism:
-    github: vladfaust/prism
+  atom-web:
+    github: atomframework/web
     version: ~> 0.4.0
 ```
 
-This shard follows [Semantic Versioning v2.0.0](http://semver.org/), so check [releases](https://github.com/vladfaust/prism/releases) and change the `version` accordingly.
+This shard follows [Semantic Versioning v2.0.0](http://semver.org/), so check [releases](https://github.com/atomframework/web/releases) and change the `version` accordingly.
 
-## Basic example
+## Included components
 
-Please refer to the API documentation available online at [github.vladfaust.com/prism](https://github.vladfaust.com/prism).
+* [Action](https://atomframework.github.io/web/Atom/Web/Action.html) - ensapsulates logic and rendering
+* [Channel](https://atomframework.github.io/web/Atom/Web/Channel.html) - convenient websockets wrapper
+* Handlers
+  * [CORS](https://atomframework.github.io/web/Atom/Web/Handlers/CORS.html) - handles [CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
+  * [Proc](https://atomframework.github.io/web/Atom/Web/Handlers/Proc.html) - calls a proc on each call
+  * [RequestLogger](https://atomframework.github.io/web/Atom/Web/Handlers/RequestLogger.html) - colorfully logs requests
+  * [Rescuer](https://atomframework.github.io/web/Atom/Web/Handlers/Rescuer.html) - rescues errors
+  * [Router](https://atomframework.github.io/web/Atom/Web/Handlers/Router.html) - routes requests
+
+## Usage
+
+* [Without Atom](#without-atom)
+  * [Basic example](#basic-example)
+  * [Custom JSON renderer](#custom-json-renderer-example)
+  * [Websockets](#websockets-example)
+
+### Without [Atom](https://github.com/atomframework/atom)
+
+[Atom](https://github.com/atomframework/atom) reduces overall code by wrapping common scenarios into macros, so the code below is quite verbose.
+
+#### Basic example
 
 ```crystal
-require "prism"
-require "prism/handlers/router"
-require "prism/handlers/request_logger"
+require "atom-web"
 
 struct KnockKnock
-  include Prism::Action
+  include Atom::Action
 
   params do
     type who : String
@@ -55,24 +67,26 @@ struct KnockKnock
   end
 end
 
-router = Prism::Handlers::Router.new do
+logger = Logger.new(STDOUT, Logger::DEBUG)
+request_logger = Atom::Handlers::RequestLogger.new(logger)
+
+router = Atom::Handlers::Router.new do
   get "/:who", KnockKnock
 end
 
-logger = Logger.new(STDOUT, Logger::DEBUG)
-request_logger = Prism::Handlers::RequestLogger.new(logger)
-handlers = [request_logger, router]
-
-server = HTTP::Server.new(handlers) do |context|
-  if action = context.request.action
-    action.call(context)
+server = HTTP::Server.new([request_logger, router]) do |context|
+  if proc = context.proc
+    proc.call(context)
   else
-    context.response.status_code = 404
-    context.response.print("Not Found: #{context.request.path}")
+    context.response.respond_with_error("Not Found: #{context.request.path}", 404)
   end
+rescue ex : Params::Error
+  context.response.respond_with_error(ex.message, 400)
 end
 
 server.bind_tcp(5000)
+logger.info("Listening at http://#{server.addresses.first}")
+
 server.listen
 
 # DEBUG -- :     GET /me 200 177μs
@@ -84,15 +98,95 @@ Knock-knock me
 Knock-knock me
 ```
 
-## Websockets example
+#### Custom JSON renderer example
+
+In this example, an application always returns formatted JSON responses.
+
+```crystal
+require "atom-web"
+
+record User, id : Int32, name : String
+
+Users = {1 => User.new(1, "John")}
+
+module CustomRenderer
+  def render(value)
+    success = (200..299) === context.response.status_code
+
+    json = JSON::Builder.new(context.response.output)
+    json.document do
+      json.object do
+        json.field("success", success)
+        json.field(success ? "data" : "error") do
+          value.to_json(json)
+        end
+        json.field("status", context.response.status_code)
+      end
+    end
+
+    context.response.content_type = "application/json; charset=utf-8"
+  end
+end
+
+struct Actions::GetUser
+  include Atom::Action
+  include CustomRenderer
+
+  params do
+    type id : Int32
+  end
+
+  def call
+    if user = Users[id]?
+      render(Views::User.new(user))
+    else
+      halt(404, "User not found with id #{id}")
+    end
+  end
+end
+
+struct Views::User
+  def initialize(@user : ::User)
+  end
+
+  def to_json(json)
+    json.object do
+      json.field("id", @user.id)
+      json.field("name", @user.name)
+    end
+  end
+end
+
+request_logger = Atom::Handlers::RequestLogger.new(Logger.new(STDOUT, Logger::DEBUG))
+
+router = Atom::Handlers::Router.new do
+  get "/users/:id", Actions::GetUser
+end
+
+server = HTTP::Server.new([request_logger, router]) do |context|
+  if proc = context.proc
+    proc.call(context)
+  else
+    context.response.respond_with_error("Not Found: #{context.request.path}", 404)
+  end
+rescue ex : Params::Error
+  context.response.respond_with_error(ex.message, 400)
+end
+
+server.bind_tcp(5000)
+puts "Listening at http://#{server.addresses.first}"
+server.listen
+```
+
+#### Websockets example
 
 We call them *Channels* for convenience.
 
 ```crystal
-require "prism"
+require "atom-web"
 
 class Notifications
-  include Prism::Channel
+  include Atom::Channel
 
   @@subscriptions = Array(self).new
 
@@ -110,7 +204,7 @@ class Notifications
   end
 end
 
-router = Prism::Handlers::Router.new do
+router = Atom::Handlers::Router.new do
   ws "/notifications" do |socket, env|
     Notifications.subscribe(socket, env)
   end
@@ -123,7 +217,7 @@ Notifications.notify("Something happened!") # Will notify all subscribers binded
 
 ## Contributing
 
-1. Fork it ( https://github.com/vladfaust/prism/fork )
+1. Fork it ( https://github.com/atomframework/web/fork )
 2. Create your feature branch (git checkout -b my-new-feature)
 3. Commit your changes (git commit -am 'Add some feature')
 4. Push to the branch (git push origin my-new-feature)
