@@ -20,7 +20,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   atom-web:
     github: atomframework/web
-    version: ~> 0.4.0
+    version: ~> 0.5.0
 ```
 
 This shard follows [Semantic Versioning v2.0.0](http://semver.org/), so check [releases](https://github.com/atomframework/web/releases) and change the `version` accordingly.
