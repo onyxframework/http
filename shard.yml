@@ -6,8 +6,6 @@ authors:
 
 crystal: 0.26.0
 
-license: MIT
-
 dependencies:
   radix:
     github: luislavena/radix
