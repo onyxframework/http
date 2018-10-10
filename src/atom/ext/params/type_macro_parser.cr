@@ -22,7 +22,7 @@ module Params
           puts print_indent + "}#{" | ::Nil" if @nilable[@indent]?},"
           @nilable[@indent] = false
         else
-          raise ArgumentError.new("Unsupported params definition syntax: `#{call}`")
+          raise "Unsupported params definition syntax: `#{call}`. Please see examples."
         end
       end
     end

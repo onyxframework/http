@@ -16,8 +16,10 @@ struct ActionWithParams
     end
   end
 
+  class_getter assert : String?
+
   def call
-    text("#{id}, #{name}, #{user.email}, #{user.active}, #{meta.not_nil!.foo}")
+    @@assert = "#{params.id}, #{params.name}, #{params.user.email}, #{params.user.active}, #{params.meta.not_nil!.foo}"
   end
 
   describe self do
@@ -25,7 +27,7 @@ struct ActionWithParams
 
     it do
       response = handle_request(self, Req.new("GET", "/?id=42&name=foo&user[email]=foo&user[active]=true&meta[foo]=17"))
-      response.body.should eq "42, foo, foo, true, 17.0"
+      self.assert.should eq "42, foo, foo, true, 17.0"
     end
 
     it "raises on missing param" do

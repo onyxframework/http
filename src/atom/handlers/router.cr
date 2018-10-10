@@ -3,7 +3,7 @@ require "http/server/handler"
 require "http/web_socket"
 
 require "../ext/http/request/path_params"
-require "../ext/http/context/proc"
+require "../ext/http/server/context/proc"
 
 module Atom::Handlers
   # Routes a request's path, assigning matching proc to `HTTP::Server::Context#proc` and path params to `HTTP::Request#path_params`.
