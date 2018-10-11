@@ -4,7 +4,7 @@ require "../ext/http/server/response/error"
 require "./params"
 require "./errors"
 
-module Atom
+class Atom
   module Handlers
     class Router
       # Draw a route for *path* and *methods* calling *action*. See `Action`.

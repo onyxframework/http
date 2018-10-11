@@ -1,7 +1,7 @@
 require "http/server/context"
 require "./action/*"
 
-module Atom
+class Atom
   # A callable HTTP action with [Params](https://github.com/vladfaust/params.cr) included.
   #
   # An Action itself isn't responsible for rendering. It *should* return an `Atom::View` instance,

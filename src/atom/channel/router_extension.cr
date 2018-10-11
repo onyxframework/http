@@ -1,6 +1,6 @@
 require "../handlers/router"
 
-module Atom
+class Atom
   module Handlers
     class Router
       # Draw a WebSocket route for *path* instantiating *channel*. See `Channel`.

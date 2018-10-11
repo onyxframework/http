@@ -1,4 +1,4 @@
 require "./atom/*"
 
-module Atom
+class Atom
 end

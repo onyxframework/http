@@ -2,7 +2,7 @@ require "http/server/context"
 require "http/web_socket"
 require "./channel/*"
 
-module Atom
+class Atom
   # A callable websocket Channel with [Params](https://github.com/vladfaust/params.cr) included.
   #
   # Channels have special `.params` definition syntax, it's basically a convenient wrapper
