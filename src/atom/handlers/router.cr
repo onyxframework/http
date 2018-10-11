@@ -38,8 +38,8 @@ module Atom::Handlers
   class Router
     include HTTP::Handler
 
-    private alias ContextProc = ::Proc(HTTP::Server::Context, Nil)
-    private alias WebSocketProc = ::Proc(HTTP::WebSocket, HTTP::Server::Context, Nil)
+    alias ContextProc = ::Proc(HTTP::Server::Context, Nil)
+    alias WebSocketProc = ::Proc(HTTP::WebSocket, HTTP::Server::Context, Nil)
     private alias Node = ContextProc | HTTP::WebSocketHandler
 
     # :nodoc:
