@@ -158,12 +158,16 @@ module Atom::Action
             )
               {% if declaration.block %}
                 {{declaration.block.body}}
+              {% else %}
+                super({{declaration.args[0].name.stringify.underscore.split("_").map(&.capitalize).join(" ")}})
               {% end %}
           end
         {% else %}
           def initialize
             {% if declaration.block %}
               {{declaration.block.body}}
+            {% else %}
+              super({{declaration.args[0].name.stringify.underscore.split("_").map(&.capitalize).join(" ")}})
             {% end %}
           end
         {% end %}
