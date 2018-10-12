@@ -15,7 +15,7 @@ module Params
           puts print_indent + $~["name"] + ": {"
           @nilable[@indent] = true if $~["nilable"]?
           @indent += 1
-        when /^\s*type\((\w+) : ([\w\| \?\(\):]+)\)$/
+        when /^\s*type\((\w+) : ((?:Union)?[\w\,| \?\(\):]+)\)$/
           puts print_indent + $~[1] + ": " + $~[2] + ","
         when /^\s*end$/
           @indent -= 1
