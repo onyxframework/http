@@ -29,7 +29,7 @@ struct ActionWithErrors
       rescue e : ActionWithErrors::Foo
         e.code.should eq 404
         e.payload.should be_nil
-        e.message.should be_nil
+        e.message.should eq "Foo"
       end
     end
 
