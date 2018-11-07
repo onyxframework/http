@@ -1,14 +1,7 @@
-dist: xenial
-language: generic
-sudo: required
-services:
-  - docker
-before_install:
-  - docker pull crystallang/crystal:nightly
+language: crystal
 script:
-  - docker run -v ${PWD}:/x -w /x crystallang/crystal:nightly bash -c "/usr/bin/shards install"
-  - docker run -v ${PWD}:/x -w /x crystallang/crystal:nightly bash -c "/usr/bin/crystal spec"
-  - docker run -v ${PWD}:/x -w /x crystallang/crystal:nightly bash -c "/usr/bin/crystal docs"
+  - crystal spec
+  - crystal docs
 deploy:
   provider: pages
   skip_cleanup: true
