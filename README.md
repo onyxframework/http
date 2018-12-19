@@ -1,7 +1,7 @@
 # Onyx::REST
 
 [![Built with Crystal](https://img.shields.io/badge/built%20with-crystal-000000.svg?style=flat-square)](https://crystal-lang.org/)
-[![Travis CI build](https://img.shields.io/travis/com/onyxframework/rest/master.svg?style=flat-square)](https://travis-ci.com/onyxframework/rest)
+[![Travis CI build](https://img.shields.io/travis/onyxframework/rest/master.svg?style=flat-square)](https://travis-ci.org/onyxframework/rest)
 [![API docs](https://img.shields.io/badge/api_docs-online-brightgreen.svg?style=flat-square)](https://api.onyxframework.org/rest)
 [![Latest release](https://img.shields.io/github/release/onyxframework/rest.svg?style=flat-square)](https://github.com/onyxframework/rest/releases)
 
@@ -43,15 +43,14 @@ server.listen
 ```
 
 ```console
- INFO [14:04:31.493] ⬛ Onyx::REST::Server is listening at http://127.0.0.1:5000
- INFO [14:04:32.578]      GET / 200 127μs
- INFO [14:04:34.082] ⬛ Onyx::REST::Server is shutting down!
+INFO [14:04:31.493] ⬛ Onyx::REST::Server is listening at http://127.0.0.1:5000
+INFO [14:04:32.578]      GET / 200 127μs
+INFO [14:04:34.082] ⬛ Onyx::REST::Server is shutting down!
 ```
 
 ```console
 $ curl http://localhost:5000
 Hello Onyx!
-$
 ```
 
 ### Handlers
