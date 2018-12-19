@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.27.0">
+
+
+<link href="../../../css/style.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="../../../js/doc.js"></script>
+<script type="text/javascript">
+  CrystalDoc.base_path = "../../../";
+</script>
+
+  <meta id="repository-name" content="github.com/onyxframework/rest">
+  <title>Onyx::REST::Rescuers::Standard - github.com/onyxframework/rest</title>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="repository-links">
+      <a href="../../../index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent " data-id="github.com/onyxframework/rest/HTTP" data-name="http">
+      <a href="../../../HTTP.html">HTTP</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/HTTP/Request" data-name="http::request">
+      <a href="../../../HTTP/Request.html">Request</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/onyxframework/rest/HTTP/Server" data-name="http::server">
+      <a href="../../../HTTP/Server.html">Server</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/HTTP/Server/Response" data-name="http::server::response">
+      <a href="../../../HTTP/Server/Response.html">Response</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent open current" data-id="github.com/onyxframework/rest/Onyx" data-name="onyx">
+      <a href="../../../Onyx.html">Onyx</a>
+      
+        <ul>
+  
+  <li class="parent open current" data-id="github.com/onyxframework/rest/Onyx/REST" data-name="onyx::rest">
+      <a href="../../../Onyx/REST.html">REST</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/CORS" data-name="onyx::rest::cors">
+      <a href="../../../Onyx/REST/CORS.html">CORS</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Error" data-name="onyx::rest::error(code)">
+      <a href="../../../Onyx/REST/Error.html">Error</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/onyxframework/rest/Onyx/REST/Errors" data-name="onyx::rest::errors">
+      <a href="../../../Onyx/REST/Errors.html">Errors</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Errors/NotFound" data-name="onyx::rest::errors::notfound">
+      <a href="../../../Onyx/REST/Errors/NotFound.html">NotFound</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Errors/ParamsError" data-name="onyx::rest::errors::paramserror">
+      <a href="../../../Onyx/REST/Errors/ParamsError.html">ParamsError</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/onyxframework/rest/Onyx/REST/Loggers" data-name="onyx::rest::loggers">
+      <a href="../../../Onyx/REST/Loggers.html">Loggers</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Loggers/Standard" data-name="onyx::rest::loggers::standard">
+      <a href="../../../Onyx/REST/Loggers/Standard.html">Standard</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/onyxframework/rest/Onyx/REST/Renderers" data-name="onyx::rest::renderers">
+      <a href="../../../Onyx/REST/Renderers.html">Renderers</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Renderers/JSON" data-name="onyx::rest::renderers::json">
+      <a href="../../../Onyx/REST/Renderers/JSON.html">JSON</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/RequestID" data-name="onyx::rest::requestid">
+      <a href="../../../Onyx/REST/RequestID.html">RequestID</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Rescuer" data-name="onyx::rest::rescuer(t)">
+      <a href="../../../Onyx/REST/Rescuer.html">Rescuer</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="github.com/onyxframework/rest/Onyx/REST/Rescuers" data-name="onyx::rest::rescuers">
+      <a href="../../../Onyx/REST/Rescuers.html">Rescuers</a>
+      
+        <ul>
+  
+  <li class=" current" data-id="github.com/onyxframework/rest/Onyx/REST/Rescuers/Standard" data-name="onyx::rest::rescuers::standard">
+      <a href="../../../Onyx/REST/Rescuers/Standard.html">Standard</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/onyxframework/rest/Onyx/REST/Router" data-name="onyx::rest::router">
+      <a href="../../../Onyx/REST/Router.html">Router</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Router/DuplicateRouteError" data-name="onyx::rest::router::duplicaterouteerror">
+      <a href="../../../Onyx/REST/Router/DuplicateRouteError.html">DuplicateRouteError</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Server" data-name="onyx::rest::server">
+      <a href="../../../Onyx/REST/Server.html">Server</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">class</span> Onyx::REST::Rescuers::Standard
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../../Onyx/REST/Rescuers/Standard.html">Onyx::REST::Rescuers::Standard</a></li><li class="superclass"><a href="../../../Onyx/REST/Rescuer.html">Onyx::REST::Rescuer(Exception)</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+
+
+
+
+  <h2>Overview</h2>
+
+  <p>A handler which rescues all <code>Exception</code>s and logs them colorfully into a standard <code>Logger</code>.
+It sets <code>HTTP::Context::Response#error</code> to the error instance before handler call,
+otherwise it prints the <code>"500 Internal <a href="../../../Onyx/REST/Server.html">Server</a> <a href="../../../Onyx/REST/Error.html">Error</a>"</code> message into the response body.
+It also logs the <code><a href="../../../HTTP/Request.html#id%3AString%3F-instance-method">HTTP::Request#id</a></code> if it's present.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>Defined in:</h2>
+  
+    
+      <a href="https://github.com/onyxframework/rest/blob/65921e2f903a9b24912f7e06d56497e13d8162cd/src/onyx-rest/rescuers/standard.cr#L12" target="_blank">
+        onyx-rest/rescuers/standard.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+  <h2>Constructors</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new%28handler%3AHTTP%3A%3AHandler%3F%3Dnil%2C%2A%2Clogger%3ALogger%3DLogger.new%28STDERR%29%2Cverbose%3ABool%3Dtrue%29-class-method" class="signature"><strong>.new</strong>(handler : HTTP::Handler? = <span class="n">nil</span>, *, logger : Logger = <span class="t">Logger</span>.<span class="k">new</span>(<span class="t">STDERR</span>), verbose : Bool = <span class="n">true</span>)</a>
+        
+          <div class="summary"><p>Set <em>verbose</em> to <code>false</code> to turn off logging errors' backtraces.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+  <h2>Instance Method Summary</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#before_handler%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AException%29-instance-method" class="signature"><strong>#before_handler</strong>(context : HTTP::Server::Context, error : Exception)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#fallback%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AException%29-instance-method" class="signature"><strong>#fallback</strong>(context : HTTP::Server::Context, error : Exception)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#logger%3ALogger-instance-method" class="signature"><strong>#logger</strong> : Logger</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#logger%3D%28logger%3ALogger%29-instance-method" class="signature"><strong>#logger=</strong>(logger : Logger)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#process%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AException%29-instance-method" class="signature"><strong>#process</strong>(context : HTTP::Server::Context, error : Exception)</a>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+    
+
+  <h3>Instance methods inherited from class <code><a href="../../../Onyx/REST/Rescuer.html">Onyx::REST::Rescuer(Exception)</a></code></h3>
+  
+  
+    <a href="../../../Onyx/REST/Rescuer.html#before_handler%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method" class="tooltip">
+      <span>before_handler(context : HTTP::Server::Context, error : T)</span>
+    before_handler</a>, 
+    
+  
+    <a href="../../../Onyx/REST/Rescuer.html#call%28context%29-instance-method" class="tooltip">
+      <span>call(context)</span>
+    call</a>, 
+    
+  
+    <a href="../../../Onyx/REST/Rescuer.html#fallback%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method" class="tooltip">
+      <span>fallback(context : HTTP::Server::Context, error : T)</span>
+    fallback</a>, 
+    
+  
+    <a href="../../../Onyx/REST/Rescuer.html#handler%3AHTTP%3A%3AHandler%3F-instance-method" class="tooltip">
+      <span>handler : HTTP::Handler?</span>
+    handler</a>, 
+    
+  
+    <a href="../../../Onyx/REST/Rescuer.html#handler%3D%28handler%3AHTTP%3A%3AHandler%3F%29-instance-method" class="tooltip">
+      <span>handler=(handler : HTTP::Handler?)</span>
+    handler=</a>, 
+    
+  
+    <a href="../../../Onyx/REST/Rescuer.html#process%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method" class="tooltip">
+      <span>process(context : HTTP::Server::Context, error : T)</span>
+    process</a>
+    
+  
+
+
+    
+
+  <h3>Constructor methods inherited from class <code><a href="../../../Onyx/REST/Rescuer.html">Onyx::REST::Rescuer(Exception)</a></code></h3>
+  
+  
+    <a href="../../../Onyx/REST/Rescuer.html#new%28handler%3AHTTP%3A%3AHandler%3F%3Dnil%29-class-method" class="tooltip">
+      <span>new(handler : HTTP::Handler? = <span class="n">nil</span>)</span>
+    new</a>
+    
+  
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+  <h2>Constructor Detail</h2>
+  
+    <div class="entry-detail" id="new(handler:HTTP::Handler?=nil,*,logger:Logger=Logger.new(STDERR),verbose:Bool=true)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(handler : HTTP::Handler? = <span class="n">nil</span>, *, logger : Logger = <span class="t">Logger</span>.<span class="k">new</span>(<span class="t">STDERR</span>), verbose : Bool = <span class="n">true</span>)
+
+        <a class="method-permalink" href="#new%28handler%3AHTTP%3A%3AHandler%3F%3Dnil%2C%2A%2Clogger%3ALogger%3DLogger.new%28STDERR%29%2Cverbose%3ABool%3Dtrue%29-class-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Set <em>verbose</em> to <code>false</code> to turn off logging errors' backtraces.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/rest/blob/65921e2f903a9b24912f7e06d56497e13d8162cd/src/onyx-rest/rescuers/standard.cr#L16" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+
+  <h2>Instance Method Detail</h2>
+  
+    <div class="entry-detail" id="before_handler(context:HTTP::Server::Context,error:Exception)-instance-method">
+      <div class="signature">
+        
+        def <strong>before_handler</strong>(context : HTTP::Server::Context, error : Exception)
+
+        <a class="method-permalink" href="#before_handler%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AException%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/rest/blob/65921e2f903a9b24912f7e06d56497e13d8162cd/src/onyx-rest/rescuers/standard.cr#L43" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="fallback(context:HTTP::Server::Context,error:Exception)-instance-method">
+      <div class="signature">
+        
+        def <strong>fallback</strong>(context : HTTP::Server::Context, error : Exception)
+
+        <a class="method-permalink" href="#fallback%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AException%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/rest/blob/65921e2f903a9b24912f7e06d56497e13d8162cd/src/onyx-rest/rescuers/standard.cr#L47" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="logger:Logger-instance-method">
+      <div class="signature">
+        
+        def <strong>logger</strong> : Logger
+
+        <a class="method-permalink" href="#logger%3ALogger-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/rest/blob/65921e2f903a9b24912f7e06d56497e13d8162cd/src/onyx-rest/rescuers/standard.cr#L13" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="logger=(logger:Logger)-instance-method">
+      <div class="signature">
+        
+        def <strong>logger=</strong>(logger : Logger)
+
+        <a class="method-permalink" href="#logger%3D%28logger%3ALogger%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/rest/blob/65921e2f903a9b24912f7e06d56497e13d8162cd/src/onyx-rest/rescuers/standard.cr#L13" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="process(context:HTTP::Server::Context,error:Exception)-instance-method">
+      <div class="signature">
+        
+        def <strong>process</strong>(context : HTTP::Server::Context, error : Exception)
+
+        <a class="method-permalink" href="#process%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AException%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/rest/blob/65921e2f903a9b24912f7e06d56497e13d8162cd/src/onyx-rest/rescuers/standard.cr#L25" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>
