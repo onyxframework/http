@@ -5,7 +5,7 @@
 [![API docs](https://img.shields.io/badge/api_docs-online-brightgreen.svg?style=flat-square)](https://api.onyxframework.org/rest)
 [![Latest release](https://img.shields.io/github/release/onyxframework/rest.svg?style=flat-square)](https://github.com/onyxframework/rest/releases)
 
-A REST API framework [Crystal](https://crystal-lang.org).
+A REST API framework for [Crystal](https://crystal-lang.org).
 
 ## About
 
