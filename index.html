@@ -201,7 +201,7 @@
 <h1>Onyx::REST</h1>
 
 <p><a href="https://crystal-lang.org/" target="_blank"><img src="https://img.shields.io/badge/built%20with-crystal-000000.svg?style=flat-square" alt="Built with Crystal"/></a>
-<a href="https://travis-ci.com/onyxframework/rest" target="_blank"><img src="https://img.shields.io/travis/com/onyxframework/rest/master.svg?style=flat-square" alt="Travis CI build"/></a>
+<a href="https://travis-ci.org/onyxframework/rest" target="_blank"><img src="https://img.shields.io/travis/onyxframework/rest/master.svg?style=flat-square" alt="Travis CI build"/></a>
 <a href="https://api.onyxframework.org/rest" target="_blank"><img src="https://img.shields.io/badge/api_docs-online-brightgreen.svg?style=flat-square" alt="API docs"/></a>
 <a href="https://github.com/onyxframework/rest/releases" target="_blank"><img src="https://img.shields.io/github/release/onyxframework/rest.svg?style=flat-square" alt="Latest release"/></a></p>
 
@@ -238,13 +238,12 @@ server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</s
 server.bind_tcp(<span class="n">5000</span>)
 server.listen</code></pre>
 
-<pre><code class="language-console"> INFO [14:04:31.493] ⬛ Onyx::REST::Server is listening at http://127.0.0.1:5000
- INFO [14:04:32.578]      GET / 200 127μs
- INFO [14:04:34.082] ⬛ Onyx::REST::Server is shutting down!</code></pre>
+<pre><code class="language-console">INFO [14:04:31.493] ⬛ Onyx::REST::Server is listening at http://127.0.0.1:5000
+INFO [14:04:32.578]      GET / 200 127μs
+INFO [14:04:34.082] ⬛ Onyx::REST::Server is shutting down!</code></pre>
 
 <pre><code class="language-console">$ curl http://localhost:5000
-Hello Onyx!
-$</code></pre>
+Hello Onyx!</code></pre>
 
 <h3>Handlers</h3>
 
