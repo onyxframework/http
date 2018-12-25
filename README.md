@@ -55,17 +55,17 @@ Hello Onyx!
 
 ### Handlers
 
-Fundamentally, every Onyx::REST application is a stack of HTTP handlers. To add new functionality, you add new handlers to the stack. There is a number of implemented handlers which fit the most common REST application needs:
+Fundamentally, every Onyx::REST application is a stack of HTTP handlers passed to the [Onyx::REST::Server](https://api.onyxframework.org/rest/Onyx/REST/Server.html). To add new functionality, you add new handlers to the stack. There is a number of implemented handlers which fit the most common REST application needs:
 
 * [Onyx::REST::Router](https://api.onyxframework.org/rest/Onyx/REST/Router.html) — routes the request to a proc
 * [Onyx::REST::CORS](https://api.onyxframework.org/rest/Onyx/REST/CORS.html) — Cross Origin Resource Sharing handler
 * [Onyx::REST::RequestID](https://api.onyxframework.org/rest/Onyx/REST/RequestID.html) — adds ID to the request
 * Rescuers — rescue unhandled errors
-  * [Onyx::REST::Rescuers::Standard](https://api.onyxframework.org/rest/Onyx/REST/Rescuers/Standard.html) — rescue errors and log to a standard Crystal logger
+  * [Onyx::REST::Rescuers::Standard](https://api.onyxframework.org/rest/Onyx/REST/Rescuers/Standard.html) — rescues errors and logs them colorfully to a standard Crystal logger
 * Loggers — log requests
-  * [Onyx::REST::Loggers::Standard](https://api.onyxframework.org/rest/Onyx/REST/Loggers/Standard.html) — log to a standard Crystal logger
+  * [Onyx::REST::Loggers::Standard](https://api.onyxframework.org/rest/Onyx/REST/Loggers/Standard.html) — logs requests colorfully to a standard Crystal logger
 * Renderers — render responses
-  * [Onyx::REST::Renderers::JSON](https://api.onyxframework.org/rest/Onyx/REST/Renderers/JSON.html) — render to JSON
+  * [Onyx::REST::Renderers::JSON](https://api.onyxframework.org/rest/Onyx/REST/Renderers/JSON.html) — renders to JSON
 
 ### REST error
 
