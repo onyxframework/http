@@ -143,4 +143,4 @@ Vlad Faust
 
 ## Licensing
 
-This software is licensed under BSD 3-Clause License with "Commons Clause" License Condition v1.0. See [LICENSE](LICENSE).
+This software is licensed under BSD 3-Clause License.
