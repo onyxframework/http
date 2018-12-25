@@ -82,7 +82,9 @@ class Onyx::REST::Router
 
     begin
       if proc = result.payload
-        context.request.path_params = result.params
+        if params = result.params
+          context.request.path_params = params
+        end
 
         proc.call(context)
 
