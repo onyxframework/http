@@ -24,8 +24,8 @@ class Onyx::REST::Server < HTTP::Server
   end
 
   # Initialize with a single *handler*.
-  def self.new(handler : HTTP::Handler, *args)
-    new([handler], *args)
+  def self.new(handler : HTTP::Handler, *args, **nargs)
+    new([handler], *args, **nargs)
   end
 
   # Start listening for requests. Blocks the runtime, just like the vanilla `HTTP::Server`.
