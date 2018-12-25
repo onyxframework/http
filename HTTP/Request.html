@@ -230,21 +230,21 @@
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/onyxframework/rest/blob/2c9a565199b661bce93977c6037ffb4a5979a4cf/src/onyx-rest/ext/http/request/id.cr#L2" target="_blank">
+      <a href="https://github.com/onyxframework/rest/blob/d85e0ce92ef7b1817f6bc7ec4328360eff74b401/src/onyx-rest/ext/http/request/id.cr#L2" target="_blank">
         onyx-rest/ext/http/request/id.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/onyxframework/rest/blob/2c9a565199b661bce93977c6037ffb4a5979a4cf/src/onyx-rest/ext/http/request/path_params.cr#L2" target="_blank">
+      <a href="https://github.com/onyxframework/rest/blob/d85e0ce92ef7b1817f6bc7ec4328360eff74b401/src/onyx-rest/ext/http/request/path_params.cr#L2" target="_blank">
         onyx-rest/ext/http/request/path_params.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/onyxframework/rest/blob/2c9a565199b661bce93977c6037ffb4a5979a4cf/src/onyx-rest/ext/http/request.cr#L3" target="_blank">
+      <a href="https://github.com/onyxframework/rest/blob/d85e0ce92ef7b1817f6bc7ec4328360eff74b401/src/onyx-rest/ext/http/request.cr#L3" target="_blank">
         onyx-rest/ext/http/request.cr
       </a>
     
@@ -263,28 +263,31 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#id%3AString%3F-instance-method" class="signature"><strong>#id</strong> : String?</a>
+        <a href="#id-instance-method" class="signature"><strong>#id</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#id%3D%28id%3AString%29-instance-method" class="signature"><strong>#id=</strong>(id : String)</a>
         
           <div class="summary"><p>A request ID.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#id%3D%28id%3AString%3F%29-instance-method" class="signature"><strong>#id=</strong>(id : String?)</a>
-        
-          <div class="summary"><p>A request ID.</p></div>
+        <a href="#id%3F%3AString%3F-instance-method" class="signature"><strong>#id?</strong> : String?</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#path_params%3AHash%28String%2CString%29%3F-instance-method" class="signature"><strong>#path_params</strong> : Hash(String, String)?</a>
+        <a href="#path_params%3AHash%28String%2CString%29-instance-method" class="signature"><strong>#path_params</strong> : Hash(String, String)</a>
         
           <div class="summary"><p>A hash containing path params (extracted from the request's path).</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#path_params%3D%28path_params%3AHash%28String%2CString%29%3F%29-instance-method" class="signature"><strong>#path_params=</strong>(path_params : Hash(String, String)?)</a>
+        <a href="#path_params%3D%28path_params%3AHash%28String%2CString%29%29-instance-method" class="signature"><strong>#path_params=</strong>(path_params : Hash(String, String))</a>
         
           <div class="summary"><p>A hash containing path params (extracted from the request's path).</p></div>
         
@@ -327,12 +330,26 @@
 
   <h2>Instance Method Detail</h2>
   
-    <div class="entry-detail" id="id:String?-instance-method">
+    <div class="entry-detail" id="id-instance-method">
       <div class="signature">
         
-        def <strong>id</strong> : String?
+        def <strong>id</strong>
 
-        <a class="method-permalink" href="#id%3AString%3F-instance-method">#</a>
+        <a class="method-permalink" href="#id-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="id=(id:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>id=</strong>(id : String)
+
+        <a class="method-permalink" href="#id%3D%28id%3AString%29-instance-method">#</a>
       </div>
       
         <div class="doc"><p>A request ID. Can be set by <code><a href="../Onyx/REST/RequestID.html">Onyx::REST::RequestID</a></code>.</p></div>
@@ -340,69 +357,73 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/rest/blob/2c9a565199b661bce93977c6037ffb4a5979a4cf/src/onyx-rest/ext/http/request/id.cr#L4" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/rest/blob/d85e0ce92ef7b1817f6bc7ec4328360eff74b401/src/onyx-rest/ext/http/request/id.cr#L4" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="id=(id:String?)-instance-method">
+    <div class="entry-detail" id="id?:String?-instance-method">
       <div class="signature">
         
-        def <strong>id=</strong>(id : String?)
+        def <strong>id?</strong> : String?
 
-        <a class="method-permalink" href="#id%3D%28id%3AString%3F%29-instance-method">#</a>
+        <a class="method-permalink" href="#id%3F%3AString%3F-instance-method">#</a>
       </div>
-      
-        <div class="doc"><p>A request ID. Can be set by <code><a href="../Onyx/REST/RequestID.html">Onyx::REST::RequestID</a></code>.</p></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/rest/blob/2c9a565199b661bce93977c6037ffb4a5979a4cf/src/onyx-rest/ext/http/request/id.cr#L4" target="_blank">View source</a>]
-        
       </div>
     </div>
   
-    <div class="entry-detail" id="path_params:Hash(String,String)?-instance-method">
+    <div class="entry-detail" id="path_params:Hash(String,String)-instance-method">
       <div class="signature">
         
-        def <strong>path_params</strong> : Hash(String, String)?
+        def <strong>path_params</strong> : Hash(String, String)
 
-        <a class="method-permalink" href="#path_params%3AHash%28String%2CString%29%3F-instance-method">#</a>
+        <a class="method-permalink" href="#path_params%3AHash%28String%2CString%29-instance-method">#</a>
       </div>
       
         <div class="doc"><p>A hash containing path params (extracted from the request's path).
-It's automatically set when routing with <code><a href="../Onyx/REST/Router.html">Onyx::REST::Router</a></code>.</p>
+It's automatically set when routing with <code><a href="../Onyx/REST/Router.html">Onyx::REST::Router</a></code>, empty by default.</p>
 
-<p>For example, request with path <code>"/user/42/edit"</code>
-routed with <code>put "/user/:id/edit"</code> will have <code>{"id" => "42"}</code> path params.</p></div>
+<p>For example, request with path <code>"/user/42/edit"</code> is
+routed with <code>put "/user/:id/edit"</code> will have <code>{"id" => "42"}</code> path params.</p>
+
+<p><span class="flag purple">NOTE</span>  You must not modify this hash values directly (e.g. <code>req.path_params["foo"] = "bar"</code>).</p>
+
+<p><span class="flag orange">TODO</span>  Make this hash immutable.</p></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/rest/blob/2c9a565199b661bce93977c6037ffb4a5979a4cf/src/onyx-rest/ext/http/request/path_params.cr#L8" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/rest/blob/d85e0ce92ef7b1817f6bc7ec4328360eff74b401/src/onyx-rest/ext/http/request/path_params.cr#L15" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="path_params=(path_params:Hash(String,String)?)-instance-method">
+    <div class="entry-detail" id="path_params=(path_params:Hash(String,String))-instance-method">
       <div class="signature">
         
-        def <strong>path_params=</strong>(path_params : Hash(String, String)?)
+        def <strong>path_params=</strong>(path_params : Hash(String, String))
 
-        <a class="method-permalink" href="#path_params%3D%28path_params%3AHash%28String%2CString%29%3F%29-instance-method">#</a>
+        <a class="method-permalink" href="#path_params%3D%28path_params%3AHash%28String%2CString%29%29-instance-method">#</a>
       </div>
       
         <div class="doc"><p>A hash containing path params (extracted from the request's path).
-It's automatically set when routing with <code><a href="../Onyx/REST/Router.html">Onyx::REST::Router</a></code>.</p>
+It's automatically set when routing with <code><a href="../Onyx/REST/Router.html">Onyx::REST::Router</a></code>, empty by default.</p>
 
-<p>For example, request with path <code>"/user/42/edit"</code>
-routed with <code>put "/user/:id/edit"</code> will have <code>{"id" => "42"}</code> path params.</p></div>
+<p>For example, request with path <code>"/user/42/edit"</code> is
+routed with <code>put "/user/:id/edit"</code> will have <code>{"id" => "42"}</code> path params.</p>
+
+<p><span class="flag purple">NOTE</span>  You must not modify this hash values directly (e.g. <code>req.path_params["foo"] = "bar"</code>).</p>
+
+<p><span class="flag orange">TODO</span>  Make this hash immutable.</p></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/rest/blob/2c9a565199b661bce93977c6037ffb4a5979a4cf/src/onyx-rest/ext/http/request/path_params.cr#L8" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/rest/blob/d85e0ce92ef7b1817f6bc7ec4328360eff74b401/src/onyx-rest/ext/http/request/path_params.cr#L15" target="_blank">View source</a>]
         
       </div>
     </div>
