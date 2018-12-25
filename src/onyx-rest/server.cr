@@ -39,9 +39,8 @@ class Onyx::REST::Server < HTTP::Server
     end
 
     Signal::INT.trap do
-      puts "\n"
-
       if logger = @logger
+        puts "\n"
         io = IO::Memory.new
         io << "⬛".colorize(:red).mode(:bold) << " " << @name
         io << " is shutting down!".colorize(:light_gray)
