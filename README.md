@@ -143,4 +143,6 @@ Vlad Faust
 
 ## Licensing
 
-This software is licensed under BSD 3-Clause License.
+This software is licensed under [BSD 3-Clause License](LICENSE).
+
+[![Open Source Initiative](https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Opensource.svg/100px-Opensource.svg.png)](https://opensource.org/licenses/BSD-3-Clause)
