@@ -39,11 +39,13 @@ class Onyx::REST
 
       def call(context)
         started_at = Time.monotonic
-        id = context.request.id.not_nil![0...8] if context.request.id
+
+        if context.request.id?
+          request_id = "[#{context.request.id[0...8]}]".colorize(:dark_gray)
+        end
 
         websocket = context.request.headers.includes_word?("Upgrade", "Websocket")
         if websocket
-          id = "[#{id}] ".colorize(:dark_gray) if context.request.id
           method = "WS".rjust(7).colorize(color(100)).mode(:bold)
           progess = "pending".colorize(:dark_gray)
 
@@ -59,13 +61,12 @@ class Onyx::REST
 
           resource = resource.colorize(color(100))
 
-          @logger.log(@severity, "#{id}#{method} #{resource} #{progess}")
+          @logger.log(@severity, "#{request_id}#{method} #{resource} #{progess}")
         end
 
         begin
           call_next(context)
         ensure
-          id = "[#{id}] ".colorize(:dark_gray) if context.request.id
           color = color(context.response.status_code)
           method = (websocket ? "WS" : context.request.method).rjust(7).colorize(color).mode(:bold)
           status_code = context.response.status_code.colorize(color).mode(:bold)
@@ -82,7 +83,7 @@ class Onyx::REST
 
           resource = resource.colorize(color)
 
-          @logger.log(@severity, "#{id}#{method} #{resource} #{status_code} #{TimeFormat.auto(Time.monotonic - started_at).colorize(:dark_gray)}")
+          @logger.log(@severity, "#{request_id}#{method} #{resource} #{status_code} #{TimeFormat.auto(Time.monotonic - started_at).colorize(:dark_gray)}")
         end
       end
     end

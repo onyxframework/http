@@ -25,7 +25,7 @@ class Onyx::REST
       def process(context : HTTP::Server::Context, error : Exception)
         io = IO::Memory.new
 
-        if id = context.request.id
+        if id = context.request.id?
           io << "[#{id[0...8]}] ".colorize(:dark_gray)
         end
 
