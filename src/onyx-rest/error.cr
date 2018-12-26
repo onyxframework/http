@@ -37,6 +37,7 @@
 # }
 # ```
 class Onyx::REST::Error(Code) < Exception
+  # The HTTP status code of this error.
   getter code : Int32 = Code
 
   # The name of the error. By default returns its class name.
@@ -57,6 +58,7 @@ class Onyx::REST::Error(Code) < Exception
 
   # The error payload. Usually used by custom renderers, for example,
   # `Onyx::REST::Renderers::JSON` calls `error.payload.try &.to_json`.
+  # Returns `nil` by default.
   def payload
   end
 end

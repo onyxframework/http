@@ -9,7 +9,7 @@ A REST API framework for [Crystal](https://crystal-lang.org).
 
 ## About
 
-Onyx::REST is an opinionated REST API framework — basically, a collection of HTTP handlers and a default HTTP::Server wrapper. It's thoroughly designed to be as much beginner-friendly as possible, yet scale with the developer's knowledge of the [Crystal Language](https://crystal-lang.org). The framework itself is modular and respects configuration over convention.
+Onyx::REST is an opinionated REST API framework — basically, a collection of HTTP handlers and the default [HTTP::Server](https://crystal-lang.org/api/HTTP/Server.html) wrapper. It's thoroughly designed to be as much beginner-friendly as possible, yet scale with the developer's knowledge of the [Crystal Language](https://crystal-lang.org). The framework itself is [SOLID](https://en.wikipedia.org/wiki/SOLID) (excluding some simplifications to reduce boilerplate code), modular (there can be multiple servers in one application and there are no top-level macros by default) and respects configuration over convention.
 
 ## Installation
 
@@ -22,7 +22,7 @@ dependencies:
     version: ~> 0.5.0
 ```
 
-This shard follows [Semantic Versioning v2.0.0](http://semver.org/), so check [releases](https://github.com/onyxframework/rest/releases) and change the `version` accordingly.
+This shard follows [Semantic Versioning v2.0.0](http://semver.org/), so check [releases](https://github.com/onyxframework/rest/releases) and change the `version` accordingly. Please visit [github.com/crystal-lang/shards](https://github.com/crystal-lang/shards) to know more about Crystal shards.
 
 ## Usage
 
@@ -87,7 +87,8 @@ end
 You can then add a [`Rescuer`](https://api.onyxframework.org/rest/Onyx/REST/Rescuer.html) to the stack, for example [`Onyx::REST::Rescuers::Standard`](https://api.onyxframework.org/rest/Onyx/REST/Rescuers/Standard.html):
 
 ```crystal
-handlers << Onyx::REST::Rescuers::Standard.new
+rescuer = Onyx::REST::Rescuers::Standard.new
+server = Onyx::REST::Server.new([rescuer, router])
 ```
 
 ```console
@@ -119,7 +120,9 @@ router.get "/users" do |env|
   end
 end
 
-handlers << HTTP::Params::Serializable::Rescuer.new
+rescuer = Onyx::REST::Rescuers::Standard.new
+params_rescuer = HTTP::Params::Serializable::Rescuer.new
+server = Onyx::REST::Server.new([rescuer, params_rescuer, router])
 ```
 
 ```console

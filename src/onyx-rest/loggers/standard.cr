@@ -8,9 +8,14 @@ class Onyx::REST
   module Loggers
     # Logs requests colorfully into specified standard *logger*.
     # It also logs the `HTTP::Request#id` if it's present.
+    # Should be put in the beginning of the stack.
     #
     # ```
     # logger = Onyx::REST::Loggers::Standard.new
+    #
+    # handlers << request_id
+    # handlers << logger
+    # handlers << router
     #
     # #   INFO -- :     GET /users 200 102μs
     # #   INFO -- :     GET /favicon.ico 404 52μs

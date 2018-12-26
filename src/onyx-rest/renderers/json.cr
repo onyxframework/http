@@ -6,12 +6,20 @@ require "../error"
 class Onyx::REST
   # HTTP handlers which render content.
   module Renderers
-    # A JSON renderer. If `HTTP::Context::Response#error` is present, prints it as a JSON object.
-    # Otherwise, if `HTTP::Context::Response#text` is present, prints it as is.
+    # A JSON renderer. If `HTTP::Server::Response#error` is present, prints it as a JSON object.
+    # Otherwise, if `HTTP::Server::Response#text` is present, prints it as is.
+    # Should be put after a router (i.e. `Onyx::REST::Router`).
     # Calls the next handler if it's present.
+    #
+    # ```
+    # renderer = Onyx::REST::Renderers::JSON
+    # handlers << router
+    # handlers << renderer
+    # ```
     class JSON
       include HTTP::Handler
 
+      # :nodoc:
       def call(context)
         if (error = context.response.error) || (text = context.response.text)
           context.response.content_type = "application/json; charset=utf-8"

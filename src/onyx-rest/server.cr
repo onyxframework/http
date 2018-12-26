@@ -4,12 +4,13 @@ require "http/server"
 # which logs server start and stop events.
 #
 # ```
-# server = Onyx::REST::Server.new(handlers, name: "My App Server")
+# server = Onyx::REST::Server.new(handlers)
 # server.bind_tcp("0.0.0.0", 5000)
 # server.listen
 #
-# # I [19:58:45.947] My App Server is listening at http://127.0.0.1:5000
-# # I [19:58:48.479] My App Server is shutting down!
+# #   INFO -- : ⬛ Onyx::REST::Server is listening at http://0.0.0.0:5000
+# ^C
+# #   INFO -- : ⬛ Onyx::REST::Server is shutting down!
 # ```
 class Onyx::REST::Server < HTTP::Server
   # Initialize with an array of *handlers*.

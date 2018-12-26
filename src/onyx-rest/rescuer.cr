@@ -8,13 +8,14 @@ require "http/server/handler"
 abstract class Onyx::REST::Rescuer(T)
   include HTTP::Handler
 
-  # A handler to call when a error is rescued.
+  # A handler to call when a error is rescued. If it's missing, calls `#fallback`.
   property handler : HTTP::Handler?
 
   # Initialize with a *handler* to call when a error is rescued.
   def initialize(@handler : HTTP::Handler? = nil)
   end
 
+  # :nodoc:
   def call(context)
     call_next(context)
   rescue error : T
@@ -35,7 +36,7 @@ abstract class Onyx::REST::Rescuer(T)
     raise NotImplementedError.new(self)
   end
 
-  # Called if `#handler` is set before it's called.
+  # Called if `#handler` is set before it's called. Empty by default.
   def before_handler(context : HTTP::Server::Context, error : T)
     # Do nothing
   end

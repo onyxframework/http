@@ -18,6 +18,7 @@ class Onyx::REST::CORS
   )
   end
 
+  # :nodoc:
   def call(context)
     begin
       context.response.headers["Access-Control-Allow-Origin"] = @allow_origin
