@@ -215,12 +215,13 @@
   <p>The Onyx REST server. Basically it is just a wrapper around default <code><a href="../../HTTP/Server.html">HTTP::Server</a></code>,
 which logs server start and stop events.</p>
 
-<pre><code>server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Server</span>.<span class="k">new</span>(handlers, name: <span class="s">&quot;My App Server&quot;</span>)
+<pre><code>server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Server</span>.<span class="k">new</span>(handlers)
 server.bind_tcp(<span class="s">&quot;0.0.0.0&quot;</span>, <span class="n">5000</span>)
 server.listen
 
-<span class="c"># I [19:58:45.947] My App Server is listening at http://127.0.0.1:5000</span>
-<span class="c"># I [19:58:48.479] My App Server is shutting down!</span></code></pre>
+<span class="c">#   INFO -- : ⬛ Onyx::REST::Server is listening at http://0.0.0.0:5000</span>
+<span class="o">^</span><span class="t">C</span>
+<span class="c">#   INFO -- : ⬛ Onyx::REST::Server is shutting down!</span></code></pre>
 
 
 
@@ -238,7 +239,7 @@ server.listen
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/server.cr#L14" target="_blank">
+      <a href="https://github.com/onyxframework/rest/blob/48e354e8c8d6f4c53c69ac236c2492b2adf79597/src/onyx-rest/server.cr#L15" target="_blank">
         onyx-rest/server.cr
       </a>
     
@@ -338,7 +339,7 @@ server.listen
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/server.cr#L16" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/rest/blob/48e354e8c8d6f4c53c69ac236c2492b2adf79597/src/onyx-rest/server.cr#L17" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -356,7 +357,7 @@ server.listen
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/server.cr#L27" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/rest/blob/48e354e8c8d6f4c53c69ac236c2492b2adf79597/src/onyx-rest/server.cr#L28" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -381,7 +382,7 @@ server.listen
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/server.cr#L32" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/rest/blob/48e354e8c8d6f4c53c69ac236c2492b2adf79597/src/onyx-rest/server.cr#L33" target="_blank">View source</a>]
         
       </div>
     </div>

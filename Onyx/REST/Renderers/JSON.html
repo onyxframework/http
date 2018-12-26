@@ -212,9 +212,14 @@
 
   <h2>Overview</h2>
 
-  <p>A JSON renderer. If <code>HTTP::Context::Response#error</code> is present, prints it as a JSON object.
-Otherwise, if <code>HTTP::Context::Response#text</code> is present, prints it as is.
+  <p>A JSON renderer. If <code><a href="../../../HTTP/Server/Response.html#error%3AException%3F-instance-method">HTTP::Server::Response#error</a></code> is present, prints it as a JSON object.
+Otherwise, if <code><a href="../../../HTTP/Server/Response.html#text%3AString%3F-instance-method">HTTP::Server::Response#text</a></code> is present, prints it as is.
+Should be put after a router (i.e. <code><a href="../../../Onyx/REST/Router.html">Onyx::REST::Router</a></code>).
 Calls the next handler if it's present.</p>
+
+<pre><code>renderer <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Renderers</span><span class="t">::</span><span class="t">JSON</span>
+handlers <span class="o">&lt;&lt;</span> router
+handlers <span class="o">&lt;&lt;</span> renderer</code></pre>
 
 
 
@@ -239,7 +244,7 @@ Calls the next handler if it's present.</p>
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/renderers/json.cr#L12" target="_blank">
+      <a href="https://github.com/onyxframework/rest/blob/48e354e8c8d6f4c53c69ac236c2492b2adf79597/src/onyx-rest/renderers/json.cr#L19" target="_blank">
         onyx-rest/renderers/json.cr
       </a>
     
@@ -253,16 +258,6 @@ Calls the next handler if it's present.</p>
 
 
 
-
-  <h2>Instance Method Summary</h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#call%28context%29-instance-method" class="signature"><strong>#call</strong>(context)</a>
-        
-      </li>
-    
-  </ul>
 
 
 
@@ -306,25 +301,6 @@ Calls the next handler if it's present.</p>
 
 
 
-
-  <h2>Instance Method Detail</h2>
-  
-    <div class="entry-detail" id="call(context)-instance-method">
-      <div class="signature">
-        
-        def <strong>call</strong>(context)
-
-        <a class="method-permalink" href="#call%28context%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/renderers/json.cr#L15" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
 
 
 

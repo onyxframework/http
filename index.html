@@ -209,7 +209,7 @@
 
 <h2>About</h2>
 
-<p>Onyx::REST is an opinionated REST API framework — basically, a collection of HTTP handlers and a default HTTP::Server wrapper. It's thoroughly designed to be as much beginner-friendly as possible, yet scale with the developer's knowledge of the <a href="https://crystal-lang.org" target="_blank">Crystal Language</a>. The framework itself is modular and respects configuration over convention.</p>
+<p>Onyx::REST is an opinionated REST API framework — basically, a collection of HTTP handlers and the default <a href="https://crystal-lang.org/api/HTTP/Server.html" target="_blank">HTTP::Server</a> wrapper. It's thoroughly designed to be as much beginner-friendly as possible, yet scale with the developer's knowledge of the <a href="https://crystal-lang.org" target="_blank">Crystal Language</a>. The framework itself is <a href="https://en.wikipedia.org/wiki/SOLID" target="_blank">SOLID</a> (excluding some simplifications to reduce boilerplate code), modular (there can be multiple servers in one application and there are no top-level macros by default) and respects configuration over convention.</p>
 
 <h2>Installation</h2>
 
@@ -220,7 +220,7 @@
     github: onyxframework/rest
     version: ~> 0.5.0</code></pre>
 
-<p>This shard follows <a href="http://semver.org/" target="_blank">Semantic Versioning v2.0.0</a>, so check <a href="https://github.com/onyxframework/rest/releases" target="_blank">releases</a> and change the <code>version</code> accordingly.</p>
+<p>This shard follows <a href="http://semver.org/" target="_blank">Semantic Versioning v2.0.0</a>, so check <a href="https://github.com/onyxframework/rest/releases" target="_blank">releases</a> and change the <code>version</code> accordingly. Please visit <a href="https://github.com/crystal-lang/shards" target="_blank">github.com/crystal-lang/shards</a> to know more about Crystal shards.</p>
 
 <h2>Usage</h2>
 
@@ -268,7 +268,8 @@ router.get <span class="s">&quot;/users/:id&quot;</span> <span class="k">do</spa
 
 <p>You can then add a <a href="https://api.onyxframework.org/rest/Onyx/REST/Rescuer.html" target="_blank"><code>Rescuer</code></a> to the stack, for example <a href="https://api.onyxframework.org/rest/Onyx/REST/Rescuers/Standard.html" target="_blank"><code>Onyx::REST::Rescuers::Standard</code></a>:</p>
 
-<pre><code class="language-crystal">handlers <span class="o">&lt;&lt;</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Rescuers</span><span class="t">::</span><span class="t">Standard</span>.<span class="k">new</span></code></pre>
+<pre><code class="language-crystal">rescuer <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Rescuers</span><span class="t">::</span><span class="t">Standard</span>.<span class="k">new</span>
+server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Server</span>.<span class="k">new</span>([rescuer, router])</code></pre>
 
 <pre><code class="language-console">$ curl http://localhost:5000/users/42
 404 User not found with id 42</code></pre>
@@ -296,7 +297,9 @@ router.get <span class="s">&quot;/users&quot;</span> <span class="k">do</span> <
   <span class="k">end</span>
 <span class="k">end</span>
 
-handlers <span class="o">&lt;&lt;</span> <span class="t">HTTP</span><span class="t">::</span><span class="t">Params</span><span class="t">::</span><span class="t">Serializable</span><span class="t">::</span><span class="t">Rescuer</span>.<span class="k">new</span></code></pre>
+rescuer <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Rescuers</span><span class="t">::</span><span class="t">Standard</span>.<span class="k">new</span>
+params_rescuer <span class="o">=</span> <span class="t">HTTP</span><span class="t">::</span><span class="t">Params</span><span class="t">::</span><span class="t">Serializable</span><span class="t">::</span><span class="t">Rescuer</span>.<span class="k">new</span>
+server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Server</span>.<span class="k">new</span>([rescuer, params_rescuer, router])</code></pre>
 
 <pre><code class="language-console">$ curl http://localhost:5000/users?age=foo
 400 Parameter "age" can't be cast from "foo" to Int32

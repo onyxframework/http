@@ -213,9 +213,28 @@
   <h2>Overview</h2>
 
   <p>A handler which rescues all <code>Exception</code>s and logs them colorfully into a standard <code>Logger</code>.
-It sets <code>HTTP::Context::Response#error</code> to the error instance before handler call,
-otherwise it prints the <code>"500 Internal <a href="../../../Onyx/REST/Server.html">Server</a> <a href="../../../Onyx/REST/Error.html">Error</a>"</code> message into the response body.
-It also logs the <code><a href="../../../HTTP/Request.html#id-instance-method">HTTP::Request#id</a></code> if it's present.</p>
+It sets <code><a href="../../../HTTP/Server/Response.html#error%3AException%3F-instance-method">HTTP::Server::Response#error</a></code> to the error instance before <em>handler</em> call,
+otherwise prints the <code>"500 Internal <a href="../../../Onyx/REST/Server.html">Server</a> <a href="../../../Onyx/REST/Error.html">Error</a>"</code> message into the response body.
+It also logs the <code><a href="../../../HTTP/Request.html#id-instance-method">HTTP::Request#id</a></code> if it's present.
+Should be put after logger in the stack.</p>
+
+<pre><code><span class="c"># Will print &quot;500 Internal Server Error&quot; into the response</span>
+rescuer <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Rescuers</span><span class="t">::</span><span class="t">Standard</span>.<span class="k">new</span>
+handlers <span class="o">&lt;&lt;</span> logger
+handlers <span class="o">&lt;&lt;</span> rescuer
+handlers <span class="o">&lt;&lt;</span> router</code></pre>
+
+<pre><code>renderer <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Renderers</span><span class="t">::</span><span class="t">JSON</span>.<span class="k">new</span>
+
+<span class="c"># Will update `context.response.error` and call the renderer</span>
+rescuer <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Rescuers</span><span class="t">::</span><span class="t">Standard</span>.<span class="k">new</span>(renderer)
+
+handlers <span class="o">&lt;&lt;</span> logger
+handlers <span class="o">&lt;&lt;</span> rescuer
+handlers <span class="o">&lt;&lt;</span> router
+handlers <span class="o">&lt;&lt;</span> renderer</code></pre>
+
+<p><span class="flag yellow">FIXME</span>  Make generic. See <a href="https://github.com/crystal-lang/crystal/issues/7200" target="_blank">https://github.com/crystal-lang/crystal/issues/7200</a>.</p>
 
 
 
@@ -233,7 +252,7 @@ It also logs the <code><a href="../../../HTTP/Request.html#id-instance-method">H
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/rescuers/standard.cr#L12" target="_blank">
+      <a href="https://github.com/onyxframework/rest/blob/48e354e8c8d6f4c53c69ac236c2492b2adf79597/src/onyx-rest/rescuers/standard.cr#L35" target="_blank">
         onyx-rest/rescuers/standard.cr
       </a>
     
@@ -266,25 +285,35 @@ It also logs the <code><a href="../../../HTTP/Request.html#id-instance-method">H
       <li class="entry-summary">
         <a href="#before_handler%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AException%29-instance-method" class="signature"><strong>#before_handler</strong>(context : HTTP::Server::Context, error : Exception)</a>
         
+          <div class="summary"><p>Update <code><a href="../../../HTTP/Server/Response.html#error%3AException%3F-instance-method">HTTP::Server::Response#error</a></code> with <em>error</em>.</p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#fallback%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AException%29-instance-method" class="signature"><strong>#fallback</strong>(context : HTTP::Server::Context, error : Exception)</a>
+        
+          <div class="summary"><p>Print <code>"500 Internal <a href="../../../Onyx/REST/Server.html">Server</a> <a href="../../../Onyx/REST/Error.html">Error</a>"</code> into the response body.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#logger%3ALogger-instance-method" class="signature"><strong>#logger</strong> : Logger</a>
         
+          <div class="summary"><p>A <code>Logger</code> to log to.</p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#logger%3D%28logger%3ALogger%29-instance-method" class="signature"><strong>#logger=</strong>(logger : Logger)</a>
         
+          <div class="summary"><p>A <code>Logger</code> to log to.</p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#process%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AException%29-instance-method" class="signature"><strong>#process</strong>(context : HTTP::Server::Context, error : Exception)</a>
+        
+          <div class="summary"><p>Log the <em>error</em> into the <code><a href="../../../Onyx/REST/Rescuers/Standard.html#logger%3ALogger-instance-method">#logger</a></code>.</p></div>
         
       </li>
     
@@ -304,11 +333,6 @@ It also logs the <code><a href="../../../HTTP/Request.html#id-instance-method">H
     <a href="../../../Onyx/REST/Rescuer.html#before_handler%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method" class="tooltip">
       <span>before_handler(context : HTTP::Server::Context, error : T)</span>
     before_handler</a>, 
-    
-  
-    <a href="../../../Onyx/REST/Rescuer.html#call%28context%29-instance-method" class="tooltip">
-      <span>call(context)</span>
-    call</a>, 
     
   
     <a href="../../../Onyx/REST/Rescuer.html#fallback%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method" class="tooltip">
@@ -397,7 +421,7 @@ It also logs the <code><a href="../../../HTTP/Request.html#id-instance-method">H
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/rescuers/standard.cr#L16" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/rest/blob/48e354e8c8d6f4c53c69ac236c2492b2adf79597/src/onyx-rest/rescuers/standard.cr#L40" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -417,10 +441,12 @@ It also logs the <code><a href="../../../HTTP/Request.html#id-instance-method">H
         <a class="method-permalink" href="#before_handler%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AException%29-instance-method">#</a>
       </div>
       
+        <div class="doc"><p>Update <code><a href="../../../HTTP/Server/Response.html#error%3AException%3F-instance-method">HTTP::Server::Response#error</a></code> with <em>error</em>.</p></div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/rescuers/standard.cr#L43" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/rest/blob/48e354e8c8d6f4c53c69ac236c2492b2adf79597/src/onyx-rest/rescuers/standard.cr#L69" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -433,10 +459,12 @@ It also logs the <code><a href="../../../HTTP/Request.html#id-instance-method">H
         <a class="method-permalink" href="#fallback%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AException%29-instance-method">#</a>
       </div>
       
+        <div class="doc"><p>Print <code>"500 Internal <a href="../../../Onyx/REST/Server.html">Server</a> <a href="../../../Onyx/REST/Error.html">Error</a>"</code> into the response body.</p></div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/rescuers/standard.cr#L47" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/rest/blob/48e354e8c8d6f4c53c69ac236c2492b2adf79597/src/onyx-rest/rescuers/standard.cr#L74" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -449,10 +477,12 @@ It also logs the <code><a href="../../../HTTP/Request.html#id-instance-method">H
         <a class="method-permalink" href="#logger%3ALogger-instance-method">#</a>
       </div>
       
+        <div class="doc"><p>A <code>Logger</code> to log to. Can be changed in runtime.</p></div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/rescuers/standard.cr#L13" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/rest/blob/48e354e8c8d6f4c53c69ac236c2492b2adf79597/src/onyx-rest/rescuers/standard.cr#L37" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -465,10 +495,12 @@ It also logs the <code><a href="../../../HTTP/Request.html#id-instance-method">H
         <a class="method-permalink" href="#logger%3D%28logger%3ALogger%29-instance-method">#</a>
       </div>
       
+        <div class="doc"><p>A <code>Logger</code> to log to. Can be changed in runtime.</p></div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/rescuers/standard.cr#L13" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/rest/blob/48e354e8c8d6f4c53c69ac236c2492b2adf79597/src/onyx-rest/rescuers/standard.cr#L37" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -481,10 +513,12 @@ It also logs the <code><a href="../../../HTTP/Request.html#id-instance-method">H
         <a class="method-permalink" href="#process%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AException%29-instance-method">#</a>
       </div>
       
+        <div class="doc"><p>Log the <em>error</em> into the <code><a href="../../../Onyx/REST/Rescuers/Standard.html#logger%3ALogger-instance-method">#logger</a></code>.</p></div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/rescuers/standard.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/rest/blob/48e354e8c8d6f4c53c69ac236c2492b2adf79597/src/onyx-rest/rescuers/standard.cr#L50" target="_blank">View source</a>]
         
       </div>
     </div>

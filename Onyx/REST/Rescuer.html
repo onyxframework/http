@@ -250,7 +250,7 @@ Otherwise calls <code><a href="../../Onyx/REST/Rescuer.html#fallback%28context%3
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/rescuer.cr#L8" target="_blank">
+      <a href="https://github.com/onyxframework/rest/blob/48e354e8c8d6f4c53c69ac236c2492b2adf79597/src/onyx-rest/rescuer.cr#L8" target="_blank">
         onyx-rest/rescuer.cr
       </a>
     
@@ -284,11 +284,6 @@ Otherwise calls <code><a href="../../Onyx/REST/Rescuer.html#fallback%28context%3
         <a href="#before_handler%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method" class="signature"><strong>#before_handler</strong>(context : HTTP::Server::Context, error : T)</a>
         
           <div class="summary"><p>Called if <code><a href="../../Onyx/REST/Rescuer.html#handler%3AHTTP%3A%3AHandler%3F-instance-method">#handler</a></code> is set before it's called.</p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#call%28context%29-instance-method" class="signature"><strong>#call</strong>(context)</a>
         
       </li>
     
@@ -376,7 +371,7 @@ Otherwise calls <code><a href="../../Onyx/REST/Rescuer.html#fallback%28context%3
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/rescuer.cr#L15" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/rest/blob/48e354e8c8d6f4c53c69ac236c2492b2adf79597/src/onyx-rest/rescuer.cr#L15" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -396,28 +391,12 @@ Otherwise calls <code><a href="../../Onyx/REST/Rescuer.html#fallback%28context%3
         <a class="method-permalink" href="#before_handler%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method">#</a>
       </div>
       
-        <div class="doc"><p>Called if <code><a href="../../Onyx/REST/Rescuer.html#handler%3AHTTP%3A%3AHandler%3F-instance-method">#handler</a></code> is set before it's called.</p></div>
+        <div class="doc"><p>Called if <code><a href="../../Onyx/REST/Rescuer.html#handler%3AHTTP%3A%3AHandler%3F-instance-method">#handler</a></code> is set before it's called. Empty by default.</p></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/rescuer.cr#L39" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="call(context)-instance-method">
-      <div class="signature">
-        
-        def <strong>call</strong>(context)
-
-        <a class="method-permalink" href="#call%28context%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/rescuer.cr#L18" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/rest/blob/48e354e8c8d6f4c53c69ac236c2492b2adf79597/src/onyx-rest/rescuer.cr#L40" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -437,7 +416,7 @@ Otherwise calls <code><a href="../../Onyx/REST/Rescuer.html#fallback%28context%3
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/rescuer.cr#L46" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/rest/blob/48e354e8c8d6f4c53c69ac236c2492b2adf79597/src/onyx-rest/rescuer.cr#L47" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -450,12 +429,12 @@ Otherwise calls <code><a href="../../Onyx/REST/Rescuer.html#fallback%28context%3
         <a class="method-permalink" href="#handler%3AHTTP%3A%3AHandler%3F-instance-method">#</a>
       </div>
       
-        <div class="doc"><p>A handler to call when a error is rescued.</p></div>
+        <div class="doc"><p>A handler to call when a error is rescued. If it's missing, calls <code><a href="../../Onyx/REST/Rescuer.html#fallback%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method">#fallback</a></code>.</p></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/rescuer.cr#L12" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/rest/blob/48e354e8c8d6f4c53c69ac236c2492b2adf79597/src/onyx-rest/rescuer.cr#L12" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -468,12 +447,12 @@ Otherwise calls <code><a href="../../Onyx/REST/Rescuer.html#fallback%28context%3
         <a class="method-permalink" href="#handler%3D%28handler%3AHTTP%3A%3AHandler%3F%29-instance-method">#</a>
       </div>
       
-        <div class="doc"><p>A handler to call when a error is rescued.</p></div>
+        <div class="doc"><p>A handler to call when a error is rescued. If it's missing, calls <code><a href="../../Onyx/REST/Rescuer.html#fallback%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method">#fallback</a></code>.</p></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/rescuer.cr#L12" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/rest/blob/48e354e8c8d6f4c53c69ac236c2492b2adf79597/src/onyx-rest/rescuer.cr#L12" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -493,7 +472,7 @@ Otherwise calls <code><a href="../../Onyx/REST/Rescuer.html#fallback%28context%3
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/rescuer.cr#L34" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/rest/blob/48e354e8c8d6f4c53c69ac236c2492b2adf79597/src/onyx-rest/rescuer.cr#L35" target="_blank">View source</a>]
         
       </div>
     </div>

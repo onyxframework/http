@@ -213,9 +213,14 @@
   <h2>Overview</h2>
 
   <p>Logs requests colorfully into specified standard <em>logger</em>.
-It also logs the <code><a href="../../../HTTP/Request.html#id-instance-method">HTTP::Request#id</a></code> if it's present.</p>
+It also logs the <code><a href="../../../HTTP/Request.html#id-instance-method">HTTP::Request#id</a></code> if it's present.
+Should be put in the beginning of the stack.</p>
 
 <pre><code>logger <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Loggers</span><span class="t">::</span><span class="t">Standard</span>.<span class="k">new</span>
+
+handlers <span class="o">&lt;&lt;</span> request_id
+handlers <span class="o">&lt;&lt;</span> logger
+handlers <span class="o">&lt;&lt;</span> router
 
 <span class="c">#   INFO -- :     GET /users 200 102μs</span>
 <span class="c">#   INFO -- :     GET /favicon.ico 404 52μs</span>
@@ -244,7 +249,7 @@ It also logs the <code><a href="../../../HTTP/Request.html#id-instance-method">H
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/loggers/standard.cr#L19" target="_blank">
+      <a href="https://github.com/onyxframework/rest/blob/48e354e8c8d6f4c53c69ac236c2492b2adf79597/src/onyx-rest/loggers/standard.cr#L24" target="_blank">
         onyx-rest/loggers/standard.cr
       </a>
     
@@ -335,7 +340,7 @@ It also logs the <code><a href="../../../HTTP/Request.html#id-instance-method">H
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/loggers/standard.cr#L32" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/rest/blob/48e354e8c8d6f4c53c69ac236c2492b2adf79597/src/onyx-rest/loggers/standard.cr#L37" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -358,7 +363,7 @@ It also logs the <code><a href="../../../HTTP/Request.html#id-instance-method">H
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/rest/blob/7d4614167d66683ab94b5cf3a98ca9e07ef3d9ba/src/onyx-rest/loggers/standard.cr#L40" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/rest/blob/48e354e8c8d6f4c53c69ac236c2492b2adf79597/src/onyx-rest/loggers/standard.cr#L45" target="_blank">View source</a>]
         
       </div>
     </div>
