@@ -198,6 +198,8 @@
 
 
 <div class="main-content">
+<p>&lt;a href="https://onyxframework.org">&lt;img align="right" width="147" height="147" src="https://onyxframework.org/img/logo.svg">&lt;/a></p>
+
 <h1>Onyx::REST</h1>
 
 <p><a href="https://crystal-lang.org/" target="_blank"><img src="https://img.shields.io/badge/built%20with-crystal-000000.svg?style=flat-square" alt="Built with Crystal"/></a>
@@ -210,6 +212,12 @@
 <h2>About</h2>
 
 <p>Onyx::REST is an opinionated REST API framework — basically, a collection of HTTP handlers and the default <a href="https://crystal-lang.org/api/HTTP/Server.html" target="_blank">HTTP::Server</a> wrapper. It's thoroughly designed to be as much beginner-friendly as possible, yet scale with the developer's knowledge of the <a href="https://crystal-lang.org" target="_blank">Crystal Language</a>. The framework itself is <a href="https://en.wikipedia.org/wiki/SOLID" target="_blank">SOLID</a> (excluding some simplifications to reduce boilerplate code), modular (there can be multiple servers in one application and there are no top-level macros by default) and respects configuration over convention.</p>
+
+<h3>Benchmarks</h3>
+
+<p><a href="https://public.chartblocks.com/c/5c273d8b3ba0f6ef7c65d832?t=b938d2bf4965222" target="_blank"><img src="https://d3ugvbs94d921r.cloudfront.net/5c273d8b3ba0f6ef7c65d832.svg?t=b938d2bf4965222&v=3318a7b2" alt="Benchmarks"/></a></p>
+
+<p><em>Source: <a href="https://github.com/the-benchmarker/web-frameworks/blob/2dc801850d6cfed91333cf9af87f7b2c363d9e38/README.md" target="_blank">https://github.com/the-benchmarker/web-frameworks@2dc801850d6cfed91333cf9af87f7b2c363d9e38</a></em></p>
 
 <h2>Installation</h2>
 
@@ -239,7 +247,6 @@ server.bind_tcp(<span class="n">5000</span>)
 server.listen</code></pre>
 
 <pre><code class="language-console">INFO [14:04:31.493] ⬛ Onyx::REST::Server is listening at http://127.0.0.1:5000
-INFO [14:04:32.578]      GET / 200 127μs
 INFO [14:04:34.082] ⬛ Onyx::REST::Server is shutting down!</code></pre>
 
 <pre><code class="language-console">$ curl http://localhost:5000
@@ -251,9 +258,75 @@ Hello Onyx!</code></pre>
 
 <ul><li><a href="https://api.onyxframework.org/rest/Onyx/REST/Router.html" target="_blank">Onyx::REST::Router</a> — routes the request to a proc</li><li><a href="https://api.onyxframework.org/rest/Onyx/REST/CORS.html" target="_blank">Onyx::REST::CORS</a> — Cross Origin Resource Sharing handler</li><li><a href="https://api.onyxframework.org/rest/Onyx/REST/RequestID.html" target="_blank">Onyx::REST::RequestID</a> — adds ID to the request</li><li>Rescuers — rescue unhandled errors</li><ul><li><a href="https://api.onyxframework.org/rest/Onyx/REST/Rescuers/Standard.html" target="_blank">Onyx::REST::Rescuers::Standard</a> — rescues errors and logs them colorfully to a standard Crystal logger</li></ul><li>Loggers — log requests</li><ul><li><a href="https://api.onyxframework.org/rest/Onyx/REST/Loggers/Standard.html" target="_blank">Onyx::REST::Loggers::Standard</a> — logs requests colorfully to a standard Crystal logger</li></ul><li>Renderers — render responses</li><ul><li><a href="https://api.onyxframework.org/rest/Onyx/REST/Renderers/JSON.html" target="_blank">Onyx::REST::Renderers::JSON</a> — renders to JSON</li></ul></ul>
 
-<h3>REST error</h3>
+<h4>Request ID</h4>
 
-<p>There is a <code><a href="Onyx/REST/Error.html">Onyx::REST::Error</a></code> abstract class which defines an <strong>expected</strong> error, for example:</p>
+<p>The built-in <a href="https://api.onyxframework.org/rest/Onyx/REST/RequestID.html" target="_blank">Onyx::REST::RequestID</a> adds a random UUID to the <a href="https://api.onyxframework.org/rest/HTTP/Request.html" target="_blank">Request instance</a>:</p>
+
+<pre><code class="language-crystal">request_id <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">RequestID</span>.<span class="k">new</span>
+handlers <span class="o">=</span> [request_id, router]
+server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Server</span>.<span class="k">new</span>(handlers)
+<span class="c"># ditto</span></code></pre>
+
+<pre><code class="language-console">$ curl http://127.0.0.1:5000
+X-Request-ID: 23bac83d-4894-4e6c-b007-7785ff73d684</code></pre>
+
+<h4>Logging requests</h4>
+
+<p>Built-in requests logger is pretty easy to use:</p>
+
+<pre><code class="language-crystal">logger <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Loggers</span><span class="t">::</span><span class="t">Standard</span>.<span class="k">new</span>
+handlers <span class="o">=</span> [request_id, logger, rescuer]
+<span class="c"># ditto</span></code></pre>
+
+<pre><code class="language-console">INFO [14:04:32.578] [4821be8e]      GET / 200 127μs
+INFO [14:04:36.718] [6ec8d538]     POST /users 201 1.579ms
+INFO [14:04:39.912] [60c5d1ed]      GET /unknown 404 77μs</code></pre>
+
+<h4>Rescuing unhandled errors</h4>
+
+<p>If an unhandled error raised somewhere during processing the request, the Crystal process doesn't crash and the user sees <code>500 Internal Server Error</code>, but the error's backtrace is put directly into <code>STDERR</code> and the handlers stack is exited. Therefore, it's a good idea to add a rescuer handler into the stack. For example, default <a href="https://api.onyxframework.org/rest/Onyx/REST/Rescuers/Standard.html" target="_blank">Onyx::REST::Rescuers::Standard</a> logs the error into a standard Crystal logger:</p>
+
+<pre><code class="language-crystal">router.get <span class="s">&quot;/error&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
+  raise <span class="s">&quot;Oops&quot;</span>
+<span class="k">end</span>
+
+rescuer <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Rescuers</span><span class="t">::</span><span class="t">Standard</span>.<span class="k">new</span>
+handlers <span class="o">=</span> [request_id, logger, rescuer, router]</code></pre>
+
+<pre><code class="language-console">INFO [14:04:32.578] [8e0c113f]  ERROR  Oops
+
+Oops (Exception)
+  from spec/json_server.cr:23:9 in '->'
+  from src/onyx-rest/router.cr:255:3 in '->'
+  from src/onyx-rest/router.cr:255:3 in 'call'
+  from /usr/share/crystal/src/http/server/handler.cr:24:7 in 'call_next'
+  from src/onyx-rest/rescuer.cr:20:5 in 'call'
+  from /usr/share/crystal/src/http/server/handler.cr:24:7 in 'call_next'
+  from src/onyx-rest/rescuer.cr:20:5 in 'call'
+  from /usr/share/crystal/src/http/server/handler.cr:24:7 in 'call_next'
+  from src/onyx-rest/loggers/standard.cr:73:11 in 'call'
+
+INFO [14:04:32.578] [8e0c113f]     GET /error 500 1.890ms</code></pre>
+
+<p>You can also specify the "next" handler for a rescuer, so it calls it directly upon rescuing:</p>
+
+<pre><code class="language-crystal">renderer <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Renderers</span><span class="t">::</span><span class="t">JSON</span>.<span class="k">new</span>
+rescuer <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Rescuers</span><span class="t">::</span><span class="t">Standard</span>.<span class="k">new</span>(renderer)
+<span class="c"># ditto</span></code></pre>
+
+<p>And the result would be:</p>
+
+<pre><code class="language-json">{
+  "error": {
+    "class": "UnhandledServerError",
+    "message": "Unhandled server error. If you are the application owner, see the logs for details",
+    "code": 500
+  }
+}</code></pre>
+
+<h3>REST errors</h3>
+
+<p>There is a <a href="https://api.onyxframework.org/rest/Onyx/REST/Error.html" target="_blank"><code>Onyx::REST::Error</code></a> abstract class which defines an <strong>expected</strong> error, for example:</p>
 
 <pre><code class="language-crystal"><span class="k">class</span> <span class="t">UserNotFound</span> <span class="o">&lt;</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Error</span>(<span class="n">404</span>)
   <span class="k">def</span> <span class="m">initialize</span>(id)
@@ -266,10 +339,7 @@ router.get <span class="s">&quot;/users/:id&quot;</span> <span class="k">do</spa
   raise <span class="t">UserNotFound</span>.<span class="k">new</span>(id) <span class="k">unless</span> <span class="t">Models</span><span class="t">::</span><span class="t">User</span>.find(id)
 <span class="k">end</span></code></pre>
 
-<p>You can then add a <a href="https://api.onyxframework.org/rest/Onyx/REST/Rescuer.html" target="_blank"><code>Rescuer</code></a> to the stack, for example <a href="https://api.onyxframework.org/rest/Onyx/REST/Rescuers/Standard.html" target="_blank"><code>Onyx::REST::Rescuers::Standard</code></a>:</p>
-
-<pre><code class="language-crystal">rescuer <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Rescuers</span><span class="t">::</span><span class="t">Standard</span>.<span class="k">new</span>
-server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Server</span>.<span class="k">new</span>([rescuer, router])</code></pre>
+<p>These errors are typically rescued by the router and renderers (no need for a <a href="https://api.onyxframework.org/rest/Onyx/REST/Rescuer.html" target="_blank">Rescuer</a> in this case):</p>
 
 <pre><code class="language-console">$ curl http://localhost:5000/users/42
 404 User not found with id 42</code></pre>
@@ -297,8 +367,12 @@ router.get <span class="s">&quot;/users&quot;</span> <span class="k">do</span> <
   <span class="k">end</span>
 <span class="k">end</span>
 
+<span class="c"># Standard rescuers rescues `Exception`s</span>
 rescuer <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Rescuers</span><span class="t">::</span><span class="t">Standard</span>.<span class="k">new</span>
+
+<span class="c"># Params rescuer rescues only Params errors and skips other `Exception`s</span>
 params_rescuer <span class="o">=</span> <span class="t">HTTP</span><span class="t">::</span><span class="t">Params</span><span class="t">::</span><span class="t">Serializable</span><span class="t">::</span><span class="t">Rescuer</span>.<span class="k">new</span>
+
 server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Server</span>.<span class="k">new</span>([rescuer, params_rescuer, router])</code></pre>
 
 <pre><code class="language-console">$ curl http://localhost:5000/users?age=foo
