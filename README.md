@@ -1,3 +1,5 @@
+<a href="https://onyxframework.org"><img align="right" width="147" height="147" src="https://onyxframework.org/img/logo.svg"></a>
+
 # Onyx::REST
 
 [![Built with Crystal](https://img.shields.io/badge/built%20with-crystal-000000.svg?style=flat-square)](https://crystal-lang.org/)
