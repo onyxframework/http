@@ -13,6 +13,12 @@ A REST API framework for [Crystal](https://crystal-lang.org).
 
 Onyx::REST is an opinionated REST API framework — basically, a collection of HTTP handlers and the default [HTTP::Server](https://crystal-lang.org/api/HTTP/Server.html) wrapper. It's thoroughly designed to be as much beginner-friendly as possible, yet scale with the developer's knowledge of the [Crystal Language](https://crystal-lang.org). The framework itself is [SOLID](https://en.wikipedia.org/wiki/SOLID) (excluding some simplifications to reduce boilerplate code), modular (there can be multiple servers in one application and there are no top-level macros by default) and respects configuration over convention.
 
+### Benchmarks
+
+[![Benchmarks](https://d3ugvbs94d921r.cloudfront.net/5c273d8b3ba0f6ef7c65d832.svg?t=b938d2bf4965222&v=3318a7b2)](https://public.chartblocks.com/c/5c273d8b3ba0f6ef7c65d832?t=b938d2bf4965222)
+
+*Source: [https://github.com/the-benchmarker/web-frameworks@2dc801850d6cfed91333cf9af87f7b2c363d9e38](https://github.com/the-benchmarker/web-frameworks/blob/2dc801850d6cfed91333cf9af87f7b2c363d9e38/README.md)*
+
 ## Installation
 
 Add this to your application's `shard.yml`:
