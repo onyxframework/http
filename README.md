@@ -44,7 +44,6 @@ server.listen
 
 ```console
 INFO [14:04:31.493] ⬛ Onyx::REST::Server is listening at http://127.0.0.1:5000
-INFO [14:04:32.578]      GET / 200 127μs
 INFO [14:04:34.082] ⬛ Onyx::REST::Server is shutting down!
 ```
 
@@ -67,9 +66,91 @@ Fundamentally, every Onyx::REST application is a stack of HTTP handlers passed t
 * Renderers — render responses
   * [Onyx::REST::Renderers::JSON](https://api.onyxframework.org/rest/Onyx/REST/Renderers/JSON.html) — renders to JSON
 
-### REST error
+#### Request ID
 
-There is a `Onyx::REST::Error` abstract class which defines an **expected** error, for example:
+The built-in [Onyx::REST::RequestID](https://api.onyxframework.org/rest/Onyx/REST/RequestID.html) adds a random UUID to the [Request instance](https://api.onyxframework.org/rest/HTTP/Request.html):
+
+```crystal
+request_id = Onyx::REST::RequestID.new
+handlers = [request_id, router]
+server = Onyx::REST::Server.new(handlers)
+# ditto
+```
+
+```console
+$ curl http://127.0.0.1:5000
+X-Request-ID: 23bac83d-4894-4e6c-b007-7785ff73d684
+```
+
+#### Logging requests
+
+Built-in requests logger is pretty easy to use:
+
+```crystal
+logger = Onyx::REST::Loggers::Standard.new
+handlers = [request_id, logger, rescuer]
+# ditto
+```
+
+```console
+INFO [14:04:32.578] [4821be8e]      GET / 200 127μs
+INFO [14:04:36.718] [6ec8d538]     POST /users 201 1.579ms
+INFO [14:04:39.912] [60c5d1ed]      GET /unknown 404 77μs
+```
+
+#### Rescuing unhandled errors
+
+If an unhandled error raised somewhere during processing the request, the Crystal process doesn't crash and the user sees `500 Internal Server Error`, but the error's backtrace is put directly into `STDERR` and the handlers stack is exited. Therefore, it's a good idea to add a rescuer handler into the stack. For example, default [Onyx::REST::Rescuers::Standard](https://api.onyxframework.org/rest/Onyx/REST/Rescuers/Standard.html) logs the error into a standard Crystal logger:
+
+```crystal
+router.get "/error" do |env|
+  raise "Oops"
+end
+
+rescuer = Onyx::REST::Rescuers::Standard.new
+handlers = [logger, rescuer, router]
+```
+
+```console
+INFO [14:04:32.578] [8e0c113f]  ERROR  Oops
+
+Oops (Exception)
+  from spec/json_server.cr:23:9 in '->'
+  from src/onyx-rest/router.cr:255:3 in '->'
+  from src/onyx-rest/router.cr:255:3 in 'call'
+  from /usr/share/crystal/src/http/server/handler.cr:24:7 in 'call_next'
+  from src/onyx-rest/rescuer.cr:20:5 in 'call'
+  from /usr/share/crystal/src/http/server/handler.cr:24:7 in 'call_next'
+  from src/onyx-rest/rescuer.cr:20:5 in 'call'
+  from /usr/share/crystal/src/http/server/handler.cr:24:7 in 'call_next'
+  from src/onyx-rest/loggers/standard.cr:73:11 in 'call'
+
+INFO [14:04:32.578] [8e0c113f]     GET /error 500 1.890ms
+```
+
+You can also specify the "next" handler for a rescuer, so it calls it directly upon rescuing:
+
+```crystal
+renderer = Onyx::REST::Renderers::JSON.new
+rescuer = Onyx::REST::Rescuers::Standard.new(renderer)
+# ditto
+```
+
+And the result would be:
+
+```json
+{
+  "error": {
+    "class": "UnhandledServerError",
+    "message": "Unhandled server error. If you are the application owner, see the logs for details",
+    "code": 500
+  }
+}
+```
+
+### REST errors
+
+There is a [`Onyx::REST::Error`](https://api.onyxframework.org/rest/Onyx/REST/Error.html) abstract class which defines an **expected** error, for example:
 
 ```crystal
 class UserNotFound < Onyx::REST::Error(404)
@@ -84,12 +165,7 @@ router.get "/users/:id" do |env|
 end
 ```
 
-You can then add a [`Rescuer`](https://api.onyxframework.org/rest/Onyx/REST/Rescuer.html) to the stack, for example [`Onyx::REST::Rescuers::Standard`](https://api.onyxframework.org/rest/Onyx/REST/Rescuers/Standard.html):
-
-```crystal
-rescuer = Onyx::REST::Rescuers::Standard.new
-server = Onyx::REST::Server.new([rescuer, router])
-```
+These errors are typically rescued by the router and renderers (no need for a [Rescuer](https://api.onyxframework.org/rest/Onyx/REST/Rescuer.html) in this case):
 
 ```console
 $ curl http://localhost:5000/users/42
@@ -120,8 +196,12 @@ router.get "/users" do |env|
   end
 end
 
+# Standard rescuers rescues `Exception`s
 rescuer = Onyx::REST::Rescuers::Standard.new
+
+# Params rescuer rescues only Params errors and skips other `Exception`s
 params_rescuer = HTTP::Params::Serializable::Rescuer.new
+
 server = Onyx::REST::Server.new([rescuer, params_rescuer, router])
 ```
 
