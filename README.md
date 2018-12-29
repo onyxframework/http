@@ -116,7 +116,7 @@ router.get "/error" do |env|
 end
 
 rescuer = Onyx::REST::Rescuers::Standard.new
-handlers = [logger, rescuer, router]
+handlers = [request_id, logger, rescuer, router]
 ```
 
 ```console
