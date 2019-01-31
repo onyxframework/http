@@ -1,4 +1,4 @@
-# A REST error which is expected to be rescued upon processing (i.e. in `Onyx::REST::Router`).
+# A REST error which is expected to be rescued upon processing (i.e. by `Onyx::REST::Rescuers::REST`).
 # Define your own errors to handle **expected** situations:
 #
 # ```

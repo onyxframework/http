@@ -1,7 +1,7 @@
-# Powerful framework for modern applications. See [onyxframework.org](https://onyxframework.org).
+require "onyx-http"
+
 class Onyx
-  # An opinionated REST API framework for Crystal.
-  class REST
+  module REST
   end
 end
 

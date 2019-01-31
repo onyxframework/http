@@ -1,4 +1,6 @@
 language: crystal
+before_script:
+  - shards install
 script:
   - crystal spec
 after_success:

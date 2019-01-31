@@ -1,50 +1,21 @@
-require "http/server/handler"
+require "./error"
 
-# Rescues `T`. Firstly calls `#process` to handle the error (e.g. log it).
-# Then if `#handler` is present, calls `#before_handler` and then the handler itself.
-# Otherwise calls `#fallback`.
-#
-# See `Onyx::REST::Rescuers::Standard`.
-abstract class Onyx::REST::Rescuer(T)
-  include HTTP::Handler
-
-  # A handler to call when a error is rescued. If it's missing, calls `#fallback`.
-  property handler : HTTP::Handler?
-
-  # Initialize with a *handler* to call when a error is rescued.
-  def initialize(@handler : HTTP::Handler? = nil)
+module Onyx::REST
+  # This class exists so the compiler could detect the type at `error.code` call.
+  private class NullError < Error(0)
   end
 
-  # :nodoc:
-  def call(context)
-    call_next(context)
-  rescue error : T
-    process(context, error)
-
-    if handler = @handler
-      before_handler(context, error)
-      handler.call(context)
-    else
-      fallback(context, error)
+  # An HTTP handler which rescues `REST::Error`.
+  #
+  # ```
+  # renderer = Onyx::REST::Renderers::JSON.new
+  # rescuer = Onyx::REST::Rescuer.new(renderer)
+  # handlers = [rescuer, router, renderer]
+  # ```
+  class Rescuer < HTTP::Rescuers::Silent(Error)
+    def fallback(context, error)
+      context.response.status_code = error.code
+      context.response << error.code << " " << error.message
     end
-  end
-
-  # Process the error before further handling. A good example is logging it.
-  #
-  # FIXME: Make abstract, so it raises if not defined in children. See https://github.com/crystal-lang/crystal/issues/6762.
-  def process(context : HTTP::Server::Context, error : T)
-    raise NotImplementedError.new(self)
-  end
-
-  # Called if `#handler` is set before it's called. Empty by default.
-  def before_handler(context : HTTP::Server::Context, error : T)
-    # Do nothing
-  end
-
-  # Called if no `#handler` is set.
-  #
-  # FIXME: Make abstract, so it raises if not defined in children. See https://github.com/crystal-lang/crystal/issues/6762.
-  def fallback(context : HTTP::Server::Context, error : T)
-    raise NotImplementedError.new(self)
   end
 end

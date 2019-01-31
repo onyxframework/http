@@ -1,4 +1,4 @@
-<a href="https://onyxframework.org"><img align="right" width="147" height="147" src="https://onyxframework.org/img/logo.svg"></a>
+<a href="https://onyxframework.org"><img width="100" height="100" src="https://onyxframework.org/img/logo.svg"></a>
 
 # Onyx::REST
 
@@ -9,17 +9,21 @@
 
 A REST API framework for [Crystal](https://crystal-lang.org).
 
-## About
+## Supporters ❤️
 
-Onyx::REST is an opinionated REST API framework — basically, a collection of HTTP handlers and the default [HTTP::Server](https://crystal-lang.org/api/HTTP/Server.html) wrapper. It's thoroughly designed to be as much beginner-friendly as possible, yet scale with the developer's knowledge of the [Crystal Language](https://crystal-lang.org). The framework itself is [SOLID](https://en.wikipedia.org/wiki/SOLID) (excluding some simplifications to reduce boilerplate code), modular (there can be multiple servers in one application and there are no top-level macros by default) and respects configuration over convention.
+Thanks to all my patrons, I can continue working on beautiful Open Source Software! 🙏
 
-### Benchmarks
+[Alexander Maslov](https://seendex.ru), [Lauri Jutila](https://github.com/ljuti)
 
-[![Benchmarks](https://d3ugvbs94d921r.cloudfront.net/5c273d8b3ba0f6ef7c65d832.svg?t=b938d2bf4965222&v=3318a7b2)](https://public.chartblocks.com/c/5c273d8b3ba0f6ef7c65d832?t=b938d2bf4965222)
+*You can become a patron too in exchange of prioritized support and other perks*
 
-*Source: [https://github.com/the-benchmarker/web-frameworks@2dc801850d6cfed91333cf9af87f7b2c363d9e38](https://github.com/the-benchmarker/web-frameworks/blob/2dc801850d6cfed91333cf9af87f7b2c363d9e38/README.md)*
+<a href="https://www.patreon.com/vladfaust"><img height="50" src="https://onyxframework.org/img/patreon-button.svg"></a>
 
-## Installation
+## About 👋
+
+Onyx::REST is an opinionated REST API framework build on top of [Onyx::HTTP](https://github.com/onyxframework/http). It provides modules to build scalabale applications, such as [`Action`](https://api.onyxframework.org/rest/Onyx/REST/Action.html) and [`View`](https://api.onyxframework.org/rest/Onyx/REST/View.html).
+
+## Installation 📥
 
 Add this to your application's `shard.yml`:
 
@@ -27,204 +31,233 @@ Add this to your application's `shard.yml`:
 dependencies:
   onyx-rest:
     github: onyxframework/rest
-    version: ~> 0.5.0
+    version: ~> 0.6.0
 ```
 
 This shard follows [Semantic Versioning v2.0.0](http://semver.org/), so check [releases](https://github.com/onyxframework/rest/releases) and change the `version` accordingly. Please visit [github.com/crystal-lang/shards](https://github.com/crystal-lang/shards) to know more about Crystal shards.
 
-## Usage
+## Usage 💻
 
-This is the most basic example of an application written with Onyx::REST:
+> ⚠ **Note:** you should make yourself familiar with [Onyx::HTTP](https://github.com/onyxframework/http) before using this shard.
+
+Onyx::REST has two main concepts: actions and views. Action is where the business logic takes place, they are essentially REST endpoints. And views take care of rendering.
+
+### Actions
+
+[`Action`](https://api.onyxframework.org/rest/Onyx/REST/Action.html) is a module and can be included into any object. Structs works nice, because actions do not need to reference each other, they are throw-away objects. There is no enforced one-to-one relation between actions and endpoints. Multiple endpoints can execute a single Action, and vice-versa. Let's define a simple action:
 
 ```crystal
 require "onyx-rest"
 
-router = Onyx::REST::Router.new do
-  get "/" do
-    "Hello Onyx!"
+struct Hello
+  include Onyx::REST::Action
+
+  def call
+    context.response << "Hello Onyx"
   end
 end
 
-server = Onyx::REST::Server.new(router)
+router = Onyx::HTTP::Router.new do
+  get "/", Hello
+end
+
+server = Onyx::HTTP::Server.new(router)
 server.bind_tcp(5000)
 server.listen
 ```
 
-```console
-INFO [14:04:31.493] ⬛ Onyx::REST::Server is listening at http://127.0.0.1:5000
-INFO [14:04:34.082] ⬛ Onyx::REST::Server is shutting down!
+```sh
+> curl http://localhost:5000
+Hello Onyx
 ```
 
-```console
-$ curl http://localhost:5000
-Hello Onyx!
-```
+Actions have access to the current [`HTTP::Server::Context`](https://crystal-lang.org/api/0.27.2/HTTP/Server/Context.html) via `#context` getter. They also have have `#status`, `#header` and `#redirect` shortcuts.
 
-### Handlers
+#### Params
 
-Fundamentally, every Onyx::REST application is a stack of HTTP handlers passed to the [Onyx::REST::Server](https://api.onyxframework.org/rest/Onyx/REST/Server.html). To add new functionality, you add new handlers to the stack. There is a number of implemented handlers which fit the most common REST application needs:
-
-* [Onyx::REST::Router](https://api.onyxframework.org/rest/Onyx/REST/Router.html) — routes the request to a proc
-* [Onyx::REST::CORS](https://api.onyxframework.org/rest/Onyx/REST/CORS.html) — Cross Origin Resource Sharing handler
-* [Onyx::REST::RequestID](https://api.onyxframework.org/rest/Onyx/REST/RequestID.html) — adds ID to the request
-* Rescuers — rescue unhandled errors
-  * [Onyx::REST::Rescuers::Standard](https://api.onyxframework.org/rest/Onyx/REST/Rescuers/Standard.html) — rescues errors and logs them colorfully to a standard Crystal logger
-* Loggers — log requests
-  * [Onyx::REST::Loggers::Standard](https://api.onyxframework.org/rest/Onyx/REST/Loggers/Standard.html) — logs requests colorfully to a standard Crystal logger
-* Renderers — render responses
-  * [Onyx::REST::Renderers::JSON](https://api.onyxframework.org/rest/Onyx/REST/Renderers/JSON.html) — renders to JSON
-
-#### Request ID
-
-The built-in [Onyx::REST::RequestID](https://api.onyxframework.org/rest/Onyx/REST/RequestID.html) adds a random UUID to the [Request instance](https://api.onyxframework.org/rest/HTTP/Request.html):
-
-```crystal
-request_id = Onyx::REST::RequestID.new
-handlers = [request_id, router]
-server = Onyx::REST::Server.new(handlers)
-# ditto
-```
-
-```console
-$ curl http://127.0.0.1:5000
-X-Request-ID: 23bac83d-4894-4e6c-b007-7785ff73d684
-```
-
-#### Logging requests
-
-Built-in requests logger is pretty easy to use:
-
-```crystal
-logger = Onyx::REST::Loggers::Standard.new
-handlers = [request_id, logger, rescuer]
-# ditto
-```
-
-```console
-INFO [14:04:32.578] [4821be8e]      GET / 200 127μs
-INFO [14:04:36.718] [6ec8d538]     POST /users 201 1.579ms
-INFO [14:04:39.912] [60c5d1ed]      GET /unknown 404 77μs
-```
-
-#### Rescuing unhandled errors
-
-If an unhandled error raised somewhere during processing the request, the Crystal process doesn't crash and the user sees `500 Internal Server Error`, but the error's backtrace is put directly into `STDERR` and the handlers stack is exited. Therefore, it's a good idea to add a rescuer handler into the stack. For example, default [Onyx::REST::Rescuers::Standard](https://api.onyxframework.org/rest/Onyx/REST/Rescuers/Standard.html) logs the error into a standard Crystal logger:
-
-```crystal
-router.get "/error" do |env|
-  raise "Oops"
-end
-
-rescuer = Onyx::REST::Rescuers::Standard.new
-handlers = [request_id, logger, rescuer, router]
-```
-
-```console
-INFO [14:04:32.578] [8e0c113f]  ERROR  Oops
-
-Oops (Exception)
-  from spec/json_server.cr:23:9 in '->'
-  from src/onyx-rest/router.cr:255:3 in '->'
-  from src/onyx-rest/router.cr:255:3 in 'call'
-  from /usr/share/crystal/src/http/server/handler.cr:24:7 in 'call_next'
-  from src/onyx-rest/rescuer.cr:20:5 in 'call'
-  from /usr/share/crystal/src/http/server/handler.cr:24:7 in 'call_next'
-  from src/onyx-rest/rescuer.cr:20:5 in 'call'
-  from /usr/share/crystal/src/http/server/handler.cr:24:7 in 'call_next'
-  from src/onyx-rest/loggers/standard.cr:73:11 in 'call'
-
-INFO [14:04:32.578] [8e0c113f]     GET /error 500 1.890ms
-```
-
-You can also specify the "next" handler for a rescuer, so it calls it directly upon rescuing:
-
-```crystal
-renderer = Onyx::REST::Renderers::JSON.new
-rescuer = Onyx::REST::Rescuers::Standard.new(renderer)
-# ditto
-```
-
-And the result would be:
-
-```json
-{
-  "error": {
-    "class": "UnhandledServerError",
-    "message": "Unhandled server error. If you are the application owner, see the logs for details",
-    "code": 500
-  }
-}
-```
-
-### REST errors
-
-There is a [`Onyx::REST::Error`](https://api.onyxframework.org/rest/Onyx/REST/Error.html) abstract class which defines an **expected** error, for example:
-
-```crystal
-class UserNotFound < Onyx::REST::Error(404)
-  def initialize(id)
-    super("User not found with id #{id}")
-  end
-end
-
-router.get "/users/:id" do |env|
-  id = env.request.path_params["id"].to_i?
-  raise UserNotFound.new(id) unless Models::User.find(id)
-end
-```
-
-These errors are typically rescued by the router and renderers (no need for a [Rescuer](https://api.onyxframework.org/rest/Onyx/REST/Rescuer.html) in this case):
-
-```console
-$ curl http://localhost:5000/users/42
-404 User not found with id 42
-```
-
-### Params
-
-Onyx::REST has a built-in rescuer for [`HTTP::Params::Serializable`](https://github.com/vladfaust/http-params-serializable), which makes defining typed params a piece of cake:
+You can easily define strongly-typed parameters in Actions to enable it parsing incoming values from the HTTP request path, query and also form and JSON bodies. Nested and array params are supported as well.
 
 ```crystal
 require "onyx-rest"
-require "onyx-rest/ext/http-params-serializable"
 
-struct FindUserParams
-  include HTTP::Params::Serializable
+struct Hello
+  include Onyx::REST::Action
 
-  getter name : String
-  getter age : Int32
-end
+  params do
+    query do
+      type who : String
+    end
+  end
 
-router.get "/users" do |env|
-  params = FindUserParams.new(env.request.query)
-  users = Models::Users.find(name: params.name, age: params.age)
-
-  if user = users[0]?
-    "#{user.first_name} #{user.last_name}"
+  def call
+    context.response << "Hello #{params.query.who}"
   end
 end
 
-# Standard rescuers rescues `Exception`s
-rescuer = Onyx::REST::Rescuers::Standard.new
+router = Onyx::HTTP::Router.new do
+  get "/", Hello
+end
 
-# Params rescuer rescues only Params errors and skips other `Exception`s
-params_rescuer = HTTP::Params::Serializable::Rescuer.new
-
-server = Onyx::REST::Server.new([rescuer, params_rescuer, router])
+server = Onyx::HTTP::Server.new(router)
+server.bind_tcp(5000)
+server.listen
 ```
 
-```console
-$ curl http://localhost:5000/users?age=foo
-400 Parameter "age" can't be cast from "foo" to Int32
-$ curl http://localhost:5000/users?age=22
-Vlad Faust
+```sh
+> curl http://localhost:5000/?who=World
+Hello World
 ```
+
+This feature is proudly powered by [HTTP::Params::Serializable](https://github.com/vladfaust/http-params-serializable) shard. Read more about `.params` macro in [API docs](https://api.onyxframework.org/rest/Onyx/REST/Action.html).
+
+#### Errors
+
+It's typical for web applications to have *expected errors*, e.g. "User is not found". Actions have syntax to define such errors (you'll need an [`Onyx::REST::Rescuer`](https://api.onyxframework.org/rest/Onyx/REST/Rescuer.html)):
+
+```crystal
+require "onyx-rest"
+
+struct GetUser
+  include Onyx::REST::Action
+
+  params do
+    path do
+      type id : Int32
+    end
+  end
+
+  errors do
+    type UserNotFound(404)
+  end
+
+  def call
+    if params.path.id == 42
+      context.response << "Found user"
+    else
+      raise UserNotFound.new
+    end
+  end
+end
+
+rescuer = Onyx::REST::Rescuer.new
+
+router = Onyx::HTTP::Router.new do
+  get "/users/:id", GetUser
+end
+
+server = Onyx::HTTP::Server.new(rescuer, router)
+server.bind_tcp(5000)
+server.listen
+```
+
+```sh
+> curl http://localhost:5000/users/42
+Found user
+> curl http://localhost:5000/users/43
+404 User Not Found
+```
+
+### Views
+
+[`View`](https://api.onyxframework.org/rest/Onyx/REST/View.html) is a module which responsibility is to render responses. A view should be handled by a *renderer*, which could either be [`Onyx::Renderers::Text`](https://api.onyxframework.org/rest/Onyx/REST/Renderers/Text.html) or [`Onyx::Renderers::JSON`](https://api.onyxframework.org/rest/Onyx/REST/Renderers/JSON.html):
+
+```crystal
+require "onyx-rest"
+require "onyx-rest/renderers/text"
+
+struct UserView
+  include Onyx::REST::View
+
+  def initialize(@id : Int32, @name : String)
+  end
+
+  text("id: #{@id}, name: #{@name}")
+end
+
+router = Onyx::HTTP::Router.new do
+  get "/" do |env|
+    env.response.view = UserView.new(42, "John")
+  end
+end
+
+renderer = Onyx::REST::Renderers::Text.new
+
+server = Onyx::HTTP::Server.new(router, renderer)
+server.bind_tcp(5000)
+server.listen
+```
+
+```sh
+> curl http://localhost:5000
+id: 42, name: John
+```
+
+### Actions + Views
+
+Actions have two native integrations with views. The first one is `#view` method which sets the response view like this:
+
+```crystal
+  def call
+    view(UserView.new(42, "John"))
+  end
+```
+
+And the second one is the fact that if an action returns a `View`, it is then treated as a response view (if not set eariler):
+
+```crystal
+  def call
+    return UserView.new(42, "John")
+  end
+```
+
+or, for a prettier control flow:
+
+```crystal
+  def call
+    return UserView.new(42, "John") if something
+    some_code
+    return AnotherView.new
+  end
+```
+
+### Macros
+
+You should use `"onyx/rest"` instead of `"onyx/http"` to enable [`Onyx::REST::Rescuer`](https://api.onyxframework.org/rest/Onyx/REST/Rescuer.html) and an ability to enable a renderer in one line:
+
+```crystal
+require "onyx/rest"
+
+Onyx.render(:json)
+Onyx.listen
+```
+
+Read more about Onyx::HTTP macros at [**@onyxframework/onyx#http**](https://github.com/onyxframework/onyx#http) or at [**@onyxframework/http#macros**](https://github.com/httpframework/http#macros).
+
+## Community 🍪
+
+There are multiple places to talk about this particular shard and about other ones as well:
+
+* [Onyx::HTTP Gitter chat](https://gitter.im/onyxframework/rest)
+* [Onyx Framework Gitter community](https://gitter.im/onyxframework)
+* [Vlad Faust Gitter community](https://gitter.im/vladfaust)
+* [Onyx Framework Twitter](https://twitter.com/onyxframework)
+* [Onyx Framework Telegram channel](https://telegram.me/onyxframework)
+
+## Support ❤️
+
+This shard is maintained by me, [Vlad Faust](https://vladfaust.com), a passionate developer with years of programming and product experience. I love creating Open-Source and I want to be able to work full-time on Open-Source projects.
+
+I will do my best to answer your questions in the free communication channels above, but if you want prioritized support, then please consider becoming my patron. Your issues will be labeled with your patronage status, and if you have a sponsor tier, then you and your team be able to communicate with me in private or semi-private channels such as e-mail and [Twist](https://twist.com). There are other perks to consider, so please, don't hesistate to check my Patreon page:
+
+<a href="https://www.patreon.com/vladfaust"><img height="50" src="https://onyxframework.org/img/patreon-button.svg"></a>
+
+You could also help me a lot if you leave a star to this GitHub repository and spread the world about Crystal and Onyx! 📣
 
 ## Contributing
 
-1. Fork it ( https://github.com/onyxframework/rest/fork )
+1. Fork it ( https://github.com/onyxframework/http/fork )
 2. Create your feature branch (git checkout -b my-new-feature)
-3. Commit your changes (git commit -am 'Add some feature')
+3. Commit your changes (git commit -am 'feat: some feature') using [Angular style commits](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit)
 4. Push to the branch (git push origin my-new-feature)
 5. Create a new Pull Request
 
@@ -234,6 +267,6 @@ Vlad Faust
 
 ## Licensing
 
-This software is licensed under [BSD 3-Clause License](LICENSE).
+This software is licensed under [MIT License](LICENSE).
 
-[![Open Source Initiative](https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Opensource.svg/100px-Opensource.svg.png)](https://opensource.org/licenses/BSD-3-Clause)
+[![Open Source Initiative](https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Opensource.svg/100px-Opensource.svg.png)](https://opensource.org/licenses/MIT)
