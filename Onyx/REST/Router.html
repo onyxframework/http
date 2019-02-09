@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.27.0">
+<meta name="generator" content="Crystal Docs 0.27.2">
 
 
 <link href="../../css/style.css" rel="stylesheet" type="text/css">
@@ -306,7 +306,7 @@ server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</s
       </li>
     
       <li class="entry-summary">
-        <a href="#delete%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3E_%29-instance-method" class="signature"><strong>#delete</strong>(path, &proc : HTTP::Server::Context -> _)</a>
+        <a href="#delete%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EUNDERSCORE%29-instance-method" class="signature"><strong>#delete</strong>(path, &proc : HTTP::Server::Context -> UNDERSCORE)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> with <code>DELETE</code> method.</p></div>
         
@@ -320,49 +320,49 @@ server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</s
       </li>
     
       <li class="entry-summary">
-        <a href="#get%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3E_%29-instance-method" class="signature"><strong>#get</strong>(path, &proc : HTTP::Server::Context -> _)</a>
+        <a href="#get%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EUNDERSCORE%29-instance-method" class="signature"><strong>#get</strong>(path, &proc : HTTP::Server::Context -> UNDERSCORE)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> with <code>GET</code> method.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#on%28path%2Cmethods%3AArray%28String%29%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3E_%29-instance-method" class="signature"><strong>#on</strong>(path, methods : Array(String), &proc : HTTP::Server::Context -> _)</a>
+        <a href="#on%28path%2Cmethods%3AArray%28String%29%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EUNDERSCORE%29-instance-method" class="signature"><strong>#on</strong>(path, methods : Array(String), &proc : HTTP::Server::Context -> UNDERSCORE)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> and <em>methods</em>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#options%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3E_%29-instance-method" class="signature"><strong>#options</strong>(path, &proc : HTTP::Server::Context -> _)</a>
+        <a href="#options%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EUNDERSCORE%29-instance-method" class="signature"><strong>#options</strong>(path, &proc : HTTP::Server::Context -> UNDERSCORE)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> with <code>OPTIONS</code> method.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#patch%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3E_%29-instance-method" class="signature"><strong>#patch</strong>(path, &proc : HTTP::Server::Context -> _)</a>
+        <a href="#patch%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EUNDERSCORE%29-instance-method" class="signature"><strong>#patch</strong>(path, &proc : HTTP::Server::Context -> UNDERSCORE)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> with <code>PATCH</code> method.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#post%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3E_%29-instance-method" class="signature"><strong>#post</strong>(path, &proc : HTTP::Server::Context -> _)</a>
+        <a href="#post%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EUNDERSCORE%29-instance-method" class="signature"><strong>#post</strong>(path, &proc : HTTP::Server::Context -> UNDERSCORE)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> with <code>POST</code> method.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#put%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3E_%29-instance-method" class="signature"><strong>#put</strong>(path, &proc : HTTP::Server::Context -> _)</a>
+        <a href="#put%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EUNDERSCORE%29-instance-method" class="signature"><strong>#put</strong>(path, &proc : HTTP::Server::Context -> UNDERSCORE)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> with <code>PUT</code> method.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#ws%28path%2C%26proc%3AHTTP%3A%3AWebSocket%2CHTTP%3A%3AServer%3A%3AContext-%3E_%29-instance-method" class="signature"><strong>#ws</strong>(path, &proc : HTTP::WebSocket, HTTP::Server::Context -> _)</a>
+        <a href="#ws%28path%2C%26proc%3AHTTP%3A%3AWebSocket%2CHTTP%3A%3AServer%3A%3AContext-%3EUNDERSCORE%29-instance-method" class="signature"><strong>#ws</strong>(path, &proc : HTTP::WebSocket, HTTP::Server::Context -> UNDERSCORE)</a>
         
           <div class="summary"><p>Draw a WebSocket route for <em>path</em>.</p></div>
         
@@ -462,12 +462,12 @@ of the result and then call the next handler if it is present, otherwise process
       </div>
     </div>
   
-    <div class="entry-detail" id="delete(path,&amp;proc:HTTP::Server::Context-&gt;_)-instance-method">
+    <div class="entry-detail" id="delete(path,&amp;proc:HTTP::Server::Context-&gt;UNDERSCORE)-instance-method">
       <div class="signature">
         
-        def <strong>delete</strong>(path, &proc : HTTP::Server::Context -> _)
+        def <strong>delete</strong>(path, &proc : HTTP::Server::Context -> UNDERSCORE)
 
-        <a class="method-permalink" href="#delete%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3E_%29-instance-method">#</a>
+        <a class="method-permalink" href="#delete%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EUNDERSCORE%29-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a route for <em>path</em> with <code>DELETE</code> method.</p>
@@ -509,12 +509,12 @@ of the result and then call the next handler if it is present, otherwise process
       </div>
     </div>
   
-    <div class="entry-detail" id="get(path,&amp;proc:HTTP::Server::Context-&gt;_)-instance-method">
+    <div class="entry-detail" id="get(path,&amp;proc:HTTP::Server::Context-&gt;UNDERSCORE)-instance-method">
       <div class="signature">
         
-        def <strong>get</strong>(path, &proc : HTTP::Server::Context -> _)
+        def <strong>get</strong>(path, &proc : HTTP::Server::Context -> UNDERSCORE)
 
-        <a class="method-permalink" href="#get%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3E_%29-instance-method">#</a>
+        <a class="method-permalink" href="#get%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EUNDERSCORE%29-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a route for <em>path</em> with <code>GET</code> method.</p>
@@ -533,12 +533,12 @@ of the result and then call the next handler if it is present, otherwise process
       </div>
     </div>
   
-    <div class="entry-detail" id="on(path,methods:Array(String),&amp;proc:HTTP::Server::Context-&gt;_)-instance-method">
+    <div class="entry-detail" id="on(path,methods:Array(String),&amp;proc:HTTP::Server::Context-&gt;UNDERSCORE)-instance-method">
       <div class="signature">
         
-        def <strong>on</strong>(path, methods : Array(String), &proc : HTTP::Server::Context -> _)
+        def <strong>on</strong>(path, methods : Array(String), &proc : HTTP::Server::Context -> UNDERSCORE)
 
-        <a class="method-permalink" href="#on%28path%2Cmethods%3AArray%28String%29%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3E_%29-instance-method">#</a>
+        <a class="method-permalink" href="#on%28path%2Cmethods%3AArray%28String%29%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EUNDERSCORE%29-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a route for <em>path</em> and <em>methods</em>.</p>
@@ -557,12 +557,12 @@ of the result and then call the next handler if it is present, otherwise process
       </div>
     </div>
   
-    <div class="entry-detail" id="options(path,&amp;proc:HTTP::Server::Context-&gt;_)-instance-method">
+    <div class="entry-detail" id="options(path,&amp;proc:HTTP::Server::Context-&gt;UNDERSCORE)-instance-method">
       <div class="signature">
         
-        def <strong>options</strong>(path, &proc : HTTP::Server::Context -> _)
+        def <strong>options</strong>(path, &proc : HTTP::Server::Context -> UNDERSCORE)
 
-        <a class="method-permalink" href="#options%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3E_%29-instance-method">#</a>
+        <a class="method-permalink" href="#options%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EUNDERSCORE%29-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a route for <em>path</em> with <code>OPTIONS</code> method.</p>
@@ -581,12 +581,12 @@ of the result and then call the next handler if it is present, otherwise process
       </div>
     </div>
   
-    <div class="entry-detail" id="patch(path,&amp;proc:HTTP::Server::Context-&gt;_)-instance-method">
+    <div class="entry-detail" id="patch(path,&amp;proc:HTTP::Server::Context-&gt;UNDERSCORE)-instance-method">
       <div class="signature">
         
-        def <strong>patch</strong>(path, &proc : HTTP::Server::Context -> _)
+        def <strong>patch</strong>(path, &proc : HTTP::Server::Context -> UNDERSCORE)
 
-        <a class="method-permalink" href="#patch%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3E_%29-instance-method">#</a>
+        <a class="method-permalink" href="#patch%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EUNDERSCORE%29-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a route for <em>path</em> with <code>PATCH</code> method.</p>
@@ -605,12 +605,12 @@ of the result and then call the next handler if it is present, otherwise process
       </div>
     </div>
   
-    <div class="entry-detail" id="post(path,&amp;proc:HTTP::Server::Context-&gt;_)-instance-method">
+    <div class="entry-detail" id="post(path,&amp;proc:HTTP::Server::Context-&gt;UNDERSCORE)-instance-method">
       <div class="signature">
         
-        def <strong>post</strong>(path, &proc : HTTP::Server::Context -> _)
+        def <strong>post</strong>(path, &proc : HTTP::Server::Context -> UNDERSCORE)
 
-        <a class="method-permalink" href="#post%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3E_%29-instance-method">#</a>
+        <a class="method-permalink" href="#post%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EUNDERSCORE%29-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a route for <em>path</em> with <code>POST</code> method.</p>
@@ -629,12 +629,12 @@ of the result and then call the next handler if it is present, otherwise process
       </div>
     </div>
   
-    <div class="entry-detail" id="put(path,&amp;proc:HTTP::Server::Context-&gt;_)-instance-method">
+    <div class="entry-detail" id="put(path,&amp;proc:HTTP::Server::Context-&gt;UNDERSCORE)-instance-method">
       <div class="signature">
         
-        def <strong>put</strong>(path, &proc : HTTP::Server::Context -> _)
+        def <strong>put</strong>(path, &proc : HTTP::Server::Context -> UNDERSCORE)
 
-        <a class="method-permalink" href="#put%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3E_%29-instance-method">#</a>
+        <a class="method-permalink" href="#put%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EUNDERSCORE%29-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a route for <em>path</em> with <code>PUT</code> method.</p>
@@ -653,12 +653,12 @@ of the result and then call the next handler if it is present, otherwise process
       </div>
     </div>
   
-    <div class="entry-detail" id="ws(path,&amp;proc:HTTP::WebSocket,HTTP::Server::Context-&gt;_)-instance-method">
+    <div class="entry-detail" id="ws(path,&amp;proc:HTTP::WebSocket,HTTP::Server::Context-&gt;UNDERSCORE)-instance-method">
       <div class="signature">
         
-        def <strong>ws</strong>(path, &proc : HTTP::WebSocket, HTTP::Server::Context -> _)
+        def <strong>ws</strong>(path, &proc : HTTP::WebSocket, HTTP::Server::Context -> UNDERSCORE)
 
-        <a class="method-permalink" href="#ws%28path%2C%26proc%3AHTTP%3A%3AWebSocket%2CHTTP%3A%3AServer%3A%3AContext-%3E_%29-instance-method">#</a>
+        <a class="method-permalink" href="#ws%28path%2C%26proc%3AHTTP%3A%3AWebSocket%2CHTTP%3A%3AServer%3A%3AContext-%3EUNDERSCORE%29-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a WebSocket route for <em>path</em>.</p>
