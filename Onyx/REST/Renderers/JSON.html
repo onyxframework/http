@@ -41,11 +41,6 @@
       
         <ul>
   
-  <li class=" " data-id="github.com/onyxframework/rest/HTTP/Request" data-name="http::request">
-      <a href="../../../HTTP/Request.html">Request</a>
-      
-    </li>
-  
   <li class="parent " data-id="github.com/onyxframework/rest/HTTP/Server" data-name="http::server">
       <a href="../../../HTTP/Server.html">Server</a>
       
@@ -76,48 +71,13 @@
       
         <ul>
   
-  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/CORS" data-name="onyx::rest::cors">
-      <a href="../../../Onyx/REST/CORS.html">CORS</a>
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Action" data-name="onyx::rest::action">
+      <a href="../../../Onyx/REST/Action.html">Action</a>
       
     </li>
   
   <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Error" data-name="onyx::rest::error(code)">
       <a href="../../../Onyx/REST/Error.html">Error</a>
-      
-    </li>
-  
-  <li class="parent " data-id="github.com/onyxframework/rest/Onyx/REST/Errors" data-name="onyx::rest::errors">
-      <a href="../../../Onyx/REST/Errors.html">Errors</a>
-      
-        <ul>
-  
-  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Errors/NotFound" data-name="onyx::rest::errors::notfound">
-      <a href="../../../Onyx/REST/Errors/NotFound.html">NotFound</a>
-      
-    </li>
-  
-  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Errors/ParamsError" data-name="onyx::rest::errors::paramserror">
-      <a href="../../../Onyx/REST/Errors/ParamsError.html">ParamsError</a>
-      
-    </li>
-  
-</ul>
-
-      
-    </li>
-  
-  <li class="parent " data-id="github.com/onyxframework/rest/Onyx/REST/Loggers" data-name="onyx::rest::loggers">
-      <a href="../../../Onyx/REST/Loggers.html">Loggers</a>
-      
-        <ul>
-  
-  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Loggers/Standard" data-name="onyx::rest::loggers::standard">
-      <a href="../../../Onyx/REST/Loggers/Standard.html">Standard</a>
-      
-    </li>
-  
-</ul>
-
       
     </li>
   
@@ -131,53 +91,23 @@
       
     </li>
   
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Renderers/Text" data-name="onyx::rest::renderers::text">
+      <a href="../../../Onyx/REST/Renderers/Text.html">Text</a>
+      
+    </li>
+  
 </ul>
 
       
     </li>
   
-  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/RequestID" data-name="onyx::rest::requestid">
-      <a href="../../../Onyx/REST/RequestID.html">RequestID</a>
-      
-    </li>
-  
-  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Rescuer" data-name="onyx::rest::rescuer(t)">
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Rescuer" data-name="onyx::rest::rescuer">
       <a href="../../../Onyx/REST/Rescuer.html">Rescuer</a>
       
     </li>
   
-  <li class="parent " data-id="github.com/onyxframework/rest/Onyx/REST/Rescuers" data-name="onyx::rest::rescuers">
-      <a href="../../../Onyx/REST/Rescuers.html">Rescuers</a>
-      
-        <ul>
-  
-  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Rescuers/Standard" data-name="onyx::rest::rescuers::standard">
-      <a href="../../../Onyx/REST/Rescuers/Standard.html">Standard</a>
-      
-    </li>
-  
-</ul>
-
-      
-    </li>
-  
-  <li class="parent " data-id="github.com/onyxframework/rest/Onyx/REST/Router" data-name="onyx::rest::router">
-      <a href="../../../Onyx/REST/Router.html">Router</a>
-      
-        <ul>
-  
-  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Router/DuplicateRouteError" data-name="onyx::rest::router::duplicaterouteerror">
-      <a href="../../../Onyx/REST/Router/DuplicateRouteError.html">DuplicateRouteError</a>
-      
-    </li>
-  
-</ul>
-
-      
-    </li>
-  
-  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Server" data-name="onyx::rest::server">
-      <a href="../../../Onyx/REST/Server.html">Server</a>
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/View" data-name="onyx::rest::view">
+      <a href="../../../Onyx/REST/View.html">View</a>
       
     </li>
   
@@ -212,14 +142,10 @@
 
   <h2>Overview</h2>
 
-  <p>A JSON renderer. If <code><a href="../../../HTTP/Server/Response.html#error%3AException%3F-instance-method">HTTP::Server::Response#error</a></code> is present, prints it as a JSON object.
-Otherwise, if <code><a href="../../../HTTP/Server/Response.html#text%3AString%3F-instance-method">HTTP::Server::Response#text</a></code> is present, prints it as is.
-Should be put after a router (i.e. <code><a href="../../../Onyx/REST/Router.html">Onyx::REST::Router</a></code>).
+  <p>A JSON renderer. If <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Response</a>#error</code> is present, prints it as a JSON object,
+otherwise renders <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Response</a>#view</code>, calling <code>View#to_json</code> on it.
+Should be put after router.
 Calls the next handler if it's present.</p>
-
-<pre><code>renderer <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Renderers</span><span class="t">::</span><span class="t">JSON</span>
-handlers <span class="o">&lt;&lt;</span> router
-handlers <span class="o">&lt;&lt;</span> renderer</code></pre>
 
 
 
@@ -244,7 +170,7 @@ handlers <span class="o">&lt;&lt;</span> renderer</code></pre>
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/onyxframework/rest/blob/3f99aa94b52108dd2574e101266b6192c84d0c5c/src/onyx-rest/renderers/json.cr#L19" target="_blank">
+      <a href="https://github.com/onyxframework/rest/blob/9df13ccc01137bd4b1372f5944de3a3cd739cb05/src/onyx-rest/renderers/json.cr#L16" target="_blank">
         onyx-rest/renderers/json.cr
       </a>
     
