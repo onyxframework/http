@@ -231,7 +231,7 @@ Onyx.render(:json)
 Onyx.listen
 ```
 
-Read more about Onyx::HTTP macros at [**@onyxframework/onyx#http**](https://github.com/onyxframework/onyx#http) or at [**@onyxframework/http#macros**](https://github.com/httpframework/http#macros).
+Read more about Onyx::HTTP macros at [**@onyxframework/onyx#http**](https://github.com/onyxframework/onyx#http) or at [**@onyxframework/http#macros**](https://github.com/onyxframework/http#macros).
 
 ## Community 🍪
 
