@@ -31,7 +31,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   onyx-rest:
     github: onyxframework/rest
-    version: ~> 0.6.0
+    version: ~> 0.6.1
 ```
 
 This shard follows [Semantic Versioning v2.0.0](http://semver.org/), so check [releases](https://github.com/onyxframework/rest/releases) and change the `version` accordingly. Please visit [github.com/crystal-lang/shards](https://github.com/crystal-lang/shards) to know more about Crystal shards.
