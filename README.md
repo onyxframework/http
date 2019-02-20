@@ -237,7 +237,7 @@ Read more about Onyx::HTTP macros at [**@onyxframework/onyx#http**](https://gith
 
 There are multiple places to talk about this particular shard and about other ones as well:
 
-* [Onyx::HTTP Gitter chat](https://gitter.im/onyxframework/rest)
+* [Onyx::REST Gitter chat](https://gitter.im/onyxframework/rest)
 * [Onyx Framework Gitter community](https://gitter.im/onyxframework)
 * [Vlad Faust Gitter community](https://gitter.im/vladfaust)
 * [Onyx Framework Twitter](https://twitter.com/onyxframework)
