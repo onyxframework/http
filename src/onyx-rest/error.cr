@@ -36,29 +36,31 @@
 #   }
 # }
 # ```
-class Onyx::REST::Error(Code) < Exception
-  # The HTTP status code of this error.
-  getter code : Int32 = Code
+module Onyx::REST
+  class Error(Code) < Exception
+    # The HTTP status code of this error.
+    getter code : Int32 = Code
 
-  # The name of the error. By default returns its class name.
-  def name
-    {{@type.name.split("::").last}}
-  end
+    # The name of the error. By default returns its class name.
+    def name
+      {{@type.name.split("::").last}}
+    end
 
-  # Initialize the error with default message, which is its class name splitted with space
-  # (e.g. `"User Not Found"` for `UserNotFound` error).
-  def initialize
-    super({{@type.name.split("::").last.underscore.split('_').join(' ') { |s| s.capitalize }}})
-  end
+    # Initialize the error with default message, which is its class name splitted with space
+    # (e.g. `"User Not Found"` for `UserNotFound` error).
+    def initialize
+      super({{@type.name.split("::").last.underscore.split('_').join(' ') { |s| s.capitalize }}})
+    end
 
-  # Initialize the error with a *message*.
-  def initialize(message : String)
-    super
-  end
+    # Initialize the error with a *message*.
+    def initialize(message : String)
+      super
+    end
 
-  # The error payload. Usually used by custom renderers, for example,
-  # `Onyx::REST::Renderers::JSON` calls `error.payload.try &.to_json`.
-  # Returns `nil` by default.
-  def payload
+    # The error payload. Usually used by custom renderers, for example,
+    # `Onyx::REST::Renderers::JSON` calls `error.payload.try &.to_json`.
+    # Returns `nil` by default.
+    def payload
+    end
   end
 end
