@@ -11,18 +11,20 @@ module Onyx::REST
   module Renderers
     # A JSON renderer. If `::HTTP::Server::Response#error` is present, prints it as a JSON object,
     # otherwise renders `::HTTP::Server::Response#view`, calling `View#to_json` on it.
+    # It updates the `"Content-Type"` header **only** if error of view is present.
     # Should be put after router.
     # Calls the next handler if it's present.
     class JSON
       include ::HTTP::Handler
 
+      CONTENT_TYPE = "application/json; charset=utf-8"
+
       # :nodoc:
       def call(context)
-        context.response.content_type = "application/json; charset=utf-8"
-
         if error = context.response.error
-          json = ::JSON::Builder.new(context.response)
+          context.response.content_type = CONTENT_TYPE
 
+          json = ::JSON::Builder.new(context.response)
           json.document do
             json.object do
               json.field("error") do
@@ -66,6 +68,8 @@ module Onyx::REST
             end
           end
         elsif view = context.response.view
+          context.response.content_type = CONTENT_TYPE
+
           json = ::JSON::Builder.new(context.response)
           json.document do
             view.to_json(json)

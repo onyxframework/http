@@ -35,6 +35,8 @@ class JSONRendererSpecServer
           env.response.view = JSONView.new("OK")
         end
       end
+
+      get "/empty" { }
     end
 
     @server = Onyx::HTTP::Server.new([router, renderer])
@@ -70,6 +72,15 @@ describe Onyx::REST::Renderers::JSON do
       response.status_code.should eq 505
       response.headers["Content-Type"].should eq "application/json; charset=utf-8"
       response.body.should eq %Q[{"error":{"class":"JSONError","message":"Boom!","code":505,"payload":{"foo":"Boom!"}}}]
+    end
+  end
+
+  describe "skip rendering" do
+    it do
+      response = client.get("/empty")
+      response.status_code.should eq 200
+      response.headers["Content-Type"]?.should be_nil
+      response.body.should eq ""
     end
   end
 
