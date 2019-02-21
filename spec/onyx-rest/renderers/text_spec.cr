@@ -35,6 +35,8 @@ class TextRendererSpecServer
           env.response.view = TextView.new("OK")
         end
       end
+
+      get "/empty" { }
     end
 
     @server = Onyx::HTTP::Server.new([router, renderer])
@@ -70,6 +72,15 @@ describe Onyx::REST::Renderers::Text do
       response.status_code.should eq 505
       response.headers["Content-Type"].should eq "text/plain; charset=utf-8"
       response.body.should eq "505 Boom!"
+    end
+  end
+
+  describe "skip rendering" do
+    it do
+      response = client.get("/empty")
+      response.status_code.should eq 200
+      response.headers["Content-Type"]?.should be_nil
+      response.body.should eq ""
     end
   end
 
