@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.27.2">
+
+
+<link href="../../css/style.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="../../js/doc.js"></script>
+<script type="text/javascript">
+  CrystalDoc.base_path = "../../";
+</script>
+
+  <meta id="repository-name" content="github.com/onyxframework/rest">
+  <title>Onyx::REST::Error(Code) - github.com/onyxframework/rest</title>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="repository-links">
+      <a href="../../index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent " data-id="github.com/onyxframework/rest/HTTP" data-name="http">
+      <a href="../../HTTP.html">HTTP</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="github.com/onyxframework/rest/HTTP/Server" data-name="http::server">
+      <a href="../../HTTP/Server.html">Server</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/HTTP/Server/Response" data-name="http::server::response">
+      <a href="../../HTTP/Server/Response.html">Response</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent open current" data-id="github.com/onyxframework/rest/Onyx" data-name="onyx">
+      <a href="../../Onyx.html">Onyx</a>
+      
+        <ul>
+  
+  <li class="parent open current" data-id="github.com/onyxframework/rest/Onyx/REST" data-name="onyx::rest">
+      <a href="../../Onyx/REST.html">REST</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Action" data-name="onyx::rest::action">
+      <a href="../../Onyx/REST/Action.html">Action</a>
+      
+    </li>
+  
+  <li class=" current" data-id="github.com/onyxframework/rest/Onyx/REST/Error" data-name="onyx::rest::error(code)">
+      <a href="../../Onyx/REST/Error.html">Error</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/onyxframework/rest/Onyx/REST/Renderers" data-name="onyx::rest::renderers">
+      <a href="../../Onyx/REST/Renderers.html">Renderers</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Renderers/JSON" data-name="onyx::rest::renderers::json">
+      <a href="../../Onyx/REST/Renderers/JSON.html">JSON</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Renderers/Text" data-name="onyx::rest::renderers::text">
+      <a href="../../Onyx/REST/Renderers/Text.html">Text</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Rescuer" data-name="onyx::rest::rescuer">
+      <a href="../../Onyx/REST/Rescuer.html">Rescuer</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/View" data-name="onyx::rest::view">
+      <a href="../../Onyx/REST/View.html">View</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">class</span> Onyx::REST::Error(Code)
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Onyx/REST/Error.html">Onyx::REST::Error(Code)</a></li><li class="superclass">Exception</li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+
+
+
+
+  <h2>Overview</h2>
+
+  <p>A REST error which is expected to be rescued upon processing (i.e. by <code>Onyx::REST::Rescuers::REST</code>).
+Define your own errors to handle <strong>expected</strong> situations:</p>
+
+<pre><code><span class="k">class</span> <span class="t">UserNotFound</span> <span class="o">&lt;</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Error</span>(<span class="n">404</span>)
+  <span class="k">def</span> <span class="m">initialize</span>(@id : <span class="t">Int32</span>)
+    <span class="k">super</span>(<span class="s">&quot;User not found with ID </span><span class="i">#{</span>@id<span class="i">}</span><span class="s">&quot;</span>)
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">payload</span>
+    {id: @id}
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c"># Will return 404 erorr if a user isn&#39;t found by the ID</span>
+router.get <span class="s">&quot;/users/:id&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
+  id <span class="o">=</span> env.request.path_params[<span class="s">&quot;id&quot;</span>]?.to_i?
+  raise <span class="t">UserNotFound</span>.<span class="k">new</span>(id) <span class="k">unless</span> <span class="t">Models</span><span class="t">::</span><span class="t">User</span>.find?(id)
+<span class="k">end</span></code></pre>
+
+<p>In case of error, a plain text response status and body will be
+<code>404</code> and <code>"404 User not found with ID 42"</code> respectively.</p>
+
+<p><code><a href="../../Onyx/REST/Renderers/JSON.html">Onyx::REST::Renderers::JSON</a></code> takes care of the error's <code><a href="../../Onyx/REST/Error.html#payload-instance-method">#payload</a></code>, rendering it appropriately:</p>
+
+<pre><code class="language-json">{
+  "error": {
+    "class": "UserNotFound",
+    "message": "User not found with ID 42",
+    "code": 404,
+    "payload": {
+      "id": 42
+    }
+  }
+}</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>Defined in:</h2>
+  
+    
+      <a href="https://github.com/onyxframework/rest/blob/66e96fb62c7a1b3a069636c002f70eb1f6ab92a5/src/onyx-rest/error.cr#L40" target="_blank">
+        onyx-rest/error.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+  <h2>Constructors</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new%28message%3AString%29-class-method" class="signature"><strong>.new</strong>(message : String)</a>
+        
+          <div class="summary"><p>Initialize the error with a <em>message</em>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new-class-method" class="signature"><strong>.new</strong></a>
+        
+          <div class="summary"><p>Initialize the error with default message, which is its class name splitted with space (e.g.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+  <h2>Instance Method Summary</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#code%3AInt32-instance-method" class="signature"><strong>#code</strong> : Int32</a>
+        
+          <div class="summary"><p>The HTTP status code of this error.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#name-instance-method" class="signature"><strong>#name</strong></a>
+        
+          <div class="summary"><p>The name of the error.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#payload-instance-method" class="signature"><strong>#payload</strong></a>
+        
+          <div class="summary"><p>The error payload.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+  <h2>Constructor Detail</h2>
+  
+    <div class="entry-detail" id="new(message:String)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(message : String)
+
+        <a class="method-permalink" href="#new%28message%3AString%29-class-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Initialize the error with a <em>message</em>.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/rest/blob/66e96fb62c7a1b3a069636c002f70eb1f6ab92a5/src/onyx-rest/error.cr#L56" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>
+
+        <a class="method-permalink" href="#new-class-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Initialize the error with default message, which is its class name splitted with space
+(e.g. <code>"User Not Found"</code> for <code>UserNotFound</code> error).</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/rest/blob/66e96fb62c7a1b3a069636c002f70eb1f6ab92a5/src/onyx-rest/error.cr#L51" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+
+  <h2>Instance Method Detail</h2>
+  
+    <div class="entry-detail" id="code:Int32-instance-method">
+      <div class="signature">
+        
+        def <strong>code</strong> : Int32
+
+        <a class="method-permalink" href="#code%3AInt32-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>The HTTP status code of this error.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/rest/blob/66e96fb62c7a1b3a069636c002f70eb1f6ab92a5/src/onyx-rest/error.cr#L44" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="name-instance-method">
+      <div class="signature">
+        
+        def <strong>name</strong>
+
+        <a class="method-permalink" href="#name-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>The name of the error. By default returns its class name.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/rest/blob/66e96fb62c7a1b3a069636c002f70eb1f6ab92a5/src/onyx-rest/error.cr#L45" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="payload-instance-method">
+      <div class="signature">
+        
+        def <strong>payload</strong>
+
+        <a class="method-permalink" href="#payload-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>The error payload. Usually used by custom renderers, for example,
+<code><a href="../../Onyx/REST/Renderers/JSON.html">Onyx::REST::Renderers::JSON</a></code> calls <code>error<a href="../../Onyx/REST/Error.html#payload-instance-method">.payload</a>.try &.to_json</code>.
+Returns <code>nil</code> by default.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/rest/blob/66e96fb62c7a1b3a069636c002f70eb1f6ab92a5/src/onyx-rest/error.cr#L63" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>
