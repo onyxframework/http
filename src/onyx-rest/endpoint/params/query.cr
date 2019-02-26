@@ -1,7 +1,7 @@
 require "http-params-serializable"
 require "../../error"
 
-module Onyx::REST::Action
+module Onyx::REST::Endpoint
   # Define query params for serialization powered by [`HTTP::Params::Serializable`](https://github.com/vladfaust/http-params-serializable).
   #
   # ```
@@ -28,7 +28,7 @@ module Onyx::REST::Action
   # params.query.offset => 5
   # ```
   macro query(&block)
-    class QueryParamsError < Onyx::REST::Error(400)
+    class QueryParamsError < Onyx::REST::Error(PARAMS_ERROR_CODE)
       def initialize(message : String, @path : Array(String))
         super(message)
       end

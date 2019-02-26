@@ -220,6 +220,45 @@ or, for a prettier control flow:
   end
 ```
 
+### Channels
+
+[`Channel`](https://api.onyxframework.org/rest/Onyx/REST/Channel.html) is a convenient websocket wrapper. It can too have `.params` and `.errors` defined. It is particulary convenient to use channels with the [Onyx::EDA](https://github.com/onyxframework/eda) shard.
+
+```crystal
+class Channels::Echo
+  include Onyx::REST::Channel
+
+  params do
+    query do
+      type secret : Int32
+    end
+  end
+
+  errors do
+    type InvalidSecret(4003)
+  end
+
+  def on_open
+    unless params.query.secret == 42
+      # Close socket with 4003 code and "Invalid Secret" reason
+      raise InvalidSecret.new
+    end
+  end
+
+  def on_message(message)
+    socket.send(message)
+  end
+end
+
+router = Onyx::HTTP::Router.new do
+  ws "/echo", Channels::Echo
+end
+
+server = Onyx::HTTP::Server.new(router)
+server.bind_tcp(5000)
+server.listen
+```
+
 ### Macros
 
 You should use `"onyx/rest"` instead of `"onyx/http"` to enable [`Onyx::REST::Rescuer`](https://api.onyxframework.org/rest/Onyx/REST/Rescuer.html) and an ability to enable a renderer in one line:

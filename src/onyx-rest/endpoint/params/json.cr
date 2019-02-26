@@ -1,7 +1,7 @@
 require "json"
 require "../../error"
 
-module Onyx::REST::Action
+module Onyx::REST::Endpoint
   # Define JSON params which would be deserialized from the request body only if
   # its "Content-Type" header is "application/json". The serialization is powered by
   # stdlib's [`JSON::Serializable`](https://crystal-lang.org/api/latest/JSON/Serializable.html).
@@ -38,7 +38,7 @@ module Onyx::REST::Action
   # json.user.username => nil
   # ```
   macro json(&block)
-    class JSONBodyError < Onyx::REST::Error(400)
+    class JSONBodyError < Onyx::REST::Error(PARAMS_ERROR_CODE)
     end
 
     struct JSONBody

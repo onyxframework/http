@@ -1,7 +1,7 @@
 require "http-params-serializable"
 require "../../error"
 
-module Onyx::REST::Action
+module Onyx::REST::Endpoint
   # Define path params which are usually extracted from the request URL by `Onyx::HTTP::Router`.
   # Serialization is powered by [`HTTP::Params::Serializable`](https://github.com/vladfaust/http-params-serializable).
   #
@@ -32,7 +32,7 @@ module Onyx::REST::Action
   # params.path.id => 1
   # ```
   macro path(&block)
-    class PathParamsError < Onyx::REST::Error(400)
+    class PathParamsError < Onyx::REST::Error(PARAMS_ERROR_CODE)
       def initialize(message : String, @path : Array(String))
         super(message)
       end

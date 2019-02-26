@@ -1,4 +1,4 @@
-module Onyx::REST::Action
+module Onyx::REST::Endpoint
   private macro define_error(declaration)
     {% if declaration.is_a?(Call) %}
       {% unless declaration.name == "type" %}
@@ -157,7 +157,8 @@ module Onyx::REST::Action
   # Optional errors definition macro. It's a DSL for defining *expected* errors,
   # such as "User Not Found" -- it's not an exception, but it should halt the request execution.
   # All defined errors will be ancestors of `REST::Error`, allowing them to be effectively
-  # handled in `REST::Rescuers::REST`.
+  # handled in `REST::Rescuers::REST`. Note that `Channel`s rescue `REST::Error` by themselves,
+  # you don't need a rescuer in this case.
   #
   # ```
   # struct MyAction

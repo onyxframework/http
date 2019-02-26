@@ -1,7 +1,7 @@
 require "http-params-serializable"
 require "../../error"
 
-module Onyx::REST::Action
+module Onyx::REST::Endpoint
   # Define Form params which would be deserialzed from the request body only if
   # its "Content-Type" header is "application/x-www-form-urlencoded". The serialization is powered by [`HTTP::Params::Serializable`](https://github.com/vladfaust/http-params-serializable).
   #
@@ -37,7 +37,7 @@ module Onyx::REST::Action
   # form.user.username => nil
   # ```
   macro form(&block)
-    class FormBodyError < Onyx::REST::Error(400)
+    class FormBodyError < Onyx::REST::Error(PARAMS_ERROR_CODE)
       def initialize(message : String, @path : Array(String))
         super(message)
       end

@@ -1,6 +1,8 @@
-require "http/server/context"
 require "callbacks"
+
 require "./action/*"
+require "./endpoint"
+
 require "./ext/http/server/response/view"
 
 # A callable REST action.
@@ -9,8 +11,9 @@ require "./ext/http/server/response/view"
 # explicitly set `HTTP::Server::Response#view` to a `View` instance with the `#view` method,
 # and that view *should* be rendered in future handlers.
 #
-# Action params can be defined in `.params` macro.
-# Action errors can be defined in the `.errors` block.
+# Action includes the `Endpoint` module.
+# Action params can be defined with the `Endpoint.params` macro (param errors have code 400).
+# Action errors can be defined with the `Endpoint.errors` macro.
 #
 # Action includes `Callbacks` module, effectively allowing to define `.before` and `.after` callbacks,
 # which would be invoked before and after `#call`. Read more about callbacks at [https://github.com/vladfaust/callbacks.cr](https://github.com/vladfaust/callbacks.cr).
@@ -55,7 +58,10 @@ require "./ext/http/server/response/view"
 # end
 # ```
 module Onyx::REST::Action
+  include Endpoint
   include Callbacks
+
+  PARAMS_ERROR_CODE = 400
 
   # Where all the action takes place.
   abstract def call
@@ -66,12 +72,6 @@ module Onyx::REST::Action
       instance.with_callbacks { instance.call }
     end
   end
-
-  def initialize(@context : ::HTTP::Server::Context)
-  end
-
-  # The current HTTP::Server context.
-  protected getter context : ::HTTP::Server::Context
 
   # Set a *view* for this request. In router, the first view assigned takes precendence:
   #
