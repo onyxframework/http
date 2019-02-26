@@ -7,17 +7,9 @@ module Onyx::REST::Endpoint
   #
   # ## Options
   #
-  # * `require` -- whether to require the form params for this endpoints
-  # (return `"400 Missing request body"` otherwise). If set to `true`,
-  # then the `params#form` getter will be non-nilable
-  # * `any_content_type` -- whether to try parsing the body regardless
-  # of the `"Content-Type"` header
-  #
-  # If both `require` and `any_content_type` options are `true`, then the endpoint
-  # will always try to parse the request body as a form and return 400 on error.
-  #
-  # If only `require` is `true` then the endpoint would expect the valid header,
-  # erroring otherwise.
+  # * `required` -- if set to `true`, will attempt to parse form params regardless
+  # of the `"Content-Type"` header and return a parameter error otherwise; the `params.form`
+  # getter becomes non-nilable
   #
   # ## Example
   #
@@ -64,7 +56,7 @@ module Onyx::REST::Endpoint
   #       type id : Int32
   #     end
   #
-  #     form require: true, any_content_type: true do
+  #     form required: true do
   #       type user do
   #         type email : String?
   #         type username : String?
@@ -78,7 +70,11 @@ module Onyx::REST::Endpoint
   #   end
   # end
   # ```
-  macro form(require _require = false, any_content_type = false, &block)
+  #
+  # ```shell
+  # > curl -X POST -d "user[email]=foo@example.com" http://localhost:5000/users/42
+  # ```
+  macro form(required = false, &block)
     class FormBodyError < Onyx::REST::Error(PARAMS_ERROR_CODE)
       def initialize(message : String, @path : Array(String))
         super(message)
@@ -141,7 +137,7 @@ module Onyx::REST::Endpoint
       {{yield.id}}
     end
 
-    {% if _require %}
+    {% if required %}
       getter! form  : FormParams
     {% else %}
       getter form  : FormParams?
@@ -152,19 +148,17 @@ module Onyx::REST::Endpoint
 
       {% begin %}
         begin
-          {% if any_content_type %}
-            if true
-          {% else %}
+          {% unless required %}
             if request.headers["Content-Type"]?.try &.=~ /^application\/x-www-form-urlencoded/
           {% end %}
             if body = request.body
               @form = FormParams.from_query(body.gets_to_end)
             else
-              {% if !any_content_type || _require %}
-                raise FormBodyError.new("Missing request body", [] of String)
-              {% end %}
+              raise FormBodyError.new("Missing request body", [] of String)
             end
-          end
+          {% unless required %}
+            end
+          {% end %}
         rescue ex : ::HTTP::Params::Serializable::Error
           raise FormBodyError.new("Form p" + ex.message.not_nil![1..-1], ex.path)
         end

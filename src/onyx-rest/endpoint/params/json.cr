@@ -8,17 +8,9 @@ module Onyx::REST::Endpoint
   #
   # ## Options
   #
-  # * `require` -- whether to require the JSON params for this endpoints
-  # (return `"400 Missing request body"` otherwise). If set to `true`,
-  # then the `params#json` getter will be non-nilable
-  # * `any_content_type` -- whether to try parsing the body regardless
-  # of the `"Content-Type"` header
-  #
-  # If both `require` and `any_content_type` options are `true`, then the endpoint
-  # will always try to parse the request body as a JSON and return 400 on error.
-  #
-  # If only `require` is `true` then the endpoint would expect the valid header,
-  # erroring otherwise.
+  # * `required` -- if set to `true`, will attempt to parse JSON params regardless
+  # of the `"Content-Type"` header and return a parameter error otherwise; the `params.json`
+  # getter becomes non-nilable
   #
   # ## Example
   #
@@ -65,7 +57,7 @@ module Onyx::REST::Endpoint
   #       type id : Int32
   #     end
   #
-  #     json require: true, any_content_type: true do
+  #     json required: true do
   #       type user do
   #         type email : String?
   #         type username : String?
@@ -79,7 +71,11 @@ module Onyx::REST::Endpoint
   #   end
   # end
   # ```
-  macro json(require _require = false, any_content_type = false, &block)
+  #
+  # ```shell
+  # > curl -X POST -d '{"user":{"email":"foo@example.com"}}' http://localhost:5000/users/1
+  # ```
+  macro json(required = false, &block)
     class JSONBodyError < Onyx::REST::Error(PARAMS_ERROR_CODE)
     end
 
@@ -135,7 +131,7 @@ module Onyx::REST::Endpoint
       {{yield.id}}
     end
 
-    {% if _require %}
+    {% if required %}
       getter! json  : JSONBody
     {% else %}
       getter json  : JSONBody?
@@ -146,19 +142,17 @@ module Onyx::REST::Endpoint
 
       {% begin %}
         begin
-          {% if any_content_type %}
-            if true
-          {% else %}
+          {% unless required %}
             if request.headers["Content-Type"]?.try &.=~ /^application\/json/
           {% end %}
             if body = request.body
               @json = JSONBody.from_json(body.gets_to_end)
             else
-              {% if !any_content_type || _require %}
-                raise JSONBodyError.new("Missing request body")
-              {% end %}
+              raise JSONBodyError.new("Missing request body")
             end
-          end
+          {% unless required %}
+            end
+          {% end %}
         rescue ex : JSON::MappingError
           raise JSONBodyError.new(ex.message.not_nil!.lines.first)
         end
