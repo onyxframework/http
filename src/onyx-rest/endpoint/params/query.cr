@@ -38,7 +38,7 @@ module Onyx::REST::Endpoint
       end
     end
 
-    struct Query
+    struct QueryParams
       include ::HTTP::Params::Serializable
 
       {% verbatim do %}
@@ -67,10 +67,10 @@ module Onyx::REST::Endpoint
 
               {% if block.body.is_a?(Expressions) %}
                 {% for expression in block.body.expressions %}
-                  Query.{{expression}}
+                  QueryParams.{{expression}}
                 {% end %}
               {% elsif block.body.is_a?(Call) %}
-                Query.{{yield.id}}
+                QueryParams.{{yield.id}}
               {% else %}
                 {% raise "BUG: Unhandled block body type #{block.body.class_name}" %}
               {% end %}
@@ -90,16 +90,16 @@ module Onyx::REST::Endpoint
       {{yield.id}}
     end
 
-    @query = uninitialized Query
+    @query = uninitialized QueryParams
     getter query
 
     def initialize(request : ::HTTP::Request)
       previous_def
 
-      @query = uninitialized Query
+      @query = uninitialized QueryParams
 
       begin
-        @query = Query.from_query(request.query.to_s)
+        @query = QueryParams.from_query(request.query.to_s)
       rescue ex : ::HTTP::Params::Serializable::Error
         raise QueryParamsError.new("Query p" + ex.message.not_nil![1..-1], ex.path)
       end

@@ -75,7 +75,7 @@ module Onyx::REST::Endpoint
   # > curl -X POST -d "user[email]=foo@example.com" http://localhost:5000/users/42
   # ```
   macro form(required = false, &block)
-    class FormBodyError < Onyx::REST::Error(PARAMS_ERROR_CODE)
+    class FormError < Onyx::REST::Error(PARAMS_ERROR_CODE)
       def initialize(message : String, @path : Array(String))
         super(message)
       end
@@ -85,7 +85,7 @@ module Onyx::REST::Endpoint
       end
     end
 
-    struct FormParams
+    struct Form
       include ::HTTP::Params::Serializable
 
       {% verbatim do %}
@@ -114,10 +114,10 @@ module Onyx::REST::Endpoint
 
               {% if block.body.is_a?(Expressions) %}
                 {% for expression in block.body.expressions %}
-                  FormParams.{{expression}}
+                  Form.{{expression}}
                 {% end %}
               {% elsif block.body.is_a?(Call) %}
-                FormParams.{{yield.id}}
+                Form.{{yield.id}}
               {% else %}
                 {% raise "BUG: Unhandled block body type #{block.body.class_name}" %}
               {% end %}
@@ -138,9 +138,9 @@ module Onyx::REST::Endpoint
     end
 
     {% if required %}
-      getter! form  : FormParams
+      getter! form  : Form
     {% else %}
-      getter form  : FormParams?
+      getter form  : Form?
     {% end %}
 
     def initialize(request : ::HTTP::Request)
@@ -152,15 +152,15 @@ module Onyx::REST::Endpoint
             if request.headers["Content-Type"]?.try &.=~ /^application\/x-www-form-urlencoded/
           {% end %}
             if body = request.body
-              @form = FormParams.from_query(body.gets_to_end)
+              @form = Form.from_query(body.gets_to_end)
             else
-              raise FormBodyError.new("Missing request body", [] of String)
+              raise FormError.new("Missing request body", [] of String)
             end
           {% unless required %}
             end
           {% end %}
         rescue ex : ::HTTP::Params::Serializable::Error
-          raise FormBodyError.new("Form p" + ex.message.not_nil![1..-1], ex.path)
+          raise FormError.new("Form p" + ex.message.not_nil![1..-1], ex.path)
         end
       {% end %}
     end

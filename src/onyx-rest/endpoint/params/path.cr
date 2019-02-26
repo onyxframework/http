@@ -42,7 +42,7 @@ module Onyx::REST::Endpoint
       end
     end
 
-    struct Path
+    struct PathParams
       include ::HTTP::Params::Serializable
 
       {% verbatim do %}
@@ -64,16 +64,16 @@ module Onyx::REST::Endpoint
       {{yield.id}}
     end
 
-    @path = uninitialized Path
+    @path = uninitialized PathParams
     getter path
 
     def initialize(request : ::HTTP::Request)
       previous_def
 
-      @path = uninitialized Path
+      @path = uninitialized PathParams
 
       begin
-        @path = Path.from_query(request.path_params.join('&'){ |(k, v)| "#{k}=#{v}" })
+        @path = PathParams.from_query(request.path_params.join('&'){ |(k, v)| "#{k}=#{v}" })
       rescue ex : ::HTTP::Params::Serializable::Error
         raise PathParamsError.new("Path p" + ex.message.not_nil![1..-1], ex.path)
       end

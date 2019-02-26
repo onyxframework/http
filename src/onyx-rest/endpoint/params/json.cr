@@ -76,17 +76,17 @@ module Onyx::REST::Endpoint
   # > curl -X POST -d '{"user":{"email":"foo@example.com"}}' http://localhost:5000/users/1
   # ```
   macro json(required = false, &block)
-    class JSONBodyError < Onyx::REST::Error(PARAMS_ERROR_CODE)
+    class JSONError < Onyx::REST::Error(PARAMS_ERROR_CODE)
     end
 
-    struct JSONBody
-      include JSON::Serializable
+    struct JSON
+      include ::JSON::Serializable
 
       {% verbatim do %}
         macro type(argument, nilable = false, **options, &block)
           {% if block %}
             {% unless options.empty? %}
-              @[JSON::Field({{**options}})]
+              @[::JSON::Field({{**options}})]
             {% end %}
 
             {% if argument.is_a?(Path) %}
@@ -104,21 +104,21 @@ module Onyx::REST::Endpoint
             {% elsif argument.is_a?(Call) %}
               struct {{argument.name.camelcase.id}}
             {% end %}
-              include JSON::Serializable
+              include ::JSON::Serializable
 
               {% if block.body.is_a?(Expressions) %}
                 {% for expression in block.body.expressions %}
-                  JSONBody.{{expression}}
+                  JSON.{{expression}}
                 {% end %}
               {% elsif block.body.is_a?(Call) %}
-                JSONBody.{{yield.id}}
+                JSON.{{yield.id}}
               {% else %}
                 {% raise "BUG: Unhandled block body type #{block.body.class_name}" %}
               {% end %}
             end
           {% elsif argument.is_a?(TypeDeclaration) %}
             {% unless options.empty? %}
-              @[JSON::Field({{**options}})]
+              @[::JSON::Field({{**options}})]
             {% end %}
 
             getter {{argument}}
@@ -132,9 +132,9 @@ module Onyx::REST::Endpoint
     end
 
     {% if required %}
-      getter! json  : JSONBody
+      getter! json  : JSON
     {% else %}
-      getter json  : JSONBody?
+      getter json  : JSON?
     {% end %}
 
     def initialize(request : HTTP::Request)
@@ -146,15 +146,15 @@ module Onyx::REST::Endpoint
             if request.headers["Content-Type"]?.try &.=~ /^application\/json/
           {% end %}
             if body = request.body
-              @json = JSONBody.from_json(body.gets_to_end)
+              @json = JSON.from_json(body.gets_to_end)
             else
-              raise JSONBodyError.new("Missing request body")
+              raise JSONError.new("Missing request body")
             end
           {% unless required %}
             end
           {% end %}
-        rescue ex : JSON::MappingError
-          raise JSONBodyError.new(ex.message.not_nil!.lines.first)
+        rescue ex : ::JSON::MappingError
+          raise JSONError.new(ex.message.not_nil!.lines.first)
         end
       {% end %}
     end
