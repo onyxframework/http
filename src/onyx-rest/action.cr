@@ -67,6 +67,8 @@ module Onyx::REST::Action
   abstract def call
 
   macro included
+    include Onyx::REST::Endpoint
+
     def self.call(context)
       instance = new(context)
       instance.with_callbacks { instance.call }

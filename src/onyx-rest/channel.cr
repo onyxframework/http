@@ -70,6 +70,8 @@ module Onyx::REST::Channel
   protected getter! socket : ::HTTP::WebSocket
 
   macro included
+    include Onyx::REST::Endpoint
+
     # Initialize a new instance and invoke `#bind`.
     def self.bind(socket : ::HTTP::WebSocket, context : ::HTTP::Server::Context)
       new(context).bind(socket)
