@@ -6,6 +6,22 @@ module Onyx::REST::Endpoint
   # its "Content-Type" header is "application/json". The serialization is powered by
   # stdlib's [`JSON::Serializable`](https://crystal-lang.org/api/latest/JSON/Serializable.html).
   #
+  # ## Options
+  #
+  # * `require` -- whether to require the JSON params for this endpoints
+  # (return `"400 Missing request body"` otherwise). If set to `true`,
+  # then the `params#json` getter will be non-nilable
+  # * `any_content_type` -- whether to try parsing the body regardless
+  # of the `"Content-Type"` header
+  #
+  # If both `require` and `any_content_type` options are `true`, then the endpoint
+  # will always try to parse the request body as a JSON and return 400 on error.
+  #
+  # If only `require` is `true` then the endpoint would expect the valid header,
+  # erroring otherwise.
+  #
+  # ## Example
+  #
   # ```
   # struct UpdateUser
   #   include Onyx::REST::Action
@@ -37,7 +53,33 @@ module Onyx::REST::Endpoint
   # json.user.email    => "foo@example.com"
   # json.user.username => nil
   # ```
-  macro json(&block)
+  #
+  # If your endpoint expects JSON params only, then it can be simplified a bit:
+  #
+  # ```
+  # struct UpdateUser
+  #   include Onyx::REST::Action
+  #
+  #   params do
+  #     path do
+  #       type id : Int32
+  #     end
+  #
+  #     json require: true, any_content_type: true do
+  #       type user do
+  #         type email : String?
+  #         type username : String?
+  #       end
+  #     end
+  #   end
+  #
+  #   def call
+  #     pp! params.json.user.email
+  #     pp! params.json.user.username
+  #   end
+  # end
+  # ```
+  macro json(require _require = false, any_content_type = false, &block)
     class JSONBodyError < Onyx::REST::Error(PARAMS_ERROR_CODE)
     end
 
@@ -93,22 +135,34 @@ module Onyx::REST::Endpoint
       {{yield.id}}
     end
 
-    getter json  : JSONBody?
+    {% if _require %}
+      getter! json  : JSONBody
+    {% else %}
+      getter json  : JSONBody?
+    {% end %}
 
     def initialize(request : HTTP::Request)
       previous_def
 
-      begin
-        if request.headers["Content-Type"]?.try &.=~ /^application\/json/
-          if body = request.body
-            @json = JSONBody.from_json(body.gets_to_end)
-          else
-            raise JSONBodyError.new("Missing request body")
+      {% begin %}
+        begin
+          {% if any_content_type %}
+            if true
+          {% else %}
+            if request.headers["Content-Type"]?.try &.=~ /^application\/json/
+          {% end %}
+            if body = request.body
+              @json = JSONBody.from_json(body.gets_to_end)
+            else
+              {% if !any_content_type || _require %}
+                raise JSONBodyError.new("Missing request body")
+              {% end %}
+            end
           end
+        rescue ex : JSON::MappingError
+          raise JSONBodyError.new(ex.message.not_nil!.lines.first)
         end
-      rescue ex : JSON::MappingError
-        raise JSONBodyError.new(ex.message.not_nil!.lines.first)
-      end
+      {% end %}
     end
   end
 end

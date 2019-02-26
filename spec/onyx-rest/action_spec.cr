@@ -52,6 +52,23 @@ struct FooAction
   end
 end
 
+class JSONAction
+  include Onyx::REST::Action
+
+  params do
+    json require: true, any_content_type: true do
+      type user do
+        type name : String
+        type email : String
+      end
+    end
+  end
+
+  def call
+    context.response << "#{params.json.user.name}, #{params.json.user.email}"
+  end
+end
+
 class ActionSpecServer
   getter server
 
@@ -60,6 +77,7 @@ class ActionSpecServer
     rescuer = Onyx::REST::Rescuer.new(renderer)
     router = Onyx::HTTP::Router.new do
       post "/foo/:path_param", FooAction
+      post "/json", JSONAction
     end
 
     @server = Onyx::HTTP::Server.new([rescuer, router, renderer])
@@ -98,6 +116,16 @@ describe Onyx::REST::Action do
         )
         response.status_code.should eq 200
         response.body.should eq "42, bar, JSON: 42, qux"
+      end
+    end
+
+    context "JSON action" do
+      it do
+        response = client.post("/json",
+          body: %Q[{"user": {"name": "John", "email": "foo@example.com"}}]
+        )
+        response.status_code.should eq 200
+        response.body.should eq "John, foo@example.com"
       end
     end
   end

@@ -2,8 +2,24 @@ require "http-params-serializable"
 require "../../error"
 
 module Onyx::REST::Endpoint
-  # Define Form params which would be deserialzed from the request body only if
+  # Define form params which would be deserialzed from the request body only if
   # its "Content-Type" header is "application/x-www-form-urlencoded". The serialization is powered by [`HTTP::Params::Serializable`](https://github.com/vladfaust/http-params-serializable).
+  #
+  # ## Options
+  #
+  # * `require` -- whether to require the form params for this endpoints
+  # (return `"400 Missing request body"` otherwise). If set to `true`,
+  # then the `params#form` getter will be non-nilable
+  # * `any_content_type` -- whether to try parsing the body regardless
+  # of the `"Content-Type"` header
+  #
+  # If both `require` and `any_content_type` options are `true`, then the endpoint
+  # will always try to parse the request body as a form and return 400 on error.
+  #
+  # If only `require` is `true` then the endpoint would expect the valid header,
+  # erroring otherwise.
+  #
+  # ## Example
   #
   # ```
   # struct UpdateUser
@@ -36,7 +52,33 @@ module Onyx::REST::Endpoint
   # form.user.email    => "foo@example.com"
   # form.user.username => nil
   # ```
-  macro form(&block)
+  #
+  # If your endpoint expects form params only, then it can be simplified a bit:
+  #
+  # ```
+  # struct UpdateUser
+  #   include Onyx::REST::Action
+  #
+  #   params do
+  #     path do
+  #       type id : Int32
+  #     end
+  #
+  #     form require: true, any_content_type: true do
+  #       type user do
+  #         type email : String?
+  #         type username : String?
+  #       end
+  #     end
+  #   end
+  #
+  #   def call
+  #     pp! params.form.user.email
+  #     pp! params.form.user.username
+  #   end
+  # end
+  # ```
+  macro form(require _require = false, any_content_type = false, &block)
     class FormBodyError < Onyx::REST::Error(PARAMS_ERROR_CODE)
       def initialize(message : String, @path : Array(String))
         super(message)
@@ -99,22 +141,34 @@ module Onyx::REST::Endpoint
       {{yield.id}}
     end
 
-    getter form  : FormParams?
+    {% if _require %}
+      getter! form  : FormParams
+    {% else %}
+      getter form  : FormParams?
+    {% end %}
 
     def initialize(request : ::HTTP::Request)
       previous_def
 
-      begin
-        if request.headers["Content-Type"]?.try &.=~ /^application\/x-www-form-urlencoded/
-          if body = request.body
-            @form = FormParams.from_query(body.gets_to_end)
-          else
-            raise FormBodyError.new("Missing request body", [] of String)
+      {% begin %}
+        begin
+          {% if any_content_type %}
+            if true
+          {% else %}
+            if request.headers["Content-Type"]?.try &.=~ /^application\/x-www-form-urlencoded/
+          {% end %}
+            if body = request.body
+              @form = FormParams.from_query(body.gets_to_end)
+            else
+              {% if !any_content_type || _require %}
+                raise FormBodyError.new("Missing request body", [] of String)
+              {% end %}
+            end
           end
+        rescue ex : ::HTTP::Params::Serializable::Error
+          raise FormBodyError.new("Form p" + ex.message.not_nil![1..-1], ex.path)
         end
-      rescue ex : ::HTTP::Params::Serializable::Error
-        raise FormBodyError.new("Form p" + ex.message.not_nil![1..-1], ex.path)
-      end
+      {% end %}
     end
   end
 end
