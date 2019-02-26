@@ -57,7 +57,7 @@ class JSONAction
 
   params do
     json require: true, any_content_type: true do
-      type user do
+      type user, nilable: true do
         type name : String
         type email : String
       end
@@ -65,7 +65,7 @@ class JSONAction
   end
 
   def call
-    context.response << "#{params.json.user.name}, #{params.json.user.email}"
+    context.response << "#{params.json.user.try &.name}, #{params.json.user.try &.email}"
   end
 end
 
@@ -120,6 +120,26 @@ describe Onyx::REST::Action do
     end
 
     context "JSON action" do
+      context "with empty JSON" do
+        it do
+          response = client.post("/json",
+            body: "{}"
+          )
+          response.status_code.should eq 200
+          response.body.should eq ", "
+        end
+      end
+
+      context "with empty user" do
+        it do
+          response = client.post("/json",
+            body: %Q[{"user": null}]
+          )
+          response.status_code.should eq 200
+          response.body.should eq ", "
+        end
+      end
+
       it do
         response = client.post("/json",
           body: %Q[{"user": {"name": "John", "email": "foo@example.com"}}]

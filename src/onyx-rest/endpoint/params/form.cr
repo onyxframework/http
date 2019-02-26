@@ -93,7 +93,7 @@ module Onyx::REST::Endpoint
       include ::HTTP::Params::Serializable
 
       {% verbatim do %}
-        macro type(argument, **options, &block)
+        macro type(argument, nilable = false, **options, &block)
           {% if block %}
             {% unless options.empty? %}
               @[::HTTP::Param({{**options}})]
@@ -102,9 +102,9 @@ module Onyx::REST::Endpoint
             {% if argument.is_a?(Path) %}
               {% raise "Cannot declare namespaced nested query parameter" if argument.names.size > 1 %}
 
-              getter {{argument.names.first.underscore}} : {{argument.names.first.camelcase.id}}
+              getter {{argument.names.first.underscore}} : {{argument.names.first.camelcase.id}}{{" | Nil".id if nilable}}
             {% elsif argument.is_a?(Call) %}
-              getter {{argument.name.underscore}} : {{argument.name.camelcase.id}}
+              getter {{argument.name.underscore}} : {{argument.name.camelcase.id}}{{" | Nil".id if nilable}}
             {% else %}
               {% raise "BUG: Unhandled argument type #{argument.class_name}" %}
             {% end %}
