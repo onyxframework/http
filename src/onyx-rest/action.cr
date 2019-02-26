@@ -49,7 +49,7 @@ require "./ext/http/server/response/view"
 #   get "/", Actions::GetUser
 #   # Equivalent of
 #   get "/" do |context|
-#     view? = action.call(context)
+#     view? = Actions::GetUser.call(context)
 #
 #     if view = view?.as?(REST::View)
 #       context.response.view ||= view
