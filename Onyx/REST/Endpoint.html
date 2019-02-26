@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.27.2">
+
+
+<link href="../../css/style.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="../../js/doc.js"></script>
+<script type="text/javascript">
+  CrystalDoc.base_path = "../../";
+</script>
+
+  <meta id="repository-name" content="github.com/onyxframework/rest">
+  <title>Onyx::REST::Endpoint - github.com/onyxframework/rest</title>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="repository-links">
+      <a href="../../index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent " data-id="github.com/onyxframework/rest/HTTP" data-name="http">
+      <a href="../../HTTP.html">HTTP</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="github.com/onyxframework/rest/HTTP/Server" data-name="http::server">
+      <a href="../../HTTP/Server.html">Server</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/HTTP/Server/Response" data-name="http::server::response">
+      <a href="../../HTTP/Server/Response.html">Response</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent open current" data-id="github.com/onyxframework/rest/Onyx" data-name="onyx">
+      <a href="../../Onyx.html">Onyx</a>
+      
+        <ul>
+  
+  <li class="parent open current" data-id="github.com/onyxframework/rest/Onyx/REST" data-name="onyx::rest">
+      <a href="../../Onyx/REST.html">REST</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Action" data-name="onyx::rest::action">
+      <a href="../../Onyx/REST/Action.html">Action</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Channel" data-name="onyx::rest::channel">
+      <a href="../../Onyx/REST/Channel.html">Channel</a>
+      
+    </li>
+  
+  <li class=" current" data-id="github.com/onyxframework/rest/Onyx/REST/Endpoint" data-name="onyx::rest::endpoint">
+      <a href="../../Onyx/REST/Endpoint.html">Endpoint</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Error" data-name="onyx::rest::error(code)">
+      <a href="../../Onyx/REST/Error.html">Error</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/onyxframework/rest/Onyx/REST/Renderers" data-name="onyx::rest::renderers">
+      <a href="../../Onyx/REST/Renderers.html">Renderers</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Renderers/JSON" data-name="onyx::rest::renderers::json">
+      <a href="../../Onyx/REST/Renderers/JSON.html">JSON</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Renderers/Text" data-name="onyx::rest::renderers::text">
+      <a href="../../Onyx/REST/Renderers/Text.html">Text</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Rescuer" data-name="onyx::rest::rescuer">
+      <a href="../../Onyx/REST/Rescuer.html">Rescuer</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/View" data-name="onyx::rest::view">
+      <a href="../../Onyx/REST/View.html">View</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">module</span> Onyx::REST::Endpoint
+
+</h1>
+
+
+
+
+
+  <h2>Overview</h2>
+
+  <p>A REST endpoint. <code><a href="../../Onyx/REST/Action.html">Action</a></code> and <code><a href="../../Onyx/REST/Channel.html">Channel</a></code> include this module.</p>
+
+<p>A endpoint includes <code><a href="../../Onyx/REST/Endpoint.html#params%28%26block%29-macro">.params</a></code> (see <code>Action.params</code> and <code>Channel.params</code>,
+they are identical) and <code><a href="../../Onyx/REST/Endpoint.html#errors%28%26block%29-macro">.errors</a></code> macros.</p>
+
+
+
+
+
+
+
+
+
+
+
+  <h2>Direct including types</h2>
+  <ul class="other-types-list">
+  
+    <li class="other-type"><a href="../../Onyx/REST/Action.html">Onyx::REST::Action</a></li>
+  
+    <li class="other-type"><a href="../../Onyx/REST/Channel.html">Onyx::REST::Channel</a></li>
+  
+  </ul>
+
+
+
+
+  <h2>Defined in:</h2>
+  
+    
+      <a href="https://github.com/onyxframework/rest/blob/5031b7afd8f21ae2167fc07a760d74a30f675672/src/onyx-rest/endpoint/errors.cr#L1" target="_blank">
+        onyx-rest/endpoint/errors.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/rest/blob/5031b7afd8f21ae2167fc07a760d74a30f675672/src/onyx-rest/endpoint/params/form.cr#L4" target="_blank">
+        onyx-rest/endpoint/params/form.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/rest/blob/5031b7afd8f21ae2167fc07a760d74a30f675672/src/onyx-rest/endpoint/params/json.cr#L4" target="_blank">
+        onyx-rest/endpoint/params/json.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/rest/blob/5031b7afd8f21ae2167fc07a760d74a30f675672/src/onyx-rest/endpoint/params/path.cr#L4" target="_blank">
+        onyx-rest/endpoint/params/path.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/rest/blob/5031b7afd8f21ae2167fc07a760d74a30f675672/src/onyx-rest/endpoint/params/query.cr#L4" target="_blank">
+        onyx-rest/endpoint/params/query.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/rest/blob/5031b7afd8f21ae2167fc07a760d74a30f675672/src/onyx-rest/endpoint/params.cr#L3" target="_blank">
+        onyx-rest/endpoint/params.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/rest/blob/5031b7afd8f21ae2167fc07a760d74a30f675672/src/onyx-rest/endpoint.cr#L8" target="_blank">
+        onyx-rest/endpoint.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+  <h2>Constructors</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new%28context%3AHTTP%3A%3AServer%3A%3AContext%29-class-method" class="signature"><strong>.new</strong>(context : HTTP::Server::Context)</a>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+
+
+  <h2>Macro Summary</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#errors%28%26block%29-macro" class="signature"><strong>errors</strong>(&block)</a>
+        
+          <div class="summary"><p>Optional errors definition macro.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#form%28require_require%3Dfalse%2Cany_content_type%3Dfalse%2C%26block%29-macro" class="signature"><strong>form</strong>(require _require = <span class="n">false</span>, any_content_type = <span class="n">false</span>, &block)</a>
+        
+          <div class="summary"><p>Define form params which would be deserialzed from the request body only if its "Content-Type" header is "application/x-www-form-urlencoded".</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#json%28require_require%3Dfalse%2Cany_content_type%3Dfalse%2C%26block%29-macro" class="signature"><strong>json</strong>(require _require = <span class="n">false</span>, any_content_type = <span class="n">false</span>, &block)</a>
+        
+          <div class="summary"><p>Define JSON params which would be deserialized from the request body only if its "Content-Type" header is "application/json".</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#params%28%26block%29-macro" class="signature"><strong>params</strong>(&block)</a>
+        
+          <div class="summary"><p>Define endpoint params.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#path%28%26block%29-macro" class="signature"><strong>path</strong>(&block)</a>
+        
+          <div class="summary"><p>Define path params which are usually extracted from the request URL by <code><a href="../../Onyx/HTTP/Router.html">Onyx::HTTP::Router</a></code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#query%28%26block%29-macro" class="signature"><strong>query</strong>(&block)</a>
+        
+          <div class="summary"><p>Define query params for serialization powered by <a href="https://github.com/vladfaust/http-params-serializable" target="_blank"><code>HTTP::Params::Serializable</code></a>.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+<div class="methods-inherited">
+  
+</div>
+
+
+  <h2>Constructor Detail</h2>
+  
+    <div class="entry-detail" id="new(context:HTTP::Server::Context)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(context : HTTP::Server::Context)
+
+        <a class="method-permalink" href="#new%28context%3AHTTP%3A%3AServer%3A%3AContext%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/rest/blob/5031b7afd8f21ae2167fc07a760d74a30f675672/src/onyx-rest/endpoint.cr#L12" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+
+
+
+  <h2>Macro Detail</h2>
+  
+    <div class="entry-detail" id="errors(&amp;block)-macro">
+      <div class="signature">
+        
+        macro <strong>errors</strong>(&block)
+
+        <a class="method-permalink" href="#errors%28%26block%29-macro">#</a>
+      </div>
+      
+        <div class="doc"><p>Optional errors definition macro. It's a DSL for defining <em>expected</em> errors,
+such as "User Not Found" -- it's not an exception, but it should halt the request execution.
+All defined errors will be ancestors of <code><a href="../../Onyx/REST/Error.html">REST::Error</a></code>, allowing them to be effectively
+handled in <code>REST::Rescuers::REST</code>. Note that <code><a href="../../Onyx/REST/Channel.html">Channel</a></code>s rescue <code><a href="../../Onyx/REST/Error.html">REST::Error</a></code> by themselves,
+you don't need a rescuer in this case.</p>
+
+<pre><code><span class="k">struct</span> <span class="t">MyAction</span>
+  <span class="k">include</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Action</span>
+
+  errors <span class="k">do</span>
+    <span class="k">type</span> <span class="t">UserNotFound</span>(<span class="n">404</span>)
+
+    <span class="c"># This error has variable `attributes` and custom block called on initialization</span>
+    <span class="k">type</span> <span class="t">InvalidUser</span>(<span class="n">409</span>), attributes : <span class="t">Hash</span>(<span class="t">String</span>, <span class="t">String</span>) <span class="k">do</span>
+      <span class="c"># All errors inherit from Exception, so `super` sets the error message</span>
+      <span class="k">super</span>(<span class="s">&quot;User has invalid attributes: </span><span class="i">#{</span>attributes<span class="i">}</span><span class="s">&quot;</span>)
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">call</span>
+    raise <span class="t">UserNotFound</span>.<span class="k">new</span>
+    raise <span class="t">InvalidUser</span>.<span class="k">new</span>({<span class="s">&quot;name&quot;</span> => <span class="s">&quot;too short&quot;</span>})
+  <span class="k">rescue</span> e : <span class="t">UserNotFound</span>
+    <span class="c"># NOTE: These rescue blocks are for example purposes only,</span>
+    <span class="c"># you should not rescue the errors *here* in real applications, leave it to Rescuers</span>
+
+    pp e.code    <span class="c"># =&gt; 404</span>
+    pp e.payload <span class="c"># =&gt; nil</span>
+    pp e.message <span class="c"># =&gt; nil</span>
+  <span class="k">rescue</span> e : <span class="t">InvalidUser</span>
+    pp e.code    <span class="c"># =&gt; 409</span>
+    pp e.payload <span class="c"># =&gt; {attributes: {&quot;name&quot; =&gt; &quot;too short&quot;}}</span>
+    pp e.message <span class="c"># =&gt; &quot;User has invalid attributes: {\&quot;name\&quot; =&gt; \&quot;too short\&quot;}&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/rest/blob/5031b7afd8f21ae2167fc07a760d74a30f675672/src/onyx-rest/endpoint/errors.cr#L194" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="form(require_require=false,any_content_type=false,&amp;block)-macro">
+      <div class="signature">
+        
+        macro <strong>form</strong>(require _require = <span class="n">false</span>, any_content_type = <span class="n">false</span>, &block)
+
+        <a class="method-permalink" href="#form%28require_require%3Dfalse%2Cany_content_type%3Dfalse%2C%26block%29-macro">#</a>
+      </div>
+      
+        <div class="doc"><p>Define form params which would be deserialzed from the request body only if
+its "Content-Type" header is "application/x-www-form-urlencoded". The serialization is powered by <a href="https://github.com/vladfaust/http-params-serializable" target="_blank"><code>HTTP::Params::Serializable</code></a>.</p>
+
+<h2>Options</h2>
+
+<ul><li><code>require</code> -- whether to require the form params for this endpoints
+(return <code>"400 Missing request body"</code> otherwise). If set to <code>true</code>,
+then the <code>params<a href="../../Onyx/REST/Endpoint.html#form%28require_require%3Dfalse%2Cany_content_type%3Dfalse%2C%26block%29-macro">#form</a></code> getter will be non-nilable</li><li><code>any_content_type</code> -- whether to try parsing the body regardless
+of the <code>"Content-Type"</code> header</li></ul>
+
+<p>If both <code>require</code> and <code>any_content_type</code> options are <code>true</code>, then the endpoint
+will always try to parse the request body as a form and return 400 on error.</p>
+
+<p>If only <code>require</code> is <code>true</code> then the endpoint would expect the valid header,
+erroring otherwise.</p>
+
+<h2>Example</h2>
+
+<pre><code><span class="k">struct</span> <span class="t">UpdateUser</span>
+  <span class="k">include</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Action</span>
+
+  params <span class="k">do</span>
+    path <span class="k">do</span>
+      <span class="k">type</span> id : <span class="t">Int32</span>
+    <span class="k">end</span>
+
+    form <span class="k">do</span>
+      <span class="k">type</span> user <span class="k">do</span>
+        <span class="k">type</span> email : <span class="t">String</span>?
+        <span class="k">type</span> username : <span class="t">String</span>?
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">call</span>
+    <span class="k">if</span> form <span class="o">=</span> params.form
+      pp! form.user.email
+      pp! form.user.username
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+
+<pre><code class="language-shell">> curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "user[email]=foo@example.com" http://localhost:5000/users/42
+form.user.email    => "foo@example.com"
+form.user.username => nil</code></pre>
+
+<p>If your endpoint expects form params only, then it can be simplified a bit:</p>
+
+<pre><code><span class="k">struct</span> <span class="t">UpdateUser</span>
+  <span class="k">include</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Action</span>
+
+  params <span class="k">do</span>
+    path <span class="k">do</span>
+      <span class="k">type</span> id : <span class="t">Int32</span>
+    <span class="k">end</span>
+
+    form <span class="k">require</span>: <span class="n">true</span>, any_content_type: <span class="n">true</span> <span class="k">do</span>
+      <span class="k">type</span> user <span class="k">do</span>
+        <span class="k">type</span> email : <span class="t">String</span>?
+        <span class="k">type</span> username : <span class="t">String</span>?
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">call</span>
+    pp! params.form.user.email
+    pp! params.form.user.username
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/rest/blob/5031b7afd8f21ae2167fc07a760d74a30f675672/src/onyx-rest/endpoint/params/form.cr#L81" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="json(require_require=false,any_content_type=false,&amp;block)-macro">
+      <div class="signature">
+        
+        macro <strong>json</strong>(require _require = <span class="n">false</span>, any_content_type = <span class="n">false</span>, &block)
+
+        <a class="method-permalink" href="#json%28require_require%3Dfalse%2Cany_content_type%3Dfalse%2C%26block%29-macro">#</a>
+      </div>
+      
+        <div class="doc"><p>Define JSON params which would be deserialized from the request body only if
+its "Content-Type" header is "application/json". The serialization is powered by
+stdlib's <a href="https://crystal-lang.org/api/latest/JSON/Serializable.html" target="_blank"><code>JSON::Serializable</code></a>.</p>
+
+<h2>Options</h2>
+
+<ul><li><code>require</code> -- whether to require the JSON params for this endpoints
+(return <code>"400 Missing request body"</code> otherwise). If set to <code>true</code>,
+then the <code>params<a href="../../Onyx/REST/Endpoint.html#json%28require_require%3Dfalse%2Cany_content_type%3Dfalse%2C%26block%29-macro">#json</a></code> getter will be non-nilable</li><li><code>any_content_type</code> -- whether to try parsing the body regardless
+of the <code>"Content-Type"</code> header</li></ul>
+
+<p>If both <code>require</code> and <code>any_content_type</code> options are <code>true</code>, then the endpoint
+will always try to parse the request body as a JSON and return 400 on error.</p>
+
+<p>If only <code>require</code> is <code>true</code> then the endpoint would expect the valid header,
+erroring otherwise.</p>
+
+<h2>Example</h2>
+
+<pre><code><span class="k">struct</span> <span class="t">UpdateUser</span>
+  <span class="k">include</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Action</span>
+
+  params <span class="k">do</span>
+    path <span class="k">do</span>
+      <span class="k">type</span> id : <span class="t">Int32</span>
+    <span class="k">end</span>
+
+    json <span class="k">do</span>
+      <span class="k">type</span> user <span class="k">do</span>
+        <span class="k">type</span> email : <span class="t">String</span>?
+        <span class="k">type</span> username : <span class="t">String</span>?
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">call</span>
+    <span class="k">if</span> json <span class="o">=</span> params.json
+      pp! json.user.email
+      pp! json.user.username
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+
+<pre><code class="language-shell">> curl -X POST -H "Content-Type: application/json" -d '{"user":{"email":"foo@example.com"}}' http://localhost:5000/users/1
+json.user.email    => "foo@example.com"
+json.user.username => nil</code></pre>
+
+<p>If your endpoint expects JSON params only, then it can be simplified a bit:</p>
+
+<pre><code><span class="k">struct</span> <span class="t">UpdateUser</span>
+  <span class="k">include</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Action</span>
+
+  params <span class="k">do</span>
+    path <span class="k">do</span>
+      <span class="k">type</span> id : <span class="t">Int32</span>
+    <span class="k">end</span>
+
+    json <span class="k">require</span>: <span class="n">true</span>, any_content_type: <span class="n">true</span> <span class="k">do</span>
+      <span class="k">type</span> user <span class="k">do</span>
+        <span class="k">type</span> email : <span class="t">String</span>?
+        <span class="k">type</span> username : <span class="t">String</span>?
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">call</span>
+    pp! params.json.user.email
+    pp! params.json.user.username
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/rest/blob/5031b7afd8f21ae2167fc07a760d74a30f675672/src/onyx-rest/endpoint/params/json.cr#L82" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="params(&amp;block)-macro">
+      <div class="signature">
+        
+        macro <strong>params</strong>(&block)
+
+        <a class="method-permalink" href="#params%28%26block%29-macro">#</a>
+      </div>
+      
+        <div class="doc"><p>Define endpoint params. You should call <code><a href="../../Onyx/REST/Endpoint.html#path%28%26block%29-macro">.path</a></code>, <code><a href="../../Onyx/REST/Endpoint.html#query%28%26block%29-macro">.query</a></code>, <code><a href="../../Onyx/REST/Endpoint.html#form%28require_require%3Dfalse%2Cany_content_type%3Dfalse%2C%26block%29-macro">.form</a></code> and <code><a href="../../Onyx/REST/Endpoint.html#json%28require_require%3Dfalse%2Cany_content_type%3Dfalse%2C%26block%29-macro">.json</a></code> macros
+within the block. Once <code><a href="../../Onyx/REST/Endpoint.html#params%28%26block%29-macro">.params</a></code> is called, a <code><a href="../../Onyx/REST/Endpoint.html#params%28%26block%29-macro">#params</a></code> getter would be set
+on every action initialization. The <code><a href="../../Onyx/REST/Endpoint.html#params%28%26block%29-macro">#params</a></code> variable would have according <code><a href="../../Onyx/REST/Endpoint.html#path%28%26block%29-macro">#path</a></code>, <code><a href="../../Onyx/REST/Endpoint.html#query%28%26block%29-macro">#query</a></code>,
+<code><a href="../../Onyx/REST/Endpoint.html#form%28require_require%3Dfalse%2Cany_content_type%3Dfalse%2C%26block%29-macro">#form</a></code> and <code><a href="../../Onyx/REST/Endpoint.html#json%28require_require%3Dfalse%2Cany_content_type%3Dfalse%2C%26block%29-macro">#json</a></code> getters itself.</p>
+
+<p>It is powered by <a href="https://github.com/vladfaust/http-params-serializable" target="_blank"><code>HTTP::Params::Serializable</code></a>,
+and it can raise <code>PathParamsError</code>, <code>QueryParamsError</code>, <code>FormBodyError</code> or <code>JSONBodyError</code>, which
+all are <code><a href="../../Onyx/REST/Error.html">REST::Error</a></code>s with 400 code.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/rest/blob/5031b7afd8f21ae2167fc07a760d74a30f675672/src/onyx-rest/endpoint/params.cr#L12" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="path(&amp;block)-macro">
+      <div class="signature">
+        
+        macro <strong>path</strong>(&block)
+
+        <a class="method-permalink" href="#path%28%26block%29-macro">#</a>
+      </div>
+      
+        <div class="doc"><p>Define path params which are usually extracted from the request URL by <code><a href="../../Onyx/HTTP/Router.html">Onyx::HTTP::Router</a></code>.
+Serialization is powered by <a href="https://github.com/vladfaust/http-params-serializable" target="_blank"><code>HTTP::Params::Serializable</code></a>.</p>
+
+<p><span class="flag purple">NOTE</span>  It does <strong>not</strong> extracts params from URL by itself, you need to have a router which
+extracts path params into the <code>request.path_params</code> variable, for example, <code><a href="../../Onyx/HTTP/Router.html">Onyx::HTTP::Router</a></code>;
+this code only <em>serializes</em> them.</p>
+
+<p>Path params do not support neither nested nor array values.</p>
+
+<pre><code><span class="k">struct</span> <span class="t">GetUser</span>
+  <span class="k">include</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Action</span>
+
+  params <span class="k">do</span>
+    path <span class="k">do</span>
+      <span class="k">type</span> id : <span class="t">Int32</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">call</span>
+    pp! params.path.id
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+
+<pre><code class="language-shell">> curl http://localhost:5000/users/1
+params.path.id => 1</code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/rest/blob/5031b7afd8f21ae2167fc07a760d74a30f675672/src/onyx-rest/endpoint/params/path.cr#L34" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="query(&amp;block)-macro">
+      <div class="signature">
+        
+        macro <strong>query</strong>(&block)
+
+        <a class="method-permalink" href="#query%28%26block%29-macro">#</a>
+      </div>
+      
+        <div class="doc"><p>Define query params for serialization powered by <a href="https://github.com/vladfaust/http-params-serializable" target="_blank"><code>HTTP::Params::Serializable</code></a>.</p>
+
+<pre><code><span class="k">struct</span> <span class="t">IndexUsers</span>
+  <span class="k">include</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Action</span>
+
+  params <span class="k">do</span>
+    query <span class="k">do</span>
+      <span class="k">type</span> limit : <span class="t">Int32</span>? <span class="o">=</span> <span class="n">10</span>
+      <span class="k">type</span> offset : <span class="t">Int32</span>? <span class="o">=</span> <span class="n">0</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">call</span>
+    pp! params.query.limit
+    pp! params.query.offset
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+
+<pre><code class="language-shell">> curl http://localhost:5000/users?offset=5
+params.query.limit  => 10
+params.query.offset => 5</code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/rest/blob/5031b7afd8f21ae2167fc07a760d74a30f675672/src/onyx-rest/endpoint/params/query.cr#L30" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+</div>
+
+</body>
+</html>

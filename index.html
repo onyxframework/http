@@ -76,6 +76,16 @@
       
     </li>
   
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Channel" data-name="onyx::rest::channel">
+      <a href="Onyx/REST/Channel.html">Channel</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Endpoint" data-name="onyx::rest::endpoint">
+      <a href="Onyx/REST/Endpoint.html">Endpoint</a>
+      
+    </li>
+  
   <li class=" " data-id="github.com/onyxframework/rest/Onyx/REST/Error" data-name="onyx::rest::error(code)">
       <a href="Onyx/REST/Error.html">Error</a>
       
@@ -160,7 +170,7 @@
 <pre><code class="language-yaml">dependencies:
   onyx-rest:
     github: onyxframework/rest
-    version: ~> 0.6.3</code></pre>
+    version: ~> 0.6.4</code></pre>
 
 <p>This shard follows <a href="http://semver.org/" target="_blank">Semantic Versioning v2.0.0</a>, so check <a href="https://github.com/onyxframework/rest/releases" target="_blank">releases</a> and change the <code>version</code> accordingly. Please visit <a href="https://github.com/crystal-lang/shards" target="_blank">github.com/crystal-lang/shards</a> to know more about Crystal shards.</p>
 
@@ -325,6 +335,43 @@ id: 42, name: John</code></pre>
     some_code
     <span class="k">return</span> <span class="t">AnotherView</span>.<span class="k">new</span>
   <span class="k">end</span></code></pre>
+
+<h3>Channels</h3>
+
+<p><a href="https://api.onyxframework.org/rest/Onyx/REST/Channel.html" target="_blank"><code>Channel</code></a> is a convenient websocket wrapper. It can too have <code>.params</code> and <code>.errors</code> defined. It is particulary convenient to use channels with the <a href="https://github.com/onyxframework/eda" target="_blank">Onyx::EDA</a> shard.</p>
+
+<pre><code class="language-crystal"><span class="k">class</span> <span class="t">Channels</span><span class="t">::</span><span class="t">Echo</span>
+  <span class="k">include</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">REST</span><span class="t">::</span><span class="t">Channel</span>
+
+  params <span class="k">do</span>
+    query <span class="k">do</span>
+      <span class="k">type</span> secret : <span class="t">Int32</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  errors <span class="k">do</span>
+    <span class="k">type</span> <span class="t">InvalidSecret</span>(<span class="n">4003</span>)
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">on_open</span>
+    <span class="k">unless</span> params.query.secret <span class="o">==</span> <span class="n">42</span>
+      <span class="c"># Close socket with 4003 code and &quot;Invalid Secret&quot; reason</span>
+      raise <span class="t">InvalidSecret</span>.<span class="k">new</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">on_message</span>(message)
+    socket.send(message)
+  <span class="k">end</span>
+<span class="k">end</span>
+
+router <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
+  ws <span class="s">&quot;/echo&quot;</span>, <span class="t">Channels</span><span class="t">::</span><span class="t">Echo</span>
+<span class="k">end</span>
+
+server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">Server</span>.<span class="k">new</span>(router)
+server.bind_tcp(<span class="n">5000</span>)
+server.listen</code></pre>
 
 <h3>Macros</h3>
 
