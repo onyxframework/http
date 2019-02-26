@@ -7,7 +7,7 @@ module Onyx::REST::Endpoint
   #
   # ## Options
   #
-  # * `required` -- if set to `true`, will attempt to parse form params regardless
+  # * `require` -- if set to `true`, will attempt to parse form params regardless
   # of the `"Content-Type"` header and return a parameter error otherwise; the `params.form`
   # getter becomes non-nilable
   #
@@ -56,7 +56,7 @@ module Onyx::REST::Endpoint
   #       type id : Int32
   #     end
   #
-  #     form required: true do
+  #     form require: true do
   #       type user do
   #         type email : String?
   #         type username : String?
@@ -74,7 +74,7 @@ module Onyx::REST::Endpoint
   # ```shell
   # > curl -X POST -d "user[email]=foo@example.com" http://localhost:5000/users/42
   # ```
-  macro form(required = false, &block)
+  macro form(require required = false, &block)
     class FormError < Onyx::REST::Error(PARAMS_ERROR_CODE)
       def initialize(message : String, @path : Array(String))
         super(message)

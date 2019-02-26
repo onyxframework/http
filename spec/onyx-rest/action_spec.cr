@@ -56,7 +56,7 @@ class JSONAction
   include Onyx::REST::Action
 
   params do
-    json required: true do
+    json require: true do
       type user, nilable: true do
         type name : String
         type email : String
