@@ -74,8 +74,8 @@ module Onyx::REST
 
       # Initialize self with *error_proc* block (`.default_error_proc` by default).
       # The block will be called once `::HTTP::Server::Response#error` is not `nil`.
-      def self.new(content_type : String = DEFAULT_CONTENT_TYPE, &error_proc : ::HTTP::Server::Context, Exception ->)
-        new(content_type, &error_proc)
+      def self.new(verbose : Bool = true, content_type : String = DEFAULT_CONTENT_TYPE, &error_proc : ::HTTP::Server::Context, Exception ->)
+        new(verbose, content_type, error_proc)
       end
 
       # Initialize self. *verbose* argument is passed to the `.default_error_proc`.
@@ -93,7 +93,7 @@ module Onyx::REST
       # renderer = Onyx::REST::Renderer::Template.new(error_proc: ->{})
       # ```
       def initialize(
-        verbose : Bool = true,
+        @verbose : Bool = true,
         @content_type : String = DEFAULT_CONTENT_TYPE,
         @error_proc : Proc(::HTTP::Server::Context, Exception, Nil) = self.class.default_error_proc(verbose)
       )
