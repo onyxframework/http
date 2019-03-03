@@ -19,6 +19,12 @@ module Onyx::REST
 
       CONTENT_TYPE = "application/json; charset=utf-8"
 
+      # Initialize self.
+      # If *verbose* is `true`, renders the actual error message into the response,
+      # otherwise renders "Internal Server Error".
+      def initialize(@verbose : Bool = true)
+      end
+
       # :nodoc:
       def call(context)
         if error = context.response.error
@@ -28,11 +34,6 @@ module Onyx::REST
           json.document do
             json.object do
               json.field("error") do
-                name = "UnhandledServerError"
-                message = "Unhandled server error. If you are the application owner, see the logs for details"
-                code = 500
-                payload = nil
-
                 case error
                 when REST::Error
                   code = error.code
@@ -54,15 +55,19 @@ module Onyx::REST
                     method: error.method,
                     path:   error.path,
                   }
+                else
+                  name = @verbose ? error.class.name.split("::").last : "Exception"
+                  message = @verbose ? error.message : "Internal Server Error"
+                  code = 500
                 end
 
                 context.response.status_code = code
 
                 json.object do
-                  json.field "class", name || error.class.name.split("::").last
-                  json.field "message", message if message && !message.empty?
+                  json.field "class", name
+                  json.field "message", message
                   json.field "code", code
-                  json.field "payload", payload if payload
+                  json.field "payload", payload
                 end
               end
             end
