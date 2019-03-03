@@ -33,6 +33,9 @@ module Onyx::REST
           when REST::Error
             code = error.code
             message = error.message
+          when ::HTTP::Params::Serializable::Error
+            code = 400
+            message = error.message
           when HTTP::Router::RouteNotFoundError
             code = 404
             message = error.message
