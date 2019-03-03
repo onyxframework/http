@@ -18,21 +18,27 @@ module Onyx::REST
 
       CONTENT_TYPE = "text/plain; charset=utf-8"
 
+      # Initialize self.
+      # If *verbose* is `true`, puts the actual error message into the response,
+      # otherwise puts "Internal Server Error".
+      def initialize(@verbose : Bool = true)
+      end
+
       # :nodoc:
       def call(context)
         if error = context.response.error
           context.response.content_type = CONTENT_TYPE
 
-          message = "Internal Server Error"
-          code = 500
-          payload = nil
-
-          # TODO: Handle ::HTTP::Params::Serializable::Error and HTTP::Router::RouteNotFoundError
           case error
           when REST::Error
             code = error.code
             message = error.message
-            payload = error.payload
+          when HTTP::Router::RouteNotFoundError
+            code = 404
+            message = error.message
+          else
+            code = 500
+            message = @verbose ? error.message : "Internal Server Error"
           end
 
           context.response.status_code = code
