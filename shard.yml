@@ -11,7 +11,7 @@ license: MIT
 dependencies:
   onyx-http:
     github: onyxframework/http
-    version: ~> 0.1.1
+    version: ~> 0.2.0
   callbacks:
     github: vladfaust/callbacks.cr
     version: ~> 0.2.0

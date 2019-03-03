@@ -57,7 +57,7 @@ module Onyx::REST
           end
 
           if context.request.responds_to?(:id)
-            request_id = context.request.id?
+            request_id = context.request.id
           end
 
           context.response.status_code = code
