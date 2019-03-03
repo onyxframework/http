@@ -103,6 +103,18 @@ module Onyx::REST
       def call(context)
         if error = context.response.error
           context.response.content_type = @content_type
+
+          case error
+          when REST::Error
+            code = error.code
+          when HTTP::Router::RouteNotFoundError
+            code = 404
+          else
+            code = 500
+          end
+
+          context.response.status_code = code
+
           @error_proc.call(context, error)
         elsif view = context.response.view
           context.response.content_type = @content_type
