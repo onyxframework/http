@@ -1,7 +1,7 @@
 require "../../spec_helper"
-require "../../../src/onyx-rest/renderer/plain"
+require "../../../src/onyx-rest/renderer/text"
 
-struct PlainView
+struct TextView
   include Onyx::REST::View
 
   def initialize(@foo : String)
@@ -18,7 +18,7 @@ struct PlainView
   json(raise NotImplementedError.new(self))
 end
 
-class PlainError < Onyx::REST::Error(505)
+class TextError < Onyx::REST::Error(505)
   def initialize(@foo : String)
     super(@foo)
   end
@@ -28,15 +28,15 @@ class PlainError < Onyx::REST::Error(505)
   end
 end
 
-class PlainRendererSpecServer
+class TextRendererSpecServer
   def initialize
-    renderer = Onyx::REST::Renderer::Plain.new
+    renderer = Onyx::REST::Renderer::Text.new
     router = Onyx::HTTP::Router.new do
       get "/" do |env|
         if env.request.query_params["raise"]?
-          env.response.error = PlainError.new("Boom!")
+          env.response.error = TextError.new("Boom!")
         else
-          env.response.view = PlainView.new("OK")
+          env.response.view = TextView.new("OK")
         end
       end
 
@@ -49,8 +49,8 @@ class PlainRendererSpecServer
   getter server
 end
 
-describe Onyx::REST::Renderer::Plain do
-  server = PlainRendererSpecServer.new
+describe Onyx::REST::Renderer::Text do
+  server = TextRendererSpecServer.new
 
   spawn do
     server.server.bind_tcp(4890)

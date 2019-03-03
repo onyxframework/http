@@ -1,5 +1,5 @@
 require "../spec_helper"
-require "../../src/onyx-rest/renderer/plain"
+require "../../src/onyx-rest/renderer/text"
 
 struct FooAction
   include Onyx::REST::Action
@@ -73,7 +73,7 @@ class ActionSpecServer
   getter server
 
   def initialize
-    renderer = Onyx::REST::Renderer::Plain.new
+    renderer = Onyx::REST::Renderer::Text.new
     rescuer = Onyx::REST::Rescuer.new(renderer)
     router = Onyx::HTTP::Router.new do
       post "/foo/:path_param", FooAction

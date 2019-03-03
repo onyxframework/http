@@ -13,7 +13,7 @@ struct JSONView
 
   json({foo: @foo})
 
-  # `Renderer::Plain` is required in another spec,
+  # `Renderer::Text` is required in another spec,
   # therefore Crystal assumes this view could be invoked with #to_text as well
   text(raise NotImplementedError.new(self))
 end
