@@ -28,6 +28,9 @@ class JSONError < Onyx::REST::Error(505)
   end
 end
 
+class EmptyJSONError < Onyx::REST::Error(506)
+end
+
 class JSONRendererSpecServer
   def initialize
     renderer = Onyx::REST::Renderers::JSON.new
@@ -41,6 +44,9 @@ class JSONRendererSpecServer
       end
 
       get "/empty" { }
+      get "/empty_error" do |env|
+        env.response.error = EmptyJSONError.new
+      end
     end
 
     @server = Onyx::HTTP::Server.new([router, renderer])
@@ -76,6 +82,13 @@ describe Onyx::REST::Renderers::JSON do
       response.status_code.should eq 505
       response.headers["Content-Type"].should eq "application/json; charset=utf-8"
       response.body.should eq %Q[{"error":{"class":"JSONError","message":"Boom!","code":505,"payload":{"foo":"Boom!"}}}]
+    end
+
+    it do
+      response = client.get("/empty_error")
+      response.status_code.should eq 506
+      response.headers["Content-Type"].should eq "application/json; charset=utf-8"
+      response.body.should eq %Q[{"error":{"class":"EmptyJSONError","message":"Empty json error","code":506,"payload":null}}]
     end
   end
 

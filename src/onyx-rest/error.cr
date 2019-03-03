@@ -47,9 +47,9 @@ module Onyx::REST
     end
 
     # Initialize the error with default message, which is its class name splitted with space
-    # (e.g. `"User Not Found"` for `UserNotFound` error).
+    # (e.g. `"User not found"` for `UserNotFound` error).
     def initialize
-      super({{@type.name.split("::").last.underscore.split('_').join(' ') { |s| s.capitalize }}})
+      super({{@type.name.split("::").last.underscore.split('_').join(' ').capitalize}})
     end
 
     # Initialize the error with a *message*.
