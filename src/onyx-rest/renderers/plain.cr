@@ -13,7 +13,7 @@ module Onyx::REST
     # It updates the `"Content-Type"` header **only** if error of view is present.
     # Should be put after router.
     # Calls the next handler if it's present.
-    class Text
+    class Plain
       include ::HTTP::Handler
 
       CONTENT_TYPE = "text/plain; charset=utf-8"
@@ -48,7 +48,7 @@ module Onyx::REST
           context.response << code << " " << message
         elsif view = context.response.view
           context.response.content_type = CONTENT_TYPE
-          view.to_text(context.response)
+          view.to_plain_text(context.response)
         end
 
         if self.next

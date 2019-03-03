@@ -38,13 +38,13 @@ describe Onyx::REST::View do
     io.to_s.should eq %Q[{"foo":"baz","bar":42}]
   end
 
-  it "has #to_text" do
-    view.to_text.should eq "foo: baz, bar: 42"
+  it "has #to_plain_text" do
+    view.to_plain_text.should eq "foo: baz, bar: 42"
   end
 
-  it "has #to_text(io)" do
+  it "has #to_plain_text(io)" do
     io = IO::Memory.new
-    view.to_text(io)
+    view.to_plain_text(io)
     io.to_s.should eq "foo: baz, bar: 42"
   end
 end

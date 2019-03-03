@@ -9,7 +9,7 @@ struct TemplateView
 
   template("./templates/test.ecr")
 
-  # `Renderers::Text` is required in another spec,
+  # `Renderers::Plain` is required in another spec,
   # therefore Crystal assumes this view could be invoked with #to_text as well
   text("foo: #{@foo}")
 

@@ -119,7 +119,7 @@ module Onyx::REST::View
     end
   end
 
-  # Define a `#to_text` method to be rendered with `Renderers::Text`.
+  # Define a `#to_plain_text` method to be rendered with `Renderers::Plain`.
   #
   # ```
   # struct UserView
@@ -133,21 +133,21 @@ module Onyx::REST::View
   #   end
   # end
   #
-  # UserView.new(user).to_text # => "id: 1, name: John"
+  # UserView.new(user).to_plain_text # => "id: 1, name: John"
   # ```
   macro text(&block)
-    def to_text
+    def to_plain_text
       io = IO::Memory.new
-      to_text(io)
+      to_plain_text(io)
       io.to_s
     end
 
-    def to_text(io)
+    def to_plain_text(io)
       io << ({{yield}})
     end
   end
 
-  # Define a `#to_text` method with an arbitrary object to be rendered with `Renderers::Text`.
+  # Define a `#to_plain_text` method with an arbitrary object to be rendered with `Renderers::Plain`.
   # This object will be invoked with `#to_s`.
   #
   # ```
@@ -160,16 +160,16 @@ module Onyx::REST::View
   #   text({id: @user.id, name: @user.name})
   # end
   #
-  # UserView.new(user).to_text # => "{id: 1, name: \"John\"}"
+  # UserView.new(user).to_plain_text # => "{id: 1, name: \"John\"}"
   # ```
   macro text(value)
-    def to_text
+    def to_plain_text
       io = IO::Memory.new
-      to_text(io)
+      to_plain_text(io)
       io.to_s
     end
 
-    def to_text(io)
+    def to_plain_text(io)
       value = ({{value}})
       io << value
     end
