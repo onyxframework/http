@@ -1,24 +1,24 @@
 require "../../spec_helper"
-require "../../../src/onyx-rest/renderers/text"
+require "../../../src/onyx-rest/renderers/template"
 
-struct TextView
+struct TemplateView
   include Onyx::REST::View
 
   def initialize(@foo : String)
   end
 
-  # `Renderers::Template` is required in another spec,
-  # therefore Crystal assumes this view could be invoked with #render as well
   template("./templates/test.ecr")
 
+  # `Renderers::Text` is required in another spec,
+  # therefore Crystal assumes this view could be invoked with #to_text as well
   text("foo: #{@foo}")
 
-  # `Renderers::JSON` is required too in another spec,
+  # `Renderers::JSON` is required in another spec,
   # therefore Crystal assumes this view could be invoked with #to_json as well
   json(raise NotImplementedError.new(self))
 end
 
-class TextError < Onyx::REST::Error(505)
+class TemplateError < Onyx::REST::Error(505)
   def initialize(@foo : String)
     super(@foo)
   end
@@ -28,15 +28,15 @@ class TextError < Onyx::REST::Error(505)
   end
 end
 
-class TextRendererSpecServer
+class TemplateRendererSpecServer
   def initialize
-    renderer = Onyx::REST::Renderers::Text.new
+    renderer = Onyx::REST::Renderers::Template.new
     router = Onyx::HTTP::Router.new do
       get "/" do |env|
         if env.request.query_params["raise"]?
-          env.response.error = TextError.new("Boom!")
+          env.response.error = TemplateError.new("Boom!")
         else
-          env.response.view = TextView.new("OK")
+          env.response.view = TemplateView.new("OK")
         end
       end
 
@@ -49,8 +49,8 @@ class TextRendererSpecServer
   getter server
 end
 
-describe Onyx::REST::Renderers::Text do
-  server = TextRendererSpecServer.new
+describe Onyx::REST::Renderers::Template do
+  server = TemplateRendererSpecServer.new
 
   spawn do
     server.server.bind_tcp(4890)
@@ -65,8 +65,8 @@ describe Onyx::REST::Renderers::Text do
     it do
       response = client.get("/")
       response.status_code.should eq 200
-      response.headers["Content-Type"].should eq "text/plain; charset=utf-8"
-      response.body.should eq "foo: OK"
+      response.headers["Content-Type"].should eq "text/html; charset=utf-8"
+      response.body.should eq "<p>foo = OK</p>\n"
     end
   end
 
@@ -74,8 +74,7 @@ describe Onyx::REST::Renderers::Text do
     it do
       response = client.get("/?raise=true")
       response.status_code.should eq 505
-      response.headers["Content-Type"].should eq "text/plain; charset=utf-8"
-      response.body.should eq "505 Boom!"
+      response.headers["Content-Type"].should eq "text/html; charset=utf-8"
     end
   end
 

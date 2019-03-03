@@ -7,9 +7,13 @@ struct JSONView
   def initialize(@foo : String)
   end
 
+  # `Renderers::Template` is required in another spec,
+  # therefore Crystal assumes this view could be invoked with #render as well
+  template("./templates/test.ecr")
+
   json({foo: @foo})
 
-  # `Renderers::Text` is required too in another spec,
+  # `Renderers::Text` is required in another spec,
   # therefore Crystal assumes this view could be invoked with #to_text as well
   text(raise NotImplementedError.new(self))
 end

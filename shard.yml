@@ -18,3 +18,9 @@ dependencies:
   http-params-serializable:
     github: vladfaust/http-params-serializable
     version: ~> 0.3.0
+  kilt:
+    github: jeromegn/kilt
+    verstion: ~> 0.4.0
+  exception_page:
+    github: crystal-loot/exception_page
+    version: ~> 0.1.0

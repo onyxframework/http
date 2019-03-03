@@ -174,4 +174,43 @@ module Onyx::REST::View
       io << value
     end
   end
+
+  # Define a `#render` method with a template path to be rendered with `Renderers::Template`.
+  #
+  # It uses [Kilt](https://github.com/jeromegn/kilt) under the hood. Basically,
+  # to enable a template engine, you must add it as a dependency and require it.
+  # [`ECR`](https://crystal-lang.org/api/latest/ECR.html) is required by default.
+  #
+  # Templates are embedded into the `#render` method, therefore they have an access to
+  # the view's instance variables (`@user` in this case).
+  # Example with [Slang](https://github.com/jeromegn/slang):
+  #
+  # ```slang
+  # doctype html
+  # html
+  #   head
+  #     title User
+  #   body
+  #     p User name = #{@user.name}
+  # ```
+  #
+  # ```
+  # require "kilt/slang"
+  #
+  # struct UserView
+  #   include Onyx::REST::View
+  #
+  #   def initialize(@user : User)
+  #   end
+  #
+  #   template("./templates/user.slang")
+  # end
+  #
+  # UserView.new(user).render # => "<html>..."
+  # ```
+  macro template(template)
+    def render(io)
+      Kilt.embed("#{__DIR__}/#{{{template}}}", io)
+    end
+  end
 end
