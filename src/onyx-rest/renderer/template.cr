@@ -8,8 +8,8 @@ require "../ext/http/server/response/view"
 require "../error"
 
 module Onyx::REST
-  # HTTP handlers which render content.
-  module Renderers
+  # HTTP handler which renders content.
+  module Renderer
     # A template renderer powered by [Kilt](https://github.com/jeromegn/kilt).
     # If `::HTTP::Server::Response#error` is present, calls a error proc
     # (`.default_error_proc` by default) which beautifully renders the error utilizing
@@ -85,12 +85,12 @@ module Onyx::REST
       #
       # ```
       # # Development
-      # renderer = Onyx::REST::Renderers::Template.new
+      # renderer = Onyx::REST::Renderer::Template.new
       #
       # # Production
-      # renderer = Onyx::REST::Renderers::Template.new(verbose: true)
+      # renderer = Onyx::REST::Renderer::Template.new(verbose: true)
       # # or
-      # renderer = Onyx::REST::Renderers::Template.new(error_proc: ->{})
+      # renderer = Onyx::REST::Renderer::Template.new(error_proc: ->{})
       # ```
       def initialize(
         verbose : Bool = true,

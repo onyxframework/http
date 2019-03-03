@@ -1,5 +1,5 @@
 require "../../spec_helper"
-require "../../../src/onyx-rest/renderers/plain"
+require "../../../src/onyx-rest/renderer/plain"
 
 struct PlainView
   include Onyx::REST::View
@@ -7,13 +7,13 @@ struct PlainView
   def initialize(@foo : String)
   end
 
-  # `Renderers::Template` is required in another spec,
+  # `Renderer::Template` is required in another spec,
   # therefore Crystal assumes this view could be invoked with #render as well
   template("./templates/test.ecr")
 
   text("foo: #{@foo}")
 
-  # `Renderers::JSON` is required too in another spec,
+  # `Renderer::JSON` is required too in another spec,
   # therefore Crystal assumes this view could be invoked with #to_json as well
   json(raise NotImplementedError.new(self))
 end
@@ -30,7 +30,7 @@ end
 
 class PlainRendererSpecServer
   def initialize
-    renderer = Onyx::REST::Renderers::Plain.new
+    renderer = Onyx::REST::Renderer::Plain.new
     router = Onyx::HTTP::Router.new do
       get "/" do |env|
         if env.request.query_params["raise"]?
@@ -49,7 +49,7 @@ class PlainRendererSpecServer
   getter server
 end
 
-describe Onyx::REST::Renderers::Plain do
+describe Onyx::REST::Renderer::Plain do
   server = PlainRendererSpecServer.new
 
   spawn do

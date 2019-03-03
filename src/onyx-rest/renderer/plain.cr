@@ -6,8 +6,8 @@ require "../ext/http/server/response/view"
 require "../error"
 
 module Onyx::REST
-  # HTTP handlers which render content.
-  module Renderers
+  # HTTP handler which renders content.
+  module Renderer
     # A plain text renderer. If `::HTTP::Server::Response#error` is present, prints it,
     # otherwise renders `::HTTP::Server::Response#view`, calling `View#to_s` on it.
     # It updates the `"Content-Type"` header **only** if error of view is present.

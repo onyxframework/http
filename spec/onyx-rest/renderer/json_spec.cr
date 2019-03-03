@@ -1,5 +1,5 @@
 require "../../spec_helper"
-require "../../../src/onyx-rest/renderers/json"
+require "../../../src/onyx-rest/renderer/json"
 
 struct JSONView
   include Onyx::REST::View
@@ -7,13 +7,13 @@ struct JSONView
   def initialize(@foo : String)
   end
 
-  # `Renderers::Template` is required in another spec,
+  # `Renderer::Template` is required in another spec,
   # therefore Crystal assumes this view could be invoked with #render as well
   template("./templates/test.ecr")
 
   json({foo: @foo})
 
-  # `Renderers::Plain` is required in another spec,
+  # `Renderer::Plain` is required in another spec,
   # therefore Crystal assumes this view could be invoked with #to_text as well
   text(raise NotImplementedError.new(self))
 end
@@ -33,7 +33,7 @@ end
 
 class JSONRendererSpecServer
   def initialize
-    renderer = Onyx::REST::Renderers::JSON.new
+    renderer = Onyx::REST::Renderer::JSON.new
     router = Onyx::HTTP::Router.new do
       get "/" do |env|
         if env.request.query_params["raise"]?
@@ -55,7 +55,7 @@ class JSONRendererSpecServer
   getter server
 end
 
-describe Onyx::REST::Renderers::JSON do
+describe Onyx::REST::Renderer::JSON do
   server = JSONRendererSpecServer.new
 
   spawn do

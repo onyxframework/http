@@ -6,7 +6,7 @@ struct TestView
   def initialize(@foo : String, @bar : Int32? = nil)
   end
 
-  template("./renderers/templates/test.ecr")
+  template("./renderer/templates/test.ecr")
 
   json do
     object do

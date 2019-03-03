@@ -7,8 +7,8 @@ require "../ext/http/server/response/view"
 require "../error"
 
 module Onyx::REST
-  # HTTP handlers which render content.
-  module Renderers
+  # HTTP handler which renders content.
+  module Renderer
     # A JSON renderer. If `::HTTP::Server::Response#error` is present, prints it as a JSON object,
     # otherwise renders `::HTTP::Server::Response#view`, calling `View#to_json` on it.
     # It updates the `"Content-Type"` header **only** if error of view is present.
