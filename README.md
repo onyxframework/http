@@ -12,7 +12,7 @@ An opinionated framework for scalable web.
 
 ## About 👋
 
-Onyx::HTTP is an opinionated HTTP framework for [Crystal language](https://crystal-lang.org/). It features DSL and modules to build modern, scalabale web applications.
+Onyx::HTTP is an opinionated HTTP framework for [Crystal language](https://crystal-lang.org/). It features DSL and modules to build modern, scalabale web applications with first-class support for websockets.
 
 ## Installation 📥
 
