@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= error.is_a?(Error) ? error.status_message : ::HTTP.default_status_message_for(500) %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet">
+  <style type="text/css">
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Source Sans Pro", sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 2rem;
+      text-align: center;
+      background-color: #f9f9f9;
+      color: #2c3e50;
+    }
+
+    .code {
+      margin: 0;
+      font-size: 8rem;
+      font-weight: bold;
+    }
+
+    .status-message {
+      margin: 0;
+      margin-top: -1.5rem;
+      font-size: 2rem;
+      max-width: 25rem;
+    }
+
+    .message {
+      margin: 0;
+      font-weight: normal;
+    }
+
+    .request-id {
+      margin: 0;
+      margin-top: 0.5rem;
+      color: #b4b9bf;
+    }
+  </style>
+</head>
+<body>
+<div class="code"><%= error.is_a?(Error) ? error.code : 500 %></div>
+<h1 class="status-message"><%= error.is_a?(Error) ? error.status_message : ::HTTP.default_status_message_for(500) %></h1>
+<% if @verbose && (message = error.message) %>
+  <h2 class="message"><%= message %></h2>
+<% end %>
+<% if request_id = context.request.id %>
+  <div class="request-id">Request ID: <%= request_id %></div>
+<% end %>
+</body>
+</html>

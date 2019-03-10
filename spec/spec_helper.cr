@@ -1,2 +1,2 @@
 require "spec"
-require "../src/onyx-rest"
+require "../src/onyx-http"

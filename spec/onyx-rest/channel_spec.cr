@@ -1,42 +1,52 @@
 require "../spec_helper"
 
-class TestChannel
-  include Onyx::REST::Channel
+class Spec::Channel
+  class Channel
+    include Onyx::HTTP::Channel
 
-  params do
-    path do
-      type id : Int32
+    params do
+      path do
+        type id : Int32
+      end
+
+      query do
+        type foo : Int32?
+      end
     end
 
-    query do
-      type foo : Int32?
+    errors do
+      type UserNotFound(4004)
+    end
+
+    def on_open
+      raise UserNotFound.new unless params.path.id == 42
+      socket.send("Oh, hi Mark")
+    end
+
+    def on_message(message)
+      socket.send(message)
     end
   end
 
-  errors do
-    type UserNotFound(4004)
-  end
+  class Server
+    def initialize
+      renderer = Onyx::HTTP::Middleware::Renderer.new
+      rescuer = Onyx::HTTP::Middleware::Rescuer::Silent(Exception).new(renderer)
+      router = Onyx::HTTP::Middleware::Router.new do
+        ws "/test/:id", Channel
+      end
 
-  def on_open
-    raise UserNotFound.new unless params.path.id == 42
-    socket.send("Oh, hi Mark")
-  end
-
-  def on_message(message)
-    socket.send(message)
-  end
-end
-
-class ChannelTestServer
-  getter server
-
-  def initialize
-    rescuer = Onyx::REST::Rescuer.new
-    router = Onyx::HTTP::Router.new do
-      ws "/test/:id", TestChannel
+      @server = Onyx::HTTP::Server.new([rescuer, router])
     end
 
-    @server = Onyx::HTTP::Server.new([rescuer, router])
+    def start
+      @server.bind_tcp(4890)
+      @server.listen
+    end
+
+    def stop
+      @server.close
+    end
   end
 end
 
@@ -55,14 +65,9 @@ struct WebSocketError
   end
 end
 
-describe Onyx::REST::Channel do
-  server = ChannelTestServer.new
-
-  spawn do
-    server.server.bind_tcp(4890)
-    server.server.listen
-  end
-
+describe Onyx::HTTP::Channel do
+  server = Spec::Channel::Server.new
+  spawn server.start
   sleep(0.1)
 
   context "with invalid ID" do
@@ -76,7 +81,7 @@ describe Onyx::REST::Channel do
 
       spawn socket.run
 
-      sleep(0.5)
+      sleep(0.1)
 
       ws_error.should be_a(WebSocketError)
       ws_error.not_nil!.reason.should eq "User Not Found"
@@ -85,21 +90,12 @@ describe Onyx::REST::Channel do
   end
 
   context "with invalid query param" do
-    it "closes socket with 4000" do
-      ws_error = nil
+    pending "returns an HTTP error" do
       socket = HTTP::WebSocket.new(URI.parse("ws://localhost:4890/test/1?foo=bar"))
-
-      socket.on_close do |frame|
-        ws_error = WebSocketError.new(frame)
-      end
-
       spawn socket.run
+      sleep(0.1)
 
-      sleep(0.5)
-
-      ws_error.should be_a(WebSocketError)
-      ws_error.not_nil!.reason.should eq %Q[Query parameter "foo" cannot be cast from "bar" to (Int32 | Nil)]
-      ws_error.not_nil!.code.should eq 4000_i16
+      # TODO: Somehow check the underlying HTTP response status_code and body
     end
   end
 
@@ -113,12 +109,12 @@ describe Onyx::REST::Channel do
 
     spawn socket.run
 
-    sleep(0.5)
+    sleep(0.1)
 
     it do
       latest_message.should eq "Oh, hi Mark"
     end
   end
 
-  server.server.close
+  server.stop
 end
