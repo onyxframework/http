@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.27.2">
+
+
+<link href="../../css/style.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="../../js/doc.js"></script>
+<script type="text/javascript">
+  CrystalDoc.base_path = "../../";
+</script>
+
+  <meta id="repository-name" content="github.com/onyxframework/http">
+  <title>Onyx::HTTP::Endpoint - github.com/onyxframework/http</title>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="repository-links">
+      <a href="../../index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Exception" data-name="exception">
+      <a href="../../Exception.html">Exception</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/onyxframework/http/HTTP" data-name="http">
+      <a href="../../HTTP.html">HTTP</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/HTTP/Request" data-name="http::request">
+      <a href="../../HTTP/Request.html">Request</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/onyxframework/http/HTTP/Server" data-name="http::server">
+      <a href="../../HTTP/Server.html">Server</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/HTTP/Server/Response" data-name="http::server::response">
+      <a href="../../HTTP/Server/Response.html">Response</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent open current" data-id="github.com/onyxframework/http/Onyx" data-name="onyx">
+      <a href="../../Onyx.html">Onyx</a>
+      
+        <ul>
+  
+  <li class="parent open current" data-id="github.com/onyxframework/http/Onyx/HTTP" data-name="onyx::http">
+      <a href="../../Onyx/HTTP.html">HTTP</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Channel" data-name="onyx::http::channel">
+      <a href="../../Onyx/HTTP/Channel.html">Channel</a>
+      
+    </li>
+  
+  <li class=" current" data-id="github.com/onyxframework/http/Onyx/HTTP/Endpoint" data-name="onyx::http::endpoint">
+      <a href="../../Onyx/HTTP/Endpoint.html">Endpoint</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Error" data-name="onyx::http::error(code)">
+      <a href="../../Onyx/HTTP/Error.html">Error</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware" data-name="onyx::http::middleware">
+      <a href="../../Onyx/HTTP/Middleware.html">Middleware</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/CORS" data-name="onyx::http::middleware::cors">
+      <a href="../../Onyx/HTTP/Middleware/CORS.html">CORS</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Logger" data-name="onyx::http::middleware::logger">
+      <a href="../../Onyx/HTTP/Middleware/Logger.html">Logger</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Renderer" data-name="onyx::http::middleware::renderer">
+      <a href="../../Onyx/HTTP/Middleware/Renderer.html">Renderer</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Renderer/ExceptionPage" data-name="onyx::http::middleware::renderer::exceptionpage">
+      <a href="../../Onyx/HTTP/Middleware/Renderer/ExceptionPage.html">ExceptionPage</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/RequestID" data-name="onyx::http::middleware::requestid">
+      <a href="../../Onyx/HTTP/Middleware/RequestID.html">RequestID</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Rescuer" data-name="onyx::http::middleware::rescuer(t)">
+      <a href="../../Onyx/HTTP/Middleware/Rescuer.html">Rescuer</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Rescuer/Error" data-name="onyx::http::middleware::rescuer::error">
+      <a href="../../Onyx/HTTP/Middleware/Rescuer/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Rescuer/Silent" data-name="onyx::http::middleware::rescuer::silent(t)">
+      <a href="../../Onyx/HTTP/Middleware/Rescuer/Silent.html">Silent</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Rescuer/Standard" data-name="onyx::http::middleware::rescuer::standard(t)">
+      <a href="../../Onyx/HTTP/Middleware/Rescuer/Standard.html">Standard</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/ResponseTime" data-name="onyx::http::middleware::responsetime">
+      <a href="../../Onyx/HTTP/Middleware/ResponseTime.html">ResponseTime</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Router" data-name="onyx::http::middleware::router">
+      <a href="../../Onyx/HTTP/Middleware/Router.html">Router</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Router/BadRequest" data-name="onyx::http::middleware::router::badrequest">
+      <a href="../../Onyx/HTTP/Middleware/Router/BadRequest.html">BadRequest</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Router/DuplicateRouteError" data-name="onyx::http::middleware::router::duplicaterouteerror">
+      <a href="../../Onyx/HTTP/Middleware/Router/DuplicateRouteError.html">DuplicateRouteError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Router/MethodNotAllowed" data-name="onyx::http::middleware::router::methodnotallowed">
+      <a href="../../Onyx/HTTP/Middleware/Router/MethodNotAllowed.html">MethodNotAllowed</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Router/NotFound" data-name="onyx::http::middleware::router::notfound">
+      <a href="../../Onyx/HTTP/Middleware/Router/NotFound.html">NotFound</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Router/UpgradeRequired" data-name="onyx::http::middleware::router::upgraderequired">
+      <a href="../../Onyx/HTTP/Middleware/Router/UpgradeRequired.html">UpgradeRequired</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Server" data-name="onyx::http::server">
+      <a href="../../Onyx/HTTP/Server.html">Server</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/View" data-name="onyx::http::view">
+      <a href="../../Onyx/HTTP/View.html">View</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">module</span> Onyx::HTTP::Endpoint
+
+</h1>
+
+
+
+
+
+  <h2>Overview</h2>
+
+  <p>An encapsulated HTTP endpoint.</p>
+
+<p>You can modify the response as you want as you still have an access to
+the current <code>context</code>. However, it's a good practice to split business and
+rendering logic. For this, a endpoint should return a <code><a href="../../Onyx/HTTP/View.html">View</a></code> instance or
+call the <code><a href="../../Onyx/HTTP/Endpoint.html#view%28view%3AView%29-instance-method">#view</a></code> method.</p>
+
+<p>Endpoint params can be defined with the <code><a href="../../Onyx/HTTP/Endpoint.html#params%28%26block%29-macro">Endpoint.params</a></code> macro (param errors have code 400
+for default endpoints and 4000 for <code><a href="../../Onyx/HTTP/Channel.html">Channel</a></code>s).
+Endpoint errors can be defined with the <code><a href="../../Onyx/HTTP/Endpoint.html#errors%28%26block%29-macro">Endpoint.errors</a></code> macro.</p>
+
+<p>Endpoints also include <code>Callbacks</code> module, effectively allowing to define
+<code><a href="../../Onyx/HTTP/Endpoint.html#before-instance-method">.before</a></code> and <code><a href="../../Onyx/HTTP/Endpoint.html#after-instance-method">.after</a></code> callbacks, which would be invoked before and after <code><a href="../../Onyx/HTTP/Endpoint.html#call-instance-method">#call</a></code>.
+Read more about callbacks at <a href="https://github.com/vladfaust/callbacks.cr" target="_blank">https://github.com/vladfaust/callbacks.cr</a>.</p>
+
+<pre><code><span class="k">struct</span> <span class="t">Endpoints</span><span class="t">::</span><span class="t">GetUser</span>
+  <span class="k">include</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>
+
+  params <span class="k">do</span>
+    path <span class="k">do</span>
+      <span class="k">type</span> id : <span class="t">Int32</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  errors <span class="k">do</span>
+    <span class="k">type</span> <span class="t">UserNotFound</span>(<span class="n">404</span>), id : <span class="t">Int32</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">call</span>
+    user <span class="o">=</span> find_user(path_params.id)
+    raise <span class="t">UserNotFound</span>.<span class="k">new</span>(path_params.id) <span class="k">unless</span> user
+    <span class="k">return</span> <span class="t">Views</span><span class="t">::</span><span class="t">User</span>.<span class="k">new</span>(user)
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="t">Endpoints</span><span class="t">::</span><span class="t">GetUser</span>.call(env) <span class="c"># =&gt; Views::User instance, if not raised either Params::Error or UserNotFound</span></code></pre>
+
+<p>Router example:</p>
+
+<pre><code>router <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
+  get <span class="s">&quot;/&quot;</span>, <span class="t">Endpoints</span><span class="t">::</span><span class="t">GetUser</span>
+  <span class="c"># Equivalent of</span>
+  get <span class="s">&quot;/&quot;</span> <span class="k">do</span> <span class="o">|</span>context<span class="o">|</span>
+    view? <span class="o">=</span> <span class="t">Endpoints</span><span class="t">::</span><span class="t">GetUser</span>.call(context)
+
+    <span class="k">if</span> view <span class="o">=</span> view?.<span class="k">as?</span>(<span class="t">HTTP</span><span class="t">::</span><span class="t">View</span>)
+      context.response.view ||= view
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+
+
+
+
+
+  <h2>Included Modules</h2>
+  <ul class="other-types-list">
+  
+    <li class="other-type">Callbacks</li>
+  
+  </ul>
+
+
+
+
+
+
+
+  <h2>Direct including types</h2>
+  <ul class="other-types-list">
+  
+    <li class="other-type"><a href="../../Onyx/HTTP/Channel.html">Onyx::HTTP::Channel</a></li>
+  
+  </ul>
+
+
+
+
+  <h2>Defined in:</h2>
+  
+    
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/endpoint/errors.cr#L1" target="_blank">
+        onyx-http/endpoint/errors.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/endpoint/params/form.cr#L4" target="_blank">
+        onyx-http/endpoint/params/form.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/endpoint/params/json.cr#L4" target="_blank">
+        onyx-http/endpoint/params/json.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/endpoint/params/path.cr#L4" target="_blank">
+        onyx-http/endpoint/params/path.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/endpoint/params/query.cr#L4" target="_blank">
+        onyx-http/endpoint/params/query.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/endpoint/params.cr#L3" target="_blank">
+        onyx-http/endpoint/params.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/endpoint.cr#L61" target="_blank">
+        onyx-http/endpoint.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+  <h2>Constructors</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new%28context%3AHTTP%3A%3AServer%3A%3AContext%29-class-method" class="signature"><strong>.new</strong>(context : HTTP::Server::Context)</a>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+  <h2>Instance Method Summary</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#after-instance-method" class="signature"><strong>#after</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#before-instance-method" class="signature"><strong>#before</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#call-instance-method" class="signature"><strong>#call</strong></a>
+        
+          <div class="summary"><p>Where all the action takes place.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#view%28view%3AView%29-instance-method" class="signature"><strong>#view</strong>(view : View)</a>
+        
+          <div class="summary"><p>Set a <em>view</em> for this request.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+  <h2>Macro Summary</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#errors%28%26block%29-macro" class="signature"><strong>errors</strong>(&block)</a>
+        
+          <div class="summary"><p>Optional errors definition macro.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#form%28requirerequired%3Dfalse%2C%26block%29-macro" class="signature"><strong>form</strong>(require required = <span class="n">false</span>, &block)</a>
+        
+          <div class="summary"><p>Define form params which would be deserialzed from the request body only if its "Content-Type" header is "application/x-www-form-urlencoded".</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#json%28requirerequired%3Dfalse%2C%26block%29-macro" class="signature"><strong>json</strong>(require required = <span class="n">false</span>, &block)</a>
+        
+          <div class="summary"><p>Define JSON params which would be deserialized from the request body only if its "Content-Type" header is "application/json".</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#params%28%26block%29-macro" class="signature"><strong>params</strong>(&block)</a>
+        
+          <div class="summary"><p>Define endpoint params.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#path%28%26block%29-macro" class="signature"><strong>path</strong>(&block)</a>
+        
+          <div class="summary"><p>Define path params which are usually extracted from the request URL by <code>Onyx::HTTP::Router</code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#query%28%26block%29-macro" class="signature"><strong>query</strong>(&block)</a>
+        
+          <div class="summary"><p>Define query params for serialization powered by <a href="https://github.com/vladfaust/http-params-serializable" target="_blank"><code>HTTP::Params::Serializable</code></a>.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+<div class="methods-inherited">
+  
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+  <h2>Constructor Detail</h2>
+  
+    <div class="entry-detail" id="new(context:HTTP::Server::Context)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(context : HTTP::Server::Context)
+
+        <a class="method-permalink" href="#new%28context%3AHTTP%3A%3AServer%3A%3AContext%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/endpoint.cr#L77" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+
+  <h2>Instance Method Detail</h2>
+  
+    <div class="entry-detail" id="after-instance-method">
+      <div class="signature">
+        
+        def <strong>after</strong>
+
+        <a class="method-permalink" href="#after-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/endpoint.cr#L62" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="before-instance-method">
+      <div class="signature">
+        
+        def <strong>before</strong>
+
+        <a class="method-permalink" href="#before-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/endpoint.cr#L62" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="call-instance-method">
+      <div class="signature">
+        abstract 
+        def <strong>call</strong>
+
+        <a class="method-permalink" href="#call-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Where all the action takes place.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/endpoint.cr#L65" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="view(view:View)-instance-method">
+      <div class="signature">
+        
+        def <strong>view</strong>(view : <a href="../../Onyx/HTTP/View.html">View</a>)
+
+        <a class="method-permalink" href="#view%28view%3AView%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Set a <em>view</em> for this request. It takes precendence over the return value:</p>
+
+<pre><code><span class="k">def</span> <span class="m">call</span>
+  view(<span class="t">ViewA</span>.<span class="k">new</span>)
+  view(<span class="t">ViewB</span>.<span class="k">new</span>)
+  <span class="k">return</span> <span class="t">ViewC</span>.<span class="k">new</span>
+<span class="k">end</span>
+
+<span class="c"># The resulting view is ViewB</span></code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/endpoint.cr#L91" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+  <h2>Macro Detail</h2>
+  
+    <div class="entry-detail" id="errors(&amp;block)-macro">
+      <div class="signature">
+        
+        macro <strong>errors</strong>(&block)
+
+        <a class="method-permalink" href="#errors%28%26block%29-macro">#</a>
+      </div>
+      
+        <div class="doc"><p>Optional errors definition macro. It's a DSL for defining <em>expected</em> errors,
+such as "User Not Found" -- it's not an exception, but it should halt the request execution.
+All defined errors will be ancestors of <code><a href="../../Onyx/HTTP/Error.html">HTTP::Error</a></code>, allowing them to be effectively
+handled in <code>HTTP::Rescuers::HTTP</code>. Note that <code><a href="../../Onyx/HTTP/Channel.html">Channel</a></code>s rescue <code><a href="../../Onyx/HTTP/Error.html">HTTP::Error</a></code> by themselves,
+you don't need a rescuer in this case.</p>
+
+<pre><code><span class="k">struct</span> <span class="t">MyAction</span>
+  <span class="k">include</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">Action</span>
+
+  errors <span class="k">do</span>
+    <span class="k">type</span> <span class="t">UserNotFound</span>(<span class="n">404</span>)
+
+    <span class="c"># This error has variable `attributes` and custom block called on initialization</span>
+    <span class="k">type</span> <span class="t">InvalidUser</span>(<span class="n">409</span>), attributes : <span class="t">Hash</span>(<span class="t">String</span>, <span class="t">String</span>) <span class="k">do</span>
+      <span class="c"># All errors inherit from Exception, so `super` sets the error message</span>
+      <span class="k">super</span>(<span class="s">&quot;User has invalid attributes: </span><span class="i">#{</span>attributes<span class="i">}</span><span class="s">&quot;</span>)
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">call</span>
+    raise <span class="t">UserNotFound</span>.<span class="k">new</span>
+    raise <span class="t">InvalidUser</span>.<span class="k">new</span>({<span class="s">&quot;name&quot;</span> => <span class="s">&quot;too short&quot;</span>})
+  <span class="k">rescue</span> e : <span class="t">UserNotFound</span>
+    <span class="c"># NOTE: These rescue blocks are for example purposes only,</span>
+    <span class="c"># you should not rescue the errors *here* in real applications, leave it to Rescuers</span>
+
+    pp e.code    <span class="c"># =&gt; 404</span>
+    pp e.payload <span class="c"># =&gt; nil</span>
+    pp e.message <span class="c"># =&gt; nil</span>
+  <span class="k">rescue</span> e : <span class="t">InvalidUser</span>
+    pp e.code    <span class="c"># =&gt; 409</span>
+    pp e.payload <span class="c"># =&gt; {attributes: {&quot;name&quot; =&gt; &quot;too short&quot;}}</span>
+    pp e.message <span class="c"># =&gt; &quot;User has invalid attributes: {\&quot;name\&quot; =&gt; \&quot;too short\&quot;}&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/endpoint/errors.cr#L194" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="form(requirerequired=false,&amp;block)-macro">
+      <div class="signature">
+        
+        macro <strong>form</strong>(require required = <span class="n">false</span>, &block)
+
+        <a class="method-permalink" href="#form%28requirerequired%3Dfalse%2C%26block%29-macro">#</a>
+      </div>
+      
+        <div class="doc"><p>Define form params which would be deserialzed from the request body only if
+its "Content-Type" header is "application/x-www-form-urlencoded". The serialization is powered by <a href="https://github.com/vladfaust/http-params-serializable" target="_blank"><code>HTTP::Params::Serializable</code></a>.</p>
+
+<h2>Options</h2>
+
+<ul><li><code>require</code> -- if set to <code>true</code>, will attempt to parse form params regardless
+of the <code>"Content-Type"</code> header and return a parameter error otherwise; the <code>params<a href="../../Onyx/HTTP/Endpoint.html#form%28requirerequired%3Dfalse%2C%26block%29-macro">.form</a></code>
+getter becomes non-nilable</li></ul>
+
+<h2>Example</h2>
+
+<pre><code><span class="k">struct</span> <span class="t">UpdateUser</span>
+  <span class="k">include</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>
+
+  params <span class="k">do</span>
+    path <span class="k">do</span>
+      <span class="k">type</span> id : <span class="t">Int32</span>
+    <span class="k">end</span>
+
+    form <span class="k">do</span>
+      <span class="k">type</span> user <span class="k">do</span>
+        <span class="k">type</span> email : <span class="t">String</span>?
+        <span class="k">type</span> username : <span class="t">String</span>?
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">call</span>
+    <span class="k">if</span> form <span class="o">=</span> params.form
+      pp! form.user.email
+      pp! form.user.username
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+
+<pre><code class="language-shell">> curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "user[email]=foo@example.com" http://localhost:5000/users/42
+form.user.email    => "foo@example.com"
+form.user.username => nil</code></pre>
+
+<p>If your endpoint expects form params only, then it can be simplified a bit:</p>
+
+<pre><code><span class="k">struct</span> <span class="t">UpdateUser</span>
+  <span class="k">include</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>
+
+  params <span class="k">do</span>
+    path <span class="k">do</span>
+      <span class="k">type</span> id : <span class="t">Int32</span>
+    <span class="k">end</span>
+
+    form <span class="k">require</span>: <span class="n">true</span> <span class="k">do</span>
+      <span class="k">type</span> user <span class="k">do</span>
+        <span class="k">type</span> email : <span class="t">String</span>?
+        <span class="k">type</span> username : <span class="t">String</span>?
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">call</span>
+    pp! params.form.user.email
+    pp! params.form.user.username
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+
+<pre><code class="language-shell">> curl -X POST -d "user[email]=foo@example.com" http://localhost:5000/users/42</code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/endpoint/params/form.cr#L77" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="json(requirerequired=false,&amp;block)-macro">
+      <div class="signature">
+        
+        macro <strong>json</strong>(require required = <span class="n">false</span>, &block)
+
+        <a class="method-permalink" href="#json%28requirerequired%3Dfalse%2C%26block%29-macro">#</a>
+      </div>
+      
+        <div class="doc"><p>Define JSON params which would be deserialized from the request body only if
+its "Content-Type" header is "application/json". The serialization is powered by
+stdlib's <a href="https://crystal-lang.org/api/latest/JSON/Serializable.html" target="_blank"><code>JSON::Serializable</code></a>.</p>
+
+<h2>Options</h2>
+
+<ul><li><code>require</code> -- if set to <code>true</code>, will attempt to parse JSON params regardless
+of the <code>"Content-Type"</code> header and return a parameter error otherwise; the <code>params<a href="../../Onyx/HTTP/Endpoint.html#json%28requirerequired%3Dfalse%2C%26block%29-macro">.json</a></code>
+getter becomes non-nilable</li></ul>
+
+<h2>Example</h2>
+
+<pre><code><span class="k">struct</span> <span class="t">UpdateUser</span>
+  <span class="k">include</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>
+
+  params <span class="k">do</span>
+    path <span class="k">do</span>
+      <span class="k">type</span> id : <span class="t">Int32</span>
+    <span class="k">end</span>
+
+    json <span class="k">do</span>
+      <span class="k">type</span> user <span class="k">do</span>
+        <span class="k">type</span> email : <span class="t">String</span>?
+        <span class="k">type</span> username : <span class="t">String</span>?
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">call</span>
+    <span class="k">if</span> json <span class="o">=</span> params.json
+      pp! json.user.email
+      pp! json.user.username
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+
+<pre><code class="language-shell">> curl -X POST -H "Content-Type: application/json" -d '{"user":{"email":"foo@example.com"}}' http://localhost:5000/users/1
+json.user.email    => "foo@example.com"
+json.user.username => nil</code></pre>
+
+<p>If your endpoint expects JSON params only, then it can be simplified a bit:</p>
+
+<pre><code><span class="k">struct</span> <span class="t">UpdateUser</span>
+  <span class="k">include</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>
+
+  params <span class="k">do</span>
+    path <span class="k">do</span>
+      <span class="k">type</span> id : <span class="t">Int32</span>
+    <span class="k">end</span>
+
+    json <span class="k">require</span>: <span class="n">true</span> <span class="k">do</span>
+      <span class="k">type</span> user <span class="k">do</span>
+        <span class="k">type</span> email : <span class="t">String</span>?
+        <span class="k">type</span> username : <span class="t">String</span>?
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">call</span>
+    pp! params.json.user.email
+    pp! params.json.user.username
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+
+<pre><code class="language-shell">> curl -X POST -d '{"user":{"email":"foo@example.com"}}' http://localhost:5000/users/1</code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/endpoint/params/json.cr#L78" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="params(&amp;block)-macro">
+      <div class="signature">
+        
+        macro <strong>params</strong>(&block)
+
+        <a class="method-permalink" href="#params%28%26block%29-macro">#</a>
+      </div>
+      
+        <div class="doc"><p>Define endpoint params. You should call <code><a href="../../Onyx/HTTP/Endpoint.html#path%28%26block%29-macro">.path</a></code>, <code><a href="../../Onyx/HTTP/Endpoint.html#query%28%26block%29-macro">.query</a></code>, <code><a href="../../Onyx/HTTP/Endpoint.html#form%28requirerequired%3Dfalse%2C%26block%29-macro">.form</a></code> and <code><a href="../../Onyx/HTTP/Endpoint.html#json%28requirerequired%3Dfalse%2C%26block%29-macro">.json</a></code> macros
+within the block. Once <code><a href="../../Onyx/HTTP/Endpoint.html#params%28%26block%29-macro">.params</a></code> is called, a <code><a href="../../Onyx/HTTP/Endpoint.html#params%28%26block%29-macro">#params</a></code> getter would be set on every
+endpoint initialization. The <code><a href="../../Onyx/HTTP/Endpoint.html#params%28%26block%29-macro">#params</a></code> variable would have according <code><a href="../../Onyx/HTTP/Endpoint.html#path%28%26block%29-macro">#path</a></code>, <code><a href="../../Onyx/HTTP/Endpoint.html#query%28%26block%29-macro">#query</a></code>,
+<code><a href="../../Onyx/HTTP/Endpoint.html#form%28requirerequired%3Dfalse%2C%26block%29-macro">#form</a></code> and <code><a href="../../Onyx/HTTP/Endpoint.html#json%28requirerequired%3Dfalse%2C%26block%29-macro">#json</a></code> getters itself.</p>
+
+<p>It is powered by <a href="https://github.com/vladfaust/http-params-serializable" target="_blank"><code>HTTP::Params::Serializable</code></a>,
+and it can raise <code>PathParamsError</code>, <code>QueryParamsError</code>, <code>FormBodyError</code> or <code>JSONBodyError</code>,
+which all are <code><a href="../../Onyx/HTTP/Error.html">HTTP::Error</a></code>s with 400 code.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/endpoint/params.cr#L12" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="path(&amp;block)-macro">
+      <div class="signature">
+        
+        macro <strong>path</strong>(&block)
+
+        <a class="method-permalink" href="#path%28%26block%29-macro">#</a>
+      </div>
+      
+        <div class="doc"><p>Define path params which are usually extracted from the request URL by <code>Onyx::HTTP::Router</code>.
+Serialization is powered by <a href="https://github.com/vladfaust/http-params-serializable" target="_blank"><code>HTTP::Params::Serializable</code></a>.</p>
+
+<p><span class="flag purple">NOTE</span>  It does <strong>not</strong> extracts params from URL by itself, you need to have a router which
+extracts path params into the <code>request.path_params</code> variable, for example,
+<code>Onyx::HTTP::Router</code>; this code only <em>deserializes</em> them.</p>
+
+<p>Path params do not support neither nested nor array values.</p>
+
+<pre><code><span class="k">struct</span> <span class="t">GetUser</span>
+  <span class="k">include</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>
+
+  params <span class="k">do</span>
+    path <span class="k">do</span>
+      <span class="k">type</span> id : <span class="t">Int32</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">call</span>
+    pp! params.path.id
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+
+<pre><code class="language-shell">> curl http://localhost:5000/users/1
+params.path.id => 1</code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/endpoint/params/path.cr#L34" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="query(&amp;block)-macro">
+      <div class="signature">
+        
+        macro <strong>query</strong>(&block)
+
+        <a class="method-permalink" href="#query%28%26block%29-macro">#</a>
+      </div>
+      
+        <div class="doc"><p>Define query params for serialization powered by <a href="https://github.com/vladfaust/http-params-serializable" target="_blank"><code>HTTP::Params::Serializable</code></a>.</p>
+
+<pre><code><span class="k">struct</span> <span class="t">IndexUsers</span>
+  <span class="k">include</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>
+
+  params <span class="k">do</span>
+    query <span class="k">do</span>
+      <span class="k">type</span> limit : <span class="t">Int32</span>? <span class="o">=</span> <span class="n">10</span>
+      <span class="k">type</span> offset : <span class="t">Int32</span>? <span class="o">=</span> <span class="n">0</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">call</span>
+    pp! params.query.limit
+    pp! params.query.offset
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+
+<pre><code class="language-shell">> curl http://localhost:5000/users?offset=5
+params.query.limit  => 10
+params.query.offset => 5</code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/endpoint/params/query.cr#L30" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+</div>
+
+</body>
+</html>

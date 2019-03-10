@@ -14,7 +14,7 @@
 </script>
 
   <meta id="repository-name" content="github.com/onyxframework/http">
-  <title>HTTP::Server::Response - github.com/onyxframework/http</title>
+  <title>Onyx::HTTP::Middleware - github.com/onyxframework/http</title>
 </head>
 <body>
 
@@ -41,7 +41,7 @@
       
     </li>
   
-  <li class="parent open current" data-id="github.com/onyxframework/http/HTTP" data-name="http">
+  <li class="parent " data-id="github.com/onyxframework/http/HTTP" data-name="http">
       <a href="../../HTTP.html">HTTP</a>
       
         <ul>
@@ -51,12 +51,12 @@
       
     </li>
   
-  <li class="parent open current" data-id="github.com/onyxframework/http/HTTP/Server" data-name="http::server">
+  <li class="parent " data-id="github.com/onyxframework/http/HTTP/Server" data-name="http::server">
       <a href="../../HTTP/Server.html">Server</a>
       
         <ul>
   
-  <li class=" current" data-id="github.com/onyxframework/http/HTTP/Server/Response" data-name="http::server::response">
+  <li class=" " data-id="github.com/onyxframework/http/HTTP/Server/Response" data-name="http::server::response">
       <a href="../../HTTP/Server/Response.html">Response</a>
       
     </li>
@@ -71,12 +71,12 @@
       
     </li>
   
-  <li class="parent " data-id="github.com/onyxframework/http/Onyx" data-name="onyx">
+  <li class="parent open current" data-id="github.com/onyxframework/http/Onyx" data-name="onyx">
       <a href="../../Onyx.html">Onyx</a>
       
         <ul>
   
-  <li class="parent " data-id="github.com/onyxframework/http/Onyx/HTTP" data-name="onyx::http">
+  <li class="parent open current" data-id="github.com/onyxframework/http/Onyx/HTTP" data-name="onyx::http">
       <a href="../../Onyx/HTTP.html">HTTP</a>
       
         <ul>
@@ -96,7 +96,7 @@
       
     </li>
   
-  <li class="parent " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware" data-name="onyx::http::middleware">
+  <li class="parent open current" data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware" data-name="onyx::http::middleware">
       <a href="../../Onyx/HTTP/Middleware.html">Middleware</a>
       
         <ul>
@@ -230,19 +230,13 @@
 <div class="main-content">
 <h1 class="type-name">
 
-  <span class="kind">class</span> HTTP::Server::Response
+  <span class="kind">module</span> Onyx::HTTP::Middleware
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../HTTP/Server/Response.html">HTTP::Server::Response</a></li><li class="superclass">IO</li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
-
-
-  <h2>Overview</h2>
-
-  <p>Extensions to the standard <code><a href="../../HTTP/Server/Response.html">HTTP::Server::Response</a></code> class.</p>
 
 
 
@@ -260,22 +254,85 @@
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/ext/http/server/response.cr#L4" target="_blank">
-        onyx-http/ext/http/server/response.cr
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/middleware/cors.cr#L3" target="_blank">
+        onyx-http/middleware/cors.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/ext/http/server/response/error.cr#L3" target="_blank">
-        onyx-http/ext/http/server/response/error.cr
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/middleware/logger.cr#L8" target="_blank">
+        onyx-http/middleware/logger.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/ext/http/server/response/view.cr#L4" target="_blank">
-        onyx-http/ext/http/server/response/view.cr
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/middleware/renderer.cr#L8" target="_blank">
+        onyx-http/middleware/renderer.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/middleware/request_id.cr#L6" target="_blank">
+        onyx-http/middleware/request_id.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/middleware/rescuer/silent.cr#L4" target="_blank">
+        onyx-http/middleware/rescuer/silent.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/middleware/rescuer/standard.cr#L7" target="_blank">
+        onyx-http/middleware/rescuer/standard.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/middleware/response_time.cr#L3" target="_blank">
+        onyx-http/middleware/response_time.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/middleware/router/bad_request.cr#L1" target="_blank">
+        onyx-http/middleware/router/bad_request.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/middleware/router/method_not_allowed.cr#L1" target="_blank">
+        onyx-http/middleware/router/method_not_allowed.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/middleware/router/not_found.cr#L1" target="_blank">
+        onyx-http/middleware/router/not_found.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/middleware/router/upgrade_required.cr#L1" target="_blank">
+        onyx-http/middleware/router/upgrade_required.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/middleware/router.cr#L9" target="_blank">
+        onyx-http/middleware/router.cr
       </a>
     
     <br/>
@@ -288,39 +345,6 @@
 
 
 
-
-  <h2>Instance Method Summary</h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#error%3AException%3F-instance-method" class="signature"><strong>#error</strong> : Exception?</a>
-        
-          <div class="summary"><p>A rescued error which is likely to be put into the response output.</p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#error%3D%28error%3AException%3F%29-instance-method" class="signature"><strong>#error=</strong>(error : Exception?)</a>
-        
-          <div class="summary"><p>A rescued error which is likely to be put into the response output.</p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#view%3AOnyx%3A%3AHTTP%3A%3AView%3F-instance-method" class="signature"><strong>#view</strong> : Onyx::HTTP::View?</a>
-        
-          <div class="summary"><p>A view to render.</p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#view%3D%28view%3AOnyx%3A%3AHTTP%3A%3AView%3F%29-instance-method" class="signature"><strong>#view=</strong>(view : Onyx::HTTP::View?)</a>
-        
-          <div class="summary"><p>A view to render.</p></div>
-        
-      </li>
-    
-  </ul>
 
 
 
@@ -328,117 +352,12 @@
 
 <div class="methods-inherited">
   
-    
-
-
-    
-
-
-    
-
-
-  
-    
-
-
-    
-
-
-    
-
-
-  
-    
-
-
-    
-
-
-    
-
-
-  
 </div>
 
 
 
 
 
-
-  <h2>Instance Method Detail</h2>
-  
-    <div class="entry-detail" id="error:Exception?-instance-method">
-      <div class="signature">
-        
-        def <strong>error</strong> : <a href="../../Exception.html">Exception</a>?
-
-        <a class="method-permalink" href="#error%3AException%3F-instance-method">#</a>
-      </div>
-      
-        <div class="doc"><p>A rescued error which is likely to be put into the response output.</p></div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/ext/http/server/response/error.cr#L7" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="error=(error:Exception?)-instance-method">
-      <div class="signature">
-        
-        def <strong>error=</strong>(error : <a href="../../Exception.html">Exception</a>?)
-
-        <a class="method-permalink" href="#error%3D%28error%3AException%3F%29-instance-method">#</a>
-      </div>
-      
-        <div class="doc"><p>A rescued error which is likely to be put into the response output.</p></div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/ext/http/server/response/error.cr#L11" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="view:Onyx::HTTP::View?-instance-method">
-      <div class="signature">
-        
-        def <strong>view</strong> : <a href="../../Onyx/HTTP/View.html">Onyx::HTTP::View</a>?
-
-        <a class="method-permalink" href="#view%3AOnyx%3A%3AHTTP%3A%3AView%3F-instance-method">#</a>
-      </div>
-      
-        <div class="doc"><p>A view to render.</p></div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/ext/http/server/response/view.cr#L8" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="view=(view:Onyx::HTTP::View?)-instance-method">
-      <div class="signature">
-        
-        def <strong>view=</strong>(view : <a href="../../Onyx/HTTP/View.html">Onyx::HTTP::View</a>?)
-
-        <a class="method-permalink" href="#view%3D%28view%3AOnyx%3A%3AHTTP%3A%3AView%3F%29-instance-method">#</a>
-      </div>
-      
-        <div class="doc"><p>A view to render.</p></div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/ext/http/server/response/view.cr#L12" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
 
 
 

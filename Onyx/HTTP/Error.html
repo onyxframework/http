@@ -14,7 +14,7 @@
 </script>
 
   <meta id="repository-name" content="github.com/onyxframework/http">
-  <title>HTTP::Server::Response - github.com/onyxframework/http</title>
+  <title>Onyx::HTTP::Error(Code) - github.com/onyxframework/http</title>
 </head>
 <body>
 
@@ -41,7 +41,7 @@
       
     </li>
   
-  <li class="parent open current" data-id="github.com/onyxframework/http/HTTP" data-name="http">
+  <li class="parent " data-id="github.com/onyxframework/http/HTTP" data-name="http">
       <a href="../../HTTP.html">HTTP</a>
       
         <ul>
@@ -51,12 +51,12 @@
       
     </li>
   
-  <li class="parent open current" data-id="github.com/onyxframework/http/HTTP/Server" data-name="http::server">
+  <li class="parent " data-id="github.com/onyxframework/http/HTTP/Server" data-name="http::server">
       <a href="../../HTTP/Server.html">Server</a>
       
         <ul>
   
-  <li class=" current" data-id="github.com/onyxframework/http/HTTP/Server/Response" data-name="http::server::response">
+  <li class=" " data-id="github.com/onyxframework/http/HTTP/Server/Response" data-name="http::server::response">
       <a href="../../HTTP/Server/Response.html">Response</a>
       
     </li>
@@ -71,12 +71,12 @@
       
     </li>
   
-  <li class="parent " data-id="github.com/onyxframework/http/Onyx" data-name="onyx">
+  <li class="parent open current" data-id="github.com/onyxframework/http/Onyx" data-name="onyx">
       <a href="../../Onyx.html">Onyx</a>
       
         <ul>
   
-  <li class="parent " data-id="github.com/onyxframework/http/Onyx/HTTP" data-name="onyx::http">
+  <li class="parent open current" data-id="github.com/onyxframework/http/Onyx/HTTP" data-name="onyx::http">
       <a href="../../Onyx/HTTP.html">HTTP</a>
       
         <ul>
@@ -91,7 +91,7 @@
       
     </li>
   
-  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Error" data-name="onyx::http::error(code)">
+  <li class=" current" data-id="github.com/onyxframework/http/Onyx/HTTP/Error" data-name="onyx::http::error(code)">
       <a href="../../Onyx/HTTP/Error.html">Error</a>
       
     </li>
@@ -230,19 +230,41 @@
 <div class="main-content">
 <h1 class="type-name">
 
-  <span class="kind">class</span> HTTP::Server::Response
+  <span class="kind">class</span> Onyx::HTTP::Error(Code)
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../HTTP/Server/Response.html">HTTP::Server::Response</a></li><li class="superclass">IO</li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Onyx/HTTP/Error.html">Onyx::HTTP::Error(Code)</a></li><li class="superclass"><a href="../../Exception.html">Exception</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
 
   <h2>Overview</h2>
 
-  <p>Extensions to the standard <code><a href="../../HTTP/Server/Response.html">HTTP::Server::Response</a></code> class.</p>
+  <p>A HTTP error which is expected to be rescued upon processing,
+for example by <code><a href="../../Onyx/HTTP/Middleware/Rescuer.html">Middleware::Rescuer</a></code>, and then rendered by <code><a href="../../Onyx/HTTP/Middleware/Renderer.html">Middleware::Renderer</a></code>.</p>
+
+<p>Define your own errors to handle <strong>expected</strong> situations:</p>
+
+<blockquote>In case of error, a plain text response status and body will be
+> <code>404</code> and <code>"404 User not found with ID 42"</code> respectively.</blockquote>
+
+<pre><code><span class="k">class</span> <span class="t">UserNotFound</span> <span class="o">&lt;</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">Error</span>(<span class="n">404</span>)
+  <span class="k">def</span> <span class="m">initialize</span>(@id : <span class="t">Int32</span>)
+    <span class="k">super</span>(<span class="s">&quot;User not found with ID </span><span class="i">#{</span>@id<span class="i">}</span><span class="s">&quot;</span>)
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">payload</span>
+    {id: @id}
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c"># Will return 404 erorr if a user isn&#39;t found by the ID</span>
+router.get <span class="s">&quot;/users/:id&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
+  id <span class="o">=</span> env.request.path_params[<span class="s">&quot;id&quot;</span>]?.to_i?
+  raise <span class="t">UserNotFound</span>.<span class="k">new</span>(id) <span class="k">unless</span> <span class="t">Models</span><span class="t">::</span><span class="t">User</span>.find?(id)
+<span class="k">end</span></code></pre>
 
 
 
@@ -251,6 +273,19 @@
 
 
 
+
+  <h2>Direct Known Subclasses</h2>
+  <ul class="other-types-list">
+  
+    <li class="other-type"><a href="../../Onyx/HTTP/Middleware/Router/BadRequest.html">Onyx::HTTP::Middleware::Router::BadRequest</a></li>
+  
+    <li class="other-type"><a href="../../Onyx/HTTP/Middleware/Router/MethodNotAllowed.html">Onyx::HTTP::Middleware::Router::MethodNotAllowed</a></li>
+  
+    <li class="other-type"><a href="../../Onyx/HTTP/Middleware/Router/NotFound.html">Onyx::HTTP::Middleware::Router::NotFound</a></li>
+  
+    <li class="other-type"><a href="../../Onyx/HTTP/Middleware/Router/UpgradeRequired.html">Onyx::HTTP::Middleware::Router::UpgradeRequired</a></li>
+  
+  </ul>
 
 
 
@@ -260,22 +295,8 @@
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/ext/http/server/response.cr#L4" target="_blank">
-        onyx-http/ext/http/server/response.cr
-      </a>
-    
-    <br/>
-  
-    
-      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/ext/http/server/response/error.cr#L3" target="_blank">
-        onyx-http/ext/http/server/response/error.cr
-      </a>
-    
-    <br/>
-  
-    
-      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/ext/http/server/response/view.cr#L4" target="_blank">
-        onyx-http/ext/http/server/response/view.cr
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/error.cr#L27" target="_blank">
+        onyx-http/error.cr
       </a>
     
     <br/>
@@ -293,30 +314,16 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#error%3AException%3F-instance-method" class="signature"><strong>#error</strong> : Exception?</a>
+        <a href="#code%3AInt32-instance-method" class="signature"><strong>#code</strong> : Int32</a>
         
-          <div class="summary"><p>A rescued error which is likely to be put into the response output.</p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#error%3D%28error%3AException%3F%29-instance-method" class="signature"><strong>#error=</strong>(error : Exception?)</a>
-        
-          <div class="summary"><p>A rescued error which is likely to be put into the response output.</p></div>
+          <div class="summary"><p>The HTTP status code of this error.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#view%3AOnyx%3A%3AHTTP%3A%3AView%3F-instance-method" class="signature"><strong>#view</strong> : Onyx::HTTP::View?</a>
+        <a href="#payload-instance-method" class="signature"><strong>#payload</strong></a>
         
-          <div class="summary"><p>A view to render.</p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#view%3D%28view%3AOnyx%3A%3AHTTP%3A%3AView%3F%29-instance-method" class="signature"><strong>#view=</strong>(view : Onyx::HTTP::View?)</a>
-        
-          <div class="summary"><p>A view to render.</p></div>
+          <div class="summary"><p>The error payload.</p></div>
         
       </li>
     
@@ -329,6 +336,15 @@
 <div class="methods-inherited">
   
     
+
+  <h3>Instance methods inherited from class <code><a href="../../Exception.html">Exception</a></code></h3>
+  
+  
+    <a href="../../Exception.html#status_message-instance-method" class="tooltip">
+      <span>status_message</span>
+    status_message</a>
+    
+  
 
 
     
@@ -367,74 +383,40 @@
 
   <h2>Instance Method Detail</h2>
   
-    <div class="entry-detail" id="error:Exception?-instance-method">
+    <div class="entry-detail" id="code:Int32-instance-method">
       <div class="signature">
         
-        def <strong>error</strong> : <a href="../../Exception.html">Exception</a>?
+        def <strong>code</strong> : Int32
 
-        <a class="method-permalink" href="#error%3AException%3F-instance-method">#</a>
+        <a class="method-permalink" href="#code%3AInt32-instance-method">#</a>
       </div>
       
-        <div class="doc"><p>A rescued error which is likely to be put into the response output.</p></div>
+        <div class="doc"><p>The HTTP status code of this error.</p></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/ext/http/server/response/error.cr#L7" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/error.cr#L31" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="error=(error:Exception?)-instance-method">
+    <div class="entry-detail" id="payload-instance-method">
       <div class="signature">
         
-        def <strong>error=</strong>(error : <a href="../../Exception.html">Exception</a>?)
+        def <strong>payload</strong>
 
-        <a class="method-permalink" href="#error%3D%28error%3AException%3F%29-instance-method">#</a>
+        <a class="method-permalink" href="#payload-instance-method">#</a>
       </div>
       
-        <div class="doc"><p>A rescued error which is likely to be put into the response output.</p></div>
+        <div class="doc"><p>The error payload. Usually used by custom renderers, for example,
+<code>Onyx::HTTP::Renderers::JSON</code> calls <code>error<a href="../../Onyx/HTTP/Error.html#payload-instance-method">.payload</a>.try &.to_json</code>.
+Returns <code>nil</code> by default.</p></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/ext/http/server/response/error.cr#L11" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="view:Onyx::HTTP::View?-instance-method">
-      <div class="signature">
-        
-        def <strong>view</strong> : <a href="../../Onyx/HTTP/View.html">Onyx::HTTP::View</a>?
-
-        <a class="method-permalink" href="#view%3AOnyx%3A%3AHTTP%3A%3AView%3F-instance-method">#</a>
-      </div>
-      
-        <div class="doc"><p>A view to render.</p></div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/ext/http/server/response/view.cr#L8" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="view=(view:Onyx::HTTP::View?)-instance-method">
-      <div class="signature">
-        
-        def <strong>view=</strong>(view : <a href="../../Onyx/HTTP/View.html">Onyx::HTTP::View</a>?)
-
-        <a class="method-permalink" href="#view%3D%28view%3AOnyx%3A%3AHTTP%3A%3AView%3F%29-instance-method">#</a>
-      </div>
-      
-        <div class="doc"><p>A view to render.</p></div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/ext/http/server/response/view.cr#L12" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/error.cr#L34" target="_blank">View source</a>]
         
       </div>
     </div>

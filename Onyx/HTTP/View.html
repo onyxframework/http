@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.27.2">
+
+
+<link href="../../css/style.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="../../js/doc.js"></script>
+<script type="text/javascript">
+  CrystalDoc.base_path = "../../";
+</script>
+
+  <meta id="repository-name" content="github.com/onyxframework/http">
+  <title>Onyx::HTTP::View - github.com/onyxframework/http</title>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="repository-links">
+      <a href="../../index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Exception" data-name="exception">
+      <a href="../../Exception.html">Exception</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/onyxframework/http/HTTP" data-name="http">
+      <a href="../../HTTP.html">HTTP</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/HTTP/Request" data-name="http::request">
+      <a href="../../HTTP/Request.html">Request</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/onyxframework/http/HTTP/Server" data-name="http::server">
+      <a href="../../HTTP/Server.html">Server</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/HTTP/Server/Response" data-name="http::server::response">
+      <a href="../../HTTP/Server/Response.html">Response</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent open current" data-id="github.com/onyxframework/http/Onyx" data-name="onyx">
+      <a href="../../Onyx.html">Onyx</a>
+      
+        <ul>
+  
+  <li class="parent open current" data-id="github.com/onyxframework/http/Onyx/HTTP" data-name="onyx::http">
+      <a href="../../Onyx/HTTP.html">HTTP</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Channel" data-name="onyx::http::channel">
+      <a href="../../Onyx/HTTP/Channel.html">Channel</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Endpoint" data-name="onyx::http::endpoint">
+      <a href="../../Onyx/HTTP/Endpoint.html">Endpoint</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Error" data-name="onyx::http::error(code)">
+      <a href="../../Onyx/HTTP/Error.html">Error</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware" data-name="onyx::http::middleware">
+      <a href="../../Onyx/HTTP/Middleware.html">Middleware</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/CORS" data-name="onyx::http::middleware::cors">
+      <a href="../../Onyx/HTTP/Middleware/CORS.html">CORS</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Logger" data-name="onyx::http::middleware::logger">
+      <a href="../../Onyx/HTTP/Middleware/Logger.html">Logger</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Renderer" data-name="onyx::http::middleware::renderer">
+      <a href="../../Onyx/HTTP/Middleware/Renderer.html">Renderer</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Renderer/ExceptionPage" data-name="onyx::http::middleware::renderer::exceptionpage">
+      <a href="../../Onyx/HTTP/Middleware/Renderer/ExceptionPage.html">ExceptionPage</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/RequestID" data-name="onyx::http::middleware::requestid">
+      <a href="../../Onyx/HTTP/Middleware/RequestID.html">RequestID</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Rescuer" data-name="onyx::http::middleware::rescuer(t)">
+      <a href="../../Onyx/HTTP/Middleware/Rescuer.html">Rescuer</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Rescuer/Error" data-name="onyx::http::middleware::rescuer::error">
+      <a href="../../Onyx/HTTP/Middleware/Rescuer/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Rescuer/Silent" data-name="onyx::http::middleware::rescuer::silent(t)">
+      <a href="../../Onyx/HTTP/Middleware/Rescuer/Silent.html">Silent</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Rescuer/Standard" data-name="onyx::http::middleware::rescuer::standard(t)">
+      <a href="../../Onyx/HTTP/Middleware/Rescuer/Standard.html">Standard</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/ResponseTime" data-name="onyx::http::middleware::responsetime">
+      <a href="../../Onyx/HTTP/Middleware/ResponseTime.html">ResponseTime</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Router" data-name="onyx::http::middleware::router">
+      <a href="../../Onyx/HTTP/Middleware/Router.html">Router</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Router/BadRequest" data-name="onyx::http::middleware::router::badrequest">
+      <a href="../../Onyx/HTTP/Middleware/Router/BadRequest.html">BadRequest</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Router/DuplicateRouteError" data-name="onyx::http::middleware::router::duplicaterouteerror">
+      <a href="../../Onyx/HTTP/Middleware/Router/DuplicateRouteError.html">DuplicateRouteError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Router/MethodNotAllowed" data-name="onyx::http::middleware::router::methodnotallowed">
+      <a href="../../Onyx/HTTP/Middleware/Router/MethodNotAllowed.html">MethodNotAllowed</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Router/NotFound" data-name="onyx::http::middleware::router::notfound">
+      <a href="../../Onyx/HTTP/Middleware/Router/NotFound.html">NotFound</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Router/UpgradeRequired" data-name="onyx::http::middleware::router::upgraderequired">
+      <a href="../../Onyx/HTTP/Middleware/Router/UpgradeRequired.html">UpgradeRequired</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Server" data-name="onyx::http::server">
+      <a href="../../Onyx/HTTP/Server.html">Server</a>
+      
+    </li>
+  
+  <li class=" current" data-id="github.com/onyxframework/http/Onyx/HTTP/View" data-name="onyx::http::view">
+      <a href="../../Onyx/HTTP/View.html">View</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">module</span> Onyx::HTTP::View
+
+</h1>
+
+
+
+
+
+  <h2>Overview</h2>
+
+  <p>A reusable HTTP view.</p>
+
+<p>Views are usually rendered by the <code><a href="../../Onyx/HTTP/Middleware/Renderer.html">Middleware::Renderer</a></code> invoking the <code><a href="../../Onyx/HTTP/View.html#render%28context%3AHTTP%3A%3AServer%3A%3AContext%29-instance-method">#render</a></code> method.
+You can use views either in raw endpoint procs or within <code><a href="../../Onyx/HTTP/Endpoint.html#call-instance-method">Endpoint#call</a></code>.</p>
+
+<pre><code><span class="k">struct</span> <span class="t">UserView</span>
+  <span class="k">include</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">View</span>
+
+  <span class="k">def</span> <span class="m">initialize</span>(@user : <span class="t">User</span>)
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">render</span>(context)
+    context.response.content_type <span class="o">=</span> <span class="s">&quot;text/plain&quot;</span>
+    context.response <span class="o">&lt;&lt;</span> <span class="s">&quot;id: </span><span class="i">#{</span>@user.id<span class="i">}</span><span class="s">, name: </span><span class="i">#{</span>@user.name<span class="i">}</span><span class="s">&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+router.get <span class="s">&quot;/user/:id&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
+  user <span class="o">=</span> <span class="t">Onyx</span>.query(<span class="t">User</span>.where(id: env.request.path_params[<span class="s">&quot;id&quot;</span>].to_i))
+
+  env.response.view <span class="o">=</span> <span class="t">UserView</span>.<span class="k">new</span>(user)
+  <span class="c"># or just return it</span>
+  <span class="t">UserView</span>.<span class="k">new</span>(user)
+<span class="k">end</span>
+
+<span class="k">struct</span> <span class="t">GetUser</span>
+  <span class="k">include</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>
+
+  params <span class="k">do</span>
+    path <span class="k">do</span>
+      <span class="k">type</span> id : <span class="t">Int32</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">call</span>
+    user <span class="o">=</span> <span class="t">Onyx</span>.query(<span class="t">User</span>.where(id: params.path.id))
+    <span class="k">return</span> <span class="t">UserView</span>.<span class="k">new</span>(user)
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+
+<p>Apart from directly implementing the <code><a href="../../Onyx/HTTP/View.html#render%28context%3AHTTP%3A%3AServer%3A%3AContext%29-instance-method">#render</a></code> method, you can use the convenient macros:</p>
+
+<ul><li><code><a href="../../Onyx/HTTP/View.html#text%28value%2Ccontent_type%3D%26quot%3Btext%2Fplain%26quot%3B%2Caccept%3D%7B%26quot%3Btext%2Fplain%26quot%3B%7D%29-macro">.text</a></code> to render the view as a text with <code>text/plain</code> content type by default</li><li><code><a href="../../Onyx/HTTP/View.html#json%28object%2Ccontent_type%3D%26quot%3Bapplication%2Fjson%26quot%3B%2Caccept%3D%7B%26quot%3Bapplication%2Fjson%26quot%3B%7D%29-macro">.json</a></code> to render the view as a JSON with <code>application/json</code> content type by default</li><li><code><a href="../../Onyx/HTTP/View.html#template%28template%2Ccontent_type%3D%26quot%3Btext%2Fhtml%26quot%3B%2Caccept%3D%7B%26quot%3Btext%2Fhtml%26quot%3B%7D%29-macro">.template</a></code> to render the view as a generic template (powered by <a href="https://github.com/jeromegn/kilt" target="_blank">Kilt</a>)
+with <code>text/html</code> content type by default</li></ul>
+
+<p>If you have only one macro of these three called in a view, then the request's <code>"Accept"</code>
+header will be ignored and the view will always be rendered as specified:</p>
+
+<pre><code><span class="c"># Will always be rendered as `{&quot;foo&quot;:@foo}`</span>
+<span class="c"># with &quot;Content-Type&quot; set to `&quot;application/json&quot;`.</span>
+<span class="k">struct</span> <span class="t">JSONView</span>
+  <span class="k">include</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">View</span>
+
+  <span class="k">def</span> <span class="m">initialize</span>(@foo : <span class="t">String</span>)
+  <span class="k">end</span>
+
+  json foo: @foo
+<span class="k">end</span></code></pre>
+
+<p>Otherwise, if you have multiple macros called, then the request's <code>"Accept"</code> header is
+considered and the rendering is determined by it. However, if the <code>"Accept"</code> header
+is absent or equals to <code>"*/*"</code>, then the <strong>latter</strong> macro takes precendence:</p>
+
+<pre><code><span class="c"># If `Accept` header has `application/json` entry with</span>
+<span class="c"># enough q-factor, then the JSON view would be rendered.</span>
+<span class="c"># Otherwise the same check will be made for `text/html` entry.</span>
+<span class="c"># If none succeeded, plain text is rendered then.</span>
+<span class="k">struct</span> <span class="t">MultiView</span>
+  <span class="k">include</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">View</span>
+
+  <span class="k">def</span> <span class="m">initialize</span>(@foo : <span class="t">String</span>)
+  <span class="k">end</span>
+
+  json foo: @foo
+  template <span class="s">&quot;./multi_view.html.ecr&quot;</span>
+  text <span class="s">&quot;foo: </span><span class="i">#{</span>@foo<span class="i">}</span><span class="s">&quot;</span>
+<span class="k">end</span></code></pre>
+
+<p>You can define multiple renderers of the same type, just alter the arguments.
+The <em>accept</em> argument is what defines the behaviour (it is stored as hash internally,
+that's why the latter takes precendence when <code>"Accept"</code> header is <code>"*/*"</code>):</p>
+
+<pre><code><span class="k">struct</span> <span class="t">TheView</span>
+  <span class="k">include</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">View</span>
+
+  template(<span class="s">&quot;./view.html.ecr&quot;</span>)
+  template(<span class="s">&quot;./view.rss.ecr&quot;</span>, content_type: <span class="s">&quot;text/rss&quot;</span>, accept: {<span class="s">&quot;text/rss&quot;</span>})
+<span class="k">end</span></code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>Defined in:</h2>
+  
+    
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/view.cr#L102" target="_blank">
+        onyx-http/view.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+
+
+
+
+  <h2>Instance Method Summary</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#render%28context%3AHTTP%3A%3AServer%3A%3AContext%29-instance-method" class="signature"><strong>#render</strong>(context : HTTP::Server::Context)</a>
+        
+      </li>
+    
+  </ul>
+
+
+
+  <h2>Macro Summary</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#json%28object%2Ccontent_type%3D%26quot%3Bapplication%2Fjson%26quot%3B%2Caccept%3D%7B%26quot%3Bapplication%2Fjson%26quot%3B%7D%29-macro" class="signature"><strong>json</strong>(object, content_type = <span class="s">&quot;application/json&quot;</span>, accept = {<span class="s">&quot;application/json&quot;</span>})</a>
+        
+          <div class="summary"><p>Add JSON rendering to this view.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#json%28content_type%3D%26quot%3Bapplication%2Fjson%26quot%3B%2Caccept%3D%7B%26quot%3Bapplication%2Fjson%26quot%3B%7D%2C%26block%29-macro" class="signature"><strong>json</strong>(content_type = <span class="s">&quot;application/json&quot;</span>, accept = {<span class="s">&quot;application/json&quot;</span>}, &block)</a>
+        
+          <div class="summary"><p>Add JSON rendering with builder to this view.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#json%28content_type%3D%26quot%3Bapplication%2Fjson%26quot%3B%2Caccept%3D%7B%26quot%3Bapplication%2Fjson%26quot%3B%7D%2C%2A%2Aobject%29-macro" class="signature"><strong>json</strong>(content_type = <span class="s">&quot;application/json&quot;</span>, accept = {<span class="s">&quot;application/json&quot;</span>}, **object)</a>
+        
+          <div class="summary"><p>Add JSON rendering to this view.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#template%28template%2Ccontent_type%3D%26quot%3Btext%2Fhtml%26quot%3B%2Caccept%3D%7B%26quot%3Btext%2Fhtml%26quot%3B%7D%29-macro" class="signature"><strong>template</strong>(template, content_type = <span class="s">&quot;text/html&quot;</span>, accept = {<span class="s">&quot;text/html&quot;</span>})</a>
+        
+          <div class="summary"><p>Add template rendering to this view.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#text%28value%2Ccontent_type%3D%26quot%3Btext%2Fplain%26quot%3B%2Caccept%3D%7B%26quot%3Btext%2Fplain%26quot%3B%7D%29-macro" class="signature"><strong>text</strong>(value, content_type = <span class="s">&quot;text/plain&quot;</span>, accept = {<span class="s">&quot;text/plain&quot;</span>})</a>
+        
+          <div class="summary"><p>Add plain text rendering to this view.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+<div class="methods-inherited">
+  
+</div>
+
+
+
+
+
+
+  <h2>Instance Method Detail</h2>
+  
+    <div class="entry-detail" id="render(context:HTTP::Server::Context)-instance-method">
+      <div class="signature">
+        abstract 
+        def <strong>render</strong>(context : HTTP::Server::Context)
+
+        <a class="method-permalink" href="#render%28context%3AHTTP%3A%3AServer%3A%3AContext%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/view.cr#L103" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+  <h2>Macro Detail</h2>
+  
+    <div class="entry-detail" id="json(object,content_type=&amp;quot;application/json&amp;quot;,accept={&amp;quot;application/json&amp;quot;})-macro">
+      <div class="signature">
+        
+        macro <strong>json</strong>(object, content_type = <span class="s">&quot;application/json&quot;</span>, accept = {<span class="s">&quot;application/json&quot;</span>})
+
+        <a class="method-permalink" href="#json%28object%2Ccontent_type%3D%26quot%3Bapplication%2Fjson%26quot%3B%2Caccept%3D%7B%26quot%3Bapplication%2Fjson%26quot%3B%7D%29-macro">#</a>
+      </div>
+      
+        <div class="doc"><p>Add JSON rendering to this view. It is expanded to this:</p>
+
+<pre><code><span class="k">def</span> <span class="m">render_to_json</span>(io : <span class="t">IO</span>)
+  ({{object}}).to_json(io)
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="m">to_json</span>(builder : <span class="t">JSON</span><span class="t">::</span><span class="t">Builder</span>)
+  ({{object}}).to_json(builder)
+<span class="k">end</span></code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/view.cr#L142" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="json(content_type=&amp;quot;application/json&amp;quot;,accept={&amp;quot;application/json&amp;quot;},&amp;block)-macro">
+      <div class="signature">
+        
+        macro <strong>json</strong>(content_type = <span class="s">&quot;application/json&quot;</span>, accept = {<span class="s">&quot;application/json&quot;</span>}, &block)
+
+        <a class="method-permalink" href="#json%28content_type%3D%26quot%3Bapplication%2Fjson%26quot%3B%2Caccept%3D%7B%26quot%3Bapplication%2Fjson%26quot%3B%7D%2C%26block%29-macro">#</a>
+      </div>
+      
+        <div class="doc"><p>Add JSON rendering with builder to this view.</p>
+
+<pre><code><span class="k">struct</span> <span class="t">TestView</span>
+  <span class="k">include</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">View</span>
+
+  <span class="k">def</span> <span class="m">initialize</span>(@foo : <span class="t">String</span>, @bar : <span class="t">Int32</span>? <span class="o">=</span> <span class="n">nil</span>)
+  <span class="k">end</span>
+
+  json <span class="k">do</span>
+    object <span class="k">do</span>
+      field <span class="s">&quot;foo&quot;</span>, @foo
+      field <span class="s">&quot;bar&quot;</span>, @bar
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/view.cr#L175" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="json(content_type=&amp;quot;application/json&amp;quot;,accept={&amp;quot;application/json&amp;quot;},**object)-macro">
+      <div class="signature">
+        
+        macro <strong>json</strong>(content_type = <span class="s">&quot;application/json&quot;</span>, accept = {<span class="s">&quot;application/json&quot;</span>}, **object)
+
+        <a class="method-permalink" href="#json%28content_type%3D%26quot%3Bapplication%2Fjson%26quot%3B%2Caccept%3D%7B%26quot%3Bapplication%2Fjson%26quot%3B%7D%2C%2A%2Aobject%29-macro">#</a>
+      </div>
+      
+        <div class="doc"><p>Add JSON rendering to this view. It is expanded like this:</p>
+
+<pre><code><span class="k">def</span> <span class="m">to_application_json</span>(io)
+  ({{object}}).to_json(io)
+<span class="k">end</span></code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/view.cr#L210" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="template(template,content_type=&amp;quot;text/html&amp;quot;,accept={&amp;quot;text/html&amp;quot;})-macro">
+      <div class="signature">
+        
+        macro <strong>template</strong>(template, content_type = <span class="s">&quot;text/html&quot;</span>, accept = {<span class="s">&quot;text/html&quot;</span>})
+
+        <a class="method-permalink" href="#template%28template%2Ccontent_type%3D%26quot%3Btext%2Fhtml%26quot%3B%2Caccept%3D%7B%26quot%3Btext%2Fhtml%26quot%3B%7D%29-macro">#</a>
+      </div>
+      
+        <div class="doc"><p>Add template rendering to this view. It is expanded like this:</p>
+
+<pre><code><span class="k">def</span> <span class="m">render_to_html</span>(io : <span class="t">IO</span>)
+  <span class="t">Kilt</span>.embed(<span class="s">&quot;</span><span class="i">#{</span>__DIR__<span class="i">}</span><span class="s">/</span><span class="i">#{</span>{{template<span class="i">}</span><span class="s">}}&quot;</span>, io)
+<span class="k">end</span></code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/view.cr#L125" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="text(value,content_type=&amp;quot;text/plain&amp;quot;,accept={&amp;quot;text/plain&amp;quot;})-macro">
+      <div class="signature">
+        
+        macro <strong>text</strong>(value, content_type = <span class="s">&quot;text/plain&quot;</span>, accept = {<span class="s">&quot;text/plain&quot;</span>})
+
+        <a class="method-permalink" href="#text%28value%2Ccontent_type%3D%26quot%3Btext%2Fplain%26quot%3B%2Caccept%3D%7B%26quot%3Btext%2Fplain%26quot%3B%7D%29-macro">#</a>
+      </div>
+      
+        <div class="doc"><p>Add plain text rendering to this view. It is expanded like this:</p>
+
+<pre><code><span class="k">def</span> <span class="m">render_to_plain</span>(io : <span class="t">IO</span>)
+  io <span class="o">&lt;&lt;</span> ({{value}})
+<span class="k">end</span></code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/view.cr#L112" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+</div>
+
+</body>
+</html>

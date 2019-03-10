@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.27.2">
+
+
+<link href="../../../css/style.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="../../../js/doc.js"></script>
+<script type="text/javascript">
+  CrystalDoc.base_path = "../../../";
+</script>
+
+  <meta id="repository-name" content="github.com/onyxframework/http">
+  <title>Onyx::HTTP::Middleware::Rescuer(T) - github.com/onyxframework/http</title>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="repository-links">
+      <a href="../../../index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Exception" data-name="exception">
+      <a href="../../../Exception.html">Exception</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/onyxframework/http/HTTP" data-name="http">
+      <a href="../../../HTTP.html">HTTP</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/HTTP/Request" data-name="http::request">
+      <a href="../../../HTTP/Request.html">Request</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/onyxframework/http/HTTP/Server" data-name="http::server">
+      <a href="../../../HTTP/Server.html">Server</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/HTTP/Server/Response" data-name="http::server::response">
+      <a href="../../../HTTP/Server/Response.html">Response</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent open current" data-id="github.com/onyxframework/http/Onyx" data-name="onyx">
+      <a href="../../../Onyx.html">Onyx</a>
+      
+        <ul>
+  
+  <li class="parent open current" data-id="github.com/onyxframework/http/Onyx/HTTP" data-name="onyx::http">
+      <a href="../../../Onyx/HTTP.html">HTTP</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Channel" data-name="onyx::http::channel">
+      <a href="../../../Onyx/HTTP/Channel.html">Channel</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Endpoint" data-name="onyx::http::endpoint">
+      <a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Error" data-name="onyx::http::error(code)">
+      <a href="../../../Onyx/HTTP/Error.html">Error</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware" data-name="onyx::http::middleware">
+      <a href="../../../Onyx/HTTP/Middleware.html">Middleware</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/CORS" data-name="onyx::http::middleware::cors">
+      <a href="../../../Onyx/HTTP/Middleware/CORS.html">CORS</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Logger" data-name="onyx::http::middleware::logger">
+      <a href="../../../Onyx/HTTP/Middleware/Logger.html">Logger</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Renderer" data-name="onyx::http::middleware::renderer">
+      <a href="../../../Onyx/HTTP/Middleware/Renderer.html">Renderer</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Renderer/ExceptionPage" data-name="onyx::http::middleware::renderer::exceptionpage">
+      <a href="../../../Onyx/HTTP/Middleware/Renderer/ExceptionPage.html">ExceptionPage</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/RequestID" data-name="onyx::http::middleware::requestid">
+      <a href="../../../Onyx/HTTP/Middleware/RequestID.html">RequestID</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Rescuer" data-name="onyx::http::middleware::rescuer(t)">
+      <a href="../../../Onyx/HTTP/Middleware/Rescuer.html">Rescuer</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Rescuer/Error" data-name="onyx::http::middleware::rescuer::error">
+      <a href="../../../Onyx/HTTP/Middleware/Rescuer/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Rescuer/Silent" data-name="onyx::http::middleware::rescuer::silent(t)">
+      <a href="../../../Onyx/HTTP/Middleware/Rescuer/Silent.html">Silent</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Rescuer/Standard" data-name="onyx::http::middleware::rescuer::standard(t)">
+      <a href="../../../Onyx/HTTP/Middleware/Rescuer/Standard.html">Standard</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/ResponseTime" data-name="onyx::http::middleware::responsetime">
+      <a href="../../../Onyx/HTTP/Middleware/ResponseTime.html">ResponseTime</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Router" data-name="onyx::http::middleware::router">
+      <a href="../../../Onyx/HTTP/Middleware/Router.html">Router</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Router/BadRequest" data-name="onyx::http::middleware::router::badrequest">
+      <a href="../../../Onyx/HTTP/Middleware/Router/BadRequest.html">BadRequest</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Router/DuplicateRouteError" data-name="onyx::http::middleware::router::duplicaterouteerror">
+      <a href="../../../Onyx/HTTP/Middleware/Router/DuplicateRouteError.html">DuplicateRouteError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Router/MethodNotAllowed" data-name="onyx::http::middleware::router::methodnotallowed">
+      <a href="../../../Onyx/HTTP/Middleware/Router/MethodNotAllowed.html">MethodNotAllowed</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Router/NotFound" data-name="onyx::http::middleware::router::notfound">
+      <a href="../../../Onyx/HTTP/Middleware/Router/NotFound.html">NotFound</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Middleware/Router/UpgradeRequired" data-name="onyx::http::middleware::router::upgraderequired">
+      <a href="../../../Onyx/HTTP/Middleware/Router/UpgradeRequired.html">UpgradeRequired</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/Server" data-name="onyx::http::server">
+      <a href="../../../Onyx/HTTP/Server.html">Server</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/onyxframework/http/Onyx/HTTP/View" data-name="onyx::http::view">
+      <a href="../../../Onyx/HTTP/View.html">View</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">module</span> Onyx::HTTP::Middleware::Rescuer(T)
+
+</h1>
+
+
+
+
+
+  <h2>Overview</h2>
+
+  <p>Rescues <code>T</code>. Firstly calls <code><a href="../../../Onyx/HTTP/Middleware/Rescuer.html#handle%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method">#handle</a></code> to handle the error (e.g. log it).
+Calls <code><a href="../../../Onyx/HTTP/Middleware/Rescuer.html#before_next_handler%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method">#before_next_handler</a></code> and then the <code><a href="../../../Onyx/HTTP/Middleware/Rescuer.html#next_handler%3A%3A%3AHTTP%3A%3AHandler-instance-method">#next_handler</a></code>.</p>
+
+<p>See <code><a href="../../../Onyx/HTTP/Middleware/Rescuer/Standard.html">Rescuer::Standard</a></code> and <code><a href="../../../Onyx/HTTP/Middleware/Rescuer/Silent.html">Rescuer::Silent</a></code>.</p>
+
+
+
+
+
+  <h2>Included Modules</h2>
+  <ul class="other-types-list">
+  
+    <li class="other-type">HTTP::Handler</li>
+  
+  </ul>
+
+
+
+
+
+
+
+  <h2>Direct including types</h2>
+  <ul class="other-types-list">
+  
+    <li class="other-type"><a href="../../../Onyx/HTTP/Middleware/Rescuer/Silent.html">Onyx::HTTP::Middleware::Rescuer::Silent(T)</a></li>
+  
+    <li class="other-type"><a href="../../../Onyx/HTTP/Middleware/Rescuer/Standard.html">Onyx::HTTP::Middleware::Rescuer::Standard(T)</a></li>
+  
+  </ul>
+
+
+
+
+  <h2>Defined in:</h2>
+  
+    
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/middleware/rescuer.cr#L8" target="_blank">
+        onyx-http/middleware/rescuer.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/middleware/rescuer/silent.cr#L5" target="_blank">
+        onyx-http/middleware/rescuer/silent.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/middleware/rescuer/error.cr#L3" target="_blank">
+        onyx-http/middleware/rescuer/error.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/middleware/rescuer/standard.cr#L8" target="_blank">
+        onyx-http/middleware/rescuer/standard.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+  <h2>Constructors</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new%28next_handler%3A%3A%3AHTTP%3A%3AHandler%29-class-method" class="signature"><strong>.new</strong>(next_handler : ::HTTP::Handler)</a>
+        
+          <div class="summary"><p>Initialize with a <em>next_handler</em> to call when a error is rescued.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+  <h2>Instance Method Summary</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#before_next_handler%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method" class="signature"><strong>#before_next_handler</strong>(context : HTTP::Server::Context, error : T)</a>
+        
+          <div class="summary"><p>Called just before the <code><a href="../../../Onyx/HTTP/Middleware/Rescuer.html#next_handler%3A%3A%3AHTTP%3A%3AHandler-instance-method">#next_handler</a></code> is called.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#handle%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method" class="signature"><strong>#handle</strong>(context : HTTP::Server::Context, error : T)</a>
+        
+          <div class="summary"><p>Process the error before further handling.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#next_handler%3A%3A%3AHTTP%3A%3AHandler-instance-method" class="signature"><strong>#next_handler</strong> : ::HTTP::Handler</a>
+        
+          <div class="summary"><p>A handler to call when a error is rescued.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#next_handler%3D%28next_handler%3A%3A%3AHTTP%3A%3AHandler%29-instance-method" class="signature"><strong>#next_handler=</strong>(next_handler : ::HTTP::Handler)</a>
+        
+          <div class="summary"><p>A handler to call when a error is rescued.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+  <h2>Constructor Detail</h2>
+  
+    <div class="entry-detail" id="new(next_handler:::HTTP::Handler)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(next_handler : ::HTTP::Handler)
+
+        <a class="method-permalink" href="#new%28next_handler%3A%3A%3AHTTP%3A%3AHandler%29-class-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Initialize with a <em>next_handler</em> to call when a error is rescued.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/middleware/rescuer.cr#L15" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+
+  <h2>Instance Method Detail</h2>
+  
+    <div class="entry-detail" id="before_next_handler(context:HTTP::Server::Context,error:T)-instance-method">
+      <div class="signature">
+        
+        def <strong>before_next_handler</strong>(context : HTTP::Server::Context, error : T)
+
+        <a class="method-permalink" href="#before_next_handler%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Called just before the <code><a href="../../../Onyx/HTTP/Middleware/Rescuer.html#next_handler%3A%3A%3AHTTP%3A%3AHandler-instance-method">#next_handler</a></code> is called.
+It does <code>context.response.error = error</code> by default.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/middleware/rescuer.cr#L32" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="handle(context:HTTP::Server::Context,error:T)-instance-method">
+      <div class="signature">
+        abstract 
+        def <strong>handle</strong>(context : HTTP::Server::Context, error : T)
+
+        <a class="method-permalink" href="#handle%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Process the error before further handling. A good example is logging it.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/middleware/rescuer.cr#L28" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="next_handler:::HTTP::Handler-instance-method">
+      <div class="signature">
+        
+        def <strong>next_handler</strong> : ::HTTP::Handler
+
+        <a class="method-permalink" href="#next_handler%3A%3A%3AHTTP%3A%3AHandler-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>A handler to call when a error is rescued.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/middleware/rescuer.cr#L14" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="next_handler=(next_handler:::HTTP::Handler)-instance-method">
+      <div class="signature">
+        
+        def <strong>next_handler=</strong>(next_handler : ::HTTP::Handler)
+
+        <a class="method-permalink" href="#next_handler%3D%28next_handler%3A%3A%3AHTTP%3A%3AHandler%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>A handler to call when a error is rescued.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/11c8b556edda787be848a23d4c9b15b89f29b831/src/onyx-http/middleware/rescuer.cr#L18" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>
