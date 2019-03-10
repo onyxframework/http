@@ -98,7 +98,9 @@ end
 Onyx.ws "/", Echo
 ```
 
-To get started with Onyx::HTTP, please visit [docs.onyxframework.org/http](https://docs.onyxframework.org/http) 📚
+## Documentation 📚
+
+The documentation is available online at [docs.onyxframework.org/http](https://docs.onyxframework.org/http).
 
 ## Community 🍪
 
