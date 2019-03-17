@@ -12,6 +12,15 @@ class Spec::View
     json foo: @foo, bar: @bar
 
     text "foo: #{@foo}, bar: #{@bar}"
+
+    xml do
+      element("foo") do
+        attribute("foo", @foo)
+        attribute("bar", @bar)
+      end
+    end
+
+    # Will be the default one
     text "bar: #{@bar}, foo: #{@foo}", content_type: "text/alternative", accept: {"text/alternative"}
   end
 
@@ -71,6 +80,14 @@ describe Onyx::HTTP::View do
       io = IO::Memory.new
       view.render_to_text_html(io)
       io.to_s.should eq "<p>foo = baz, bar = 42</p>\n"
+    end
+  end
+
+  describe "#render_to_application_xml" do
+    it do
+      io = IO::Memory.new
+      view.render_to_application_xml(io)
+      io.to_s.should eq %Q[<?xml version="1.0"?>\n<foo foo="baz" bar="42"/>\n]
     end
   end
 

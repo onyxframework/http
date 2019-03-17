@@ -1,5 +1,6 @@
 require "kilt"
 require "json"
+require "xml"
 
 # A reusable HTTP view.
 #
@@ -47,6 +48,7 @@ require "json"
 #
 # * `.text` to render the view as a text with `text/plain` content type by default
 # * `.json` to render the view as a JSON with `application/json` content type by default
+# * `.xml` to render the view as XML with `application/xml` content type by default
 # * `.template` to render the view as a generic template (powered by [Kilt](https://github.com/jeromegn/kilt))
 # with `text/html` content type by default
 #
@@ -209,6 +211,49 @@ module Onyx::HTTP::View
   # ```
   macro json(content_type = "application/json", accept = {"application/json"}, **object)
     json({{object}})
+  end
+
+  # Add XML rendering with builder to this view.
+  # See [XML::Builder](https://crystal-lang.org/api/latest/XML/Builder.html) for methods.
+  #
+  # ```
+  # struct TestView
+  #   include Onyx::HTTP::View
+  #
+  #   def initialize(@foo : String, @bar : Int32? = nil)
+  #   end
+  #
+  #   xml do
+  #     element("foo", @foo) do
+  #       attribute("bar", @bar)
+  #     end
+  #   end
+  # end
+  # ```
+  macro xml(content_type = "application/xml", accept = {"application/xml"}, &block)
+    def build_xml(builder, &block)
+      with builder yield
+    end
+
+    def to_xml(io : IO)
+      builder = XML::Builder.new(io)
+
+      builder.document do
+        build_xml(builder) do
+          {{yield.id}}
+        end
+      end
+    end
+
+    def to_xml(builder : XML::Builder)
+      build_xml(builder) do
+        {{yield.id}}
+      end
+    end
+
+    define_type_renderer(render_to_{{content_type.split("/").join("_").id}}, {{content_type}}, {{accept}}) do
+      to_xml(io)
+    end
   end
 
   private macro define_proc_based_render
