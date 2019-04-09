@@ -39,7 +39,7 @@ module Onyx::HTTP::Middleware
     private alias Node = ContextProc | ::HTTP::WebSocketHandler
 
     # :nodoc:
-    HTTP_METHODS = %w(get post put patch delete options)
+    HTTP_METHODS = %w(get head post put patch delete options)
     @tree = Radix::Tree(Node).new
     @hash = {} of String => Node
 
