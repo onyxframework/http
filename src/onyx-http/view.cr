@@ -112,7 +112,7 @@ module Onyx::HTTP::View
   # end
   # ```
   macro text(value, content_type = "text/plain", accept = {"text/plain"})
-    define_type_renderer(render_to_{{content_type.split("/").join("_").id}}, {{content_type}}, {{accept}}) do
+    define_type_renderer(render_to_{{content_type.split("/").map { |s| s.underscore.gsub(/-/, "_") }.join("_").id}}, {{content_type}}, {{accept}}) do
       io << ({{value}})
     end
   end
@@ -125,7 +125,7 @@ module Onyx::HTTP::View
   # end
   # ```
   macro template(template, content_type = "text/html", accept = {"text/html"})
-    define_type_renderer(render_to_{{content_type.split("/").join("_").id}}, {{content_type}}, {{accept}}) do
+    define_type_renderer(render_to_{{content_type.split("/").map { |s| s.underscore.gsub(/-/, "_") }.join("_").id}}, {{content_type}}, {{accept}}) do
       Kilt.embed("#{__DIR__}/#{{{template}}}", io)
     end
   end
@@ -141,7 +141,7 @@ module Onyx::HTTP::View
   #   ({{object}}).to_json(builder)
   # end
   # ```
-  macro json(object, content_type = "application/json", accept = {"application/json"})
+  macro json(object, content_type = "application/json", accept = {"application/json"}, &block)
     {% unless @type.methods.find { |m| m.name.stringify == "to_json" } %}
       def to_json(io : IO)
         ({{object}}).to_json(io)
@@ -152,8 +152,14 @@ module Onyx::HTTP::View
       end
     {% end %}
 
-    define_type_renderer(render_to_{{content_type.split("/").join("_").id}}, {{content_type}}, {{accept}}) do
-      ({{object}}).to_json(io)
+    define_type_renderer(render_to_{{content_type.split("/").map { |s| s.underscore.gsub(/-/, "_") }.join("_").id}}, {{content_type}}, {{accept}}) do
+      {% if block %}
+        {{object}} do |{{block.args.join(",").id}}|
+          {{block.body}}
+        end.to_json(io)
+      {% else %}
+        ({{object}}).to_json(io)
+      {% end %}
     end
   end
 
@@ -197,7 +203,7 @@ module Onyx::HTTP::View
       end
     {% end %}
 
-    define_type_renderer(render_to_{{content_type.split("/").join("_").id}}, {{content_type}}, {{accept}}) do
+    define_type_renderer(render_to_{{content_type.split("/").map { |s| s.underscore.gsub(/-/, "_") }.join("_").id}}, {{content_type}}, {{accept}}) do
       to_json(io)
     end
   end
@@ -251,7 +257,7 @@ module Onyx::HTTP::View
       end
     end
 
-    define_type_renderer(render_to_{{content_type.split("/").join("_").id}}, {{content_type}}, {{accept}}) do
+    define_type_renderer(render_to_{{content_type.split("/").map { |s| s.underscore.gsub(/-/, "_") }.join("_").id}}, {{content_type}}, {{accept}}) do
       to_xml(io)
     end
   end

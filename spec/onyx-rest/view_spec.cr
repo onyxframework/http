@@ -11,6 +11,15 @@ class Spec::View
 
     json foo: @foo, bar: @bar
 
+    json content_type: "application/json-a" do
+      builder do
+        field "foo", @foo
+        field "bar", @bar
+      end
+    end
+
+    json @foo.chars.map { |c| c.upcase.to_s }, content_type: "application/json-b"
+
     text "foo: #{@foo}, bar: #{@bar}"
 
     xml do
@@ -56,6 +65,22 @@ describe Onyx::HTTP::View do
       io = IO::Memory.new
       view.render_to_application_json(io)
       io.to_s.should eq %Q[{"foo":"baz","bar":42}]
+    end
+  end
+
+  describe "#render_to_application_json_a" do
+    it do
+      io = IO::Memory.new
+      view.render_to_application_json_a(io)
+      io.to_s.should eq %Q[{"foo":"baz","bar":42}]
+    end
+  end
+
+  describe "#render_to_application_json_b" do
+    it do
+      io = IO::Memory.new
+      view.render_to_application_json_b(io)
+      io.to_s.should eq %Q{["B","A","Z"]}
     end
   end
 
