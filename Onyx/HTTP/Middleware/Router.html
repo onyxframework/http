@@ -289,35 +289,35 @@ server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</s
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router/bad_request.cr#L2" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router/bad_request.cr#L2" target="_blank">
         onyx-http/middleware/router/bad_request.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router/method_not_allowed.cr#L2" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router/method_not_allowed.cr#L2" target="_blank">
         onyx-http/middleware/router/method_not_allowed.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router/not_found.cr#L2" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router/not_found.cr#L2" target="_blank">
         onyx-http/middleware/router/not_found.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router/upgrade_required.cr#L2" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router/upgrade_required.cr#L2" target="_blank">
         onyx-http/middleware/router/upgrade_required.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router.cr#L35" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router.cr#L35" target="_blank">
         onyx-http/middleware/router.cr
       </a>
     
@@ -386,6 +386,20 @@ server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</s
         <a href="#get%28path%2Cendpoint%3AHTTP%3A%3AEndpoint.class%29-instance-method" class="signature"><strong>#get</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> with <code>GET</code> calling <em>endpoint</em>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#head%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method" class="signature"><strong>#head</strong>(path, &proc : HTTP::Server::Context -> View | UNDERSCORE)</a>
+        
+          <div class="summary"><p>Draw a route for <em>path</em> with <code>HEAD</code> method.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#head%28path%2Cendpoint%3AHTTP%3A%3AEndpoint.class%29-instance-method" class="signature"><strong>#head</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)</a>
+        
+          <div class="summary"><p>Draw a route for <em>path</em> with <code>HEAD</code> calling <em>endpoint</em>.</p></div>
         
       </li>
     
@@ -536,7 +550,7 @@ router <span class="o">=</span> <span class="t">Router</span>.<span class="k">ne
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router.cr#L56" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router.cr#L56" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -562,7 +576,7 @@ raising <code>RouteNotFound</code> otherwise. Calls the next handler if it's pre
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router.cr#L64" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router.cr#L64" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -587,7 +601,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -611,7 +625,7 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -634,7 +648,7 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router.cr#L118" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router.cr#L118" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -659,7 +673,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -683,7 +697,56 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="head(path,&amp;proc:HTTP::Server::Context-&gt;View|UNDERSCORE)-instance-method">
+      <div class="signature">
+        
+        def <strong>head</strong>(path, &proc : HTTP::Server::Context -> <a href="../../../Onyx/HTTP/View.html">View</a> | UNDERSCORE)
+
+        <a class="method-permalink" href="#head%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Draw a route for <em>path</em> with <code>HEAD</code> method. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance
+is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Response</a>#view</code> is set to this view.</p>
+
+<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
+  head <span class="s">&quot;/bar&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
+    env.response <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello from HEAD /bar!&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="head(path,endpoint:HTTP::Endpoint.class)-instance-method">
+      <div class="signature">
+        
+        def <strong>head</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)
+
+        <a class="method-permalink" href="#head%28path%2Cendpoint%3AHTTP%3A%3AEndpoint.class%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Draw a route for <em>path</em> with <code>HEAD</code> calling <em>endpoint</em>.
+See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance is returned, then the
+<code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Response</a>#view</code> is set  to this view.</p>
+
+<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
+  head <span class="s">&quot;/bar&quot;</span>, <span class="t">MyEndpoint</span>
+<span class="k">end</span></code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -708,7 +771,7 @@ then the <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Resp
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router.cr#L132" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router.cr#L132" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -732,7 +795,7 @@ to this view.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router.cr#L153" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router.cr#L153" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -756,7 +819,7 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -781,7 +844,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -806,7 +869,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -830,7 +893,7 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -855,7 +918,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -879,7 +942,7 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -903,7 +966,7 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -928,7 +991,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -954,7 +1017,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router.cr#L199" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router.cr#L199" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -977,7 +1040,7 @@ A request is currently determined as websocket by <code>"Upgrade": "Websocket"</
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/a68a13431f6dba92fd821d08483333da523da8cc/src/onyx-http/middleware/router.cr#L211" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/12e4d64185c0574d8362f277c6c707bda2bd329e/src/onyx-http/middleware/router.cr#L211" target="_blank">View source</a>]
         
       </div>
     </div>
