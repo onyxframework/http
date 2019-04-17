@@ -39,7 +39,9 @@ const triggerBuild = (username, repo, branch) => {
         message: `onyx-http@${gitCommitHash.substring(0, 7)} ${gitCommitSubject}`,
         branch: branch,
         config: {
-          env: `ONYX_HTTP_COMMIT=${gitCommitHash}`
+          env: {
+            global: `ONYX_HTTP_COMMIT=${gitCommitHash}`
+          }
         }
       },
     }),
