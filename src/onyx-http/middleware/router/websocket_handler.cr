@@ -1,5 +1,8 @@
 module Onyx::HTTP::Middleware
   class Router
+    # :nodoc:
+    #
+    # This class should not be used explicitly, see `Router#ws` instead.
     class WebSocketHandler
       include ::HTTP::Handler
 
