@@ -67,6 +67,9 @@ module Onyx::HTTP::Middleware
 
       begin
         call_next(context)
+      rescue ex
+        context.response.status_code = 500
+        raise ex
       ensure
         if context.response.upgraded?
           status_code = context.response.websocket_status_code ||
