@@ -36,7 +36,7 @@ module Onyx::HTTP::Middleware
     include ::HTTP::Handler
 
     private alias ContextProc = Proc(::HTTP::Server::Context, Nil)
-    private alias Node = ContextProc | ::HTTP::WebSocketHandler
+    private alias Node = ContextProc | WebSocketHandler
 
     # :nodoc:
     HTTP_METHODS = %w(get head post put patch delete options)
@@ -185,7 +185,7 @@ module Onyx::HTTP::Middleware
       end
     {% end %}
 
-    # Draw a WebSocket route for *path*.
+    # Draw a `"ws://"` route for *path*.
     #
     # A request is currently determined as websocket by `"Upgrade": "Websocket"` header.
     #
@@ -197,7 +197,7 @@ module Onyx::HTTP::Middleware
     # end
     # ```
     def ws(path, &proc : ::HTTP::WebSocket, ::HTTP::Server::Context ->)
-      add("/ws" + path, ::HTTP::WebSocketHandler.new(&proc))
+      add("/ws" + path, WebSocketHandler.new(&proc))
     end
 
     # Draw a `"ws://"` route for *path* binding *channel*. See `Channel`.
@@ -208,9 +208,26 @@ module Onyx::HTTP::Middleware
     #   ws "/foo", MyChannel
     # end
     # ```
-    def ws(path, channel : Onyx::HTTP::Channel.class)
+    def ws(path, channel : T.class) : Nil forall T
+      {%
+        a = 42 # Crystal formatter bug
+
+        unless T < Onyx::HTTP::Channel
+          raise <<-TEXT
+          \e[41m Onyx::HTTP compilation error \e[0m — \e[33m\e[1mMiddleware::Router#ws\e[0m must be called with class including \e[32m\e[1mChannel\e[0m, given \e[31m\e[1m#{T}\e[0m
+          TEXT
+        end
+      %}
+
+      ch = uninitialized T
+
+      ws_handler = WebSocketHandler.new do |socket, context|
+        ch.bind(socket)
+      end
+
       add("/ws" + path, ContextProc.new do |context|
-        channel.call(context)
+        ch = channel.new(context)
+        ws_handler.call(context)
       end)
     end
 

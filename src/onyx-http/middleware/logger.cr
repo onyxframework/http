@@ -68,9 +68,17 @@ module Onyx::HTTP::Middleware
       begin
         call_next(context)
       ensure
-        color = color(context.response.status_code)
+        if context.response.upgraded?
+          status_code = context.response.websocket_status_code ||
+                        context.response.status_code
+        else
+          status_code = context.response.status_code
+        end
+
+        color = color(status_code)
+
         method = (websocket ? "WS" : context.request.method).rjust(7).colorize(color).mode(:bold)
-        status_code = context.response.status_code.colorize(color).mode(:bold)
+        status_code = status_code.colorize(color).mode(:bold)
 
         resource = context.request.path
 

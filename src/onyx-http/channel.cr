@@ -84,20 +84,22 @@ require "./endpoint"
 module Onyx::HTTP::Channel
   include Endpoint
 
-  # By default calls `#upgrade`, which upgrades the request to
-  # a websocket and then calls `#bind`.
-  def call
-    upgrade do |socket|
-      bind(socket)
-    end
+  # TODO: Refactor this mess.
+  protected def call
+    {% raise "An Onyx::HTTP::Channel must be `#call`'ed with WebSocket argument" %}
+  end
+
+  # Call `#bind`.
+  def call(socket)
+    bind(socket)
   end
 
   macro included
     include Onyx::HTTP::Endpoint
 
-    def self.call(context)
+    def self.call(socket, context)
       instance = new(context)
-      instance.with_callbacks { instance.call }
+      instance.with_callbacks { instance.call(socket) }
     end
   end
 
@@ -134,88 +136,26 @@ module Onyx::HTTP::Channel
   protected def bind(socket)
     @socket = socket
 
-    wrap { on_open }
+    on_open
 
     socket.on_message do |message|
-      wrap { on_message(message) }
+      on_message(message)
     end
 
     socket.on_binary do |binary|
-      wrap { on_binary(binary) }
+      on_binary(binary)
     end
 
     socket.on_ping do
-      wrap { on_ping }
+      on_ping
     end
 
     socket.on_pong do
-      wrap { on_pong }
+      on_pong
     end
 
     socket.on_close do
-      context.response.status_code = 1000 if context.response.status_code == 101
       on_close
     end
-  end
-
-  protected def wrap(&block)
-    begin
-      yield
-    rescue error : Exception
-      if error.is_a?(HTTP::Error)
-        context.response.status_code = error.code
-        code = error.code.to_i16
-        message = error.status_message
-      else
-        context.response.status_code = 1011
-        code = 1011_i16
-        message = "Exception"
-      end
-
-      raw = uninitialized UInt8[2]
-      IO::ByteFormat::BigEndian.encode(code, raw.to_slice)
-      socket.close(String.new(raw.to_slice) + message)
-
-      raise error unless error.is_a?(HTTP::Error)
-    end
-  end
-
-  protected def upgrade(&proc : ::HTTP::WebSocket ->)
-    if websocket_upgrade_request?(context.request)
-      response = context.response
-
-      version = context.request.headers["Sec-WebSocket-Version"]?
-      unless version == ::HTTP::WebSocket::Protocol::VERSION
-        response.headers["Sec-WebSocket-Version"] = ::HTTP::WebSocket::Protocol::VERSION
-        raise Middleware::Router::UpgradeRequired.new
-      end
-
-      key = context.request.headers["Sec-WebSocket-Key"]?
-      raise Middleware::Router::BadRequest.new("Sec-WebSocket-Key header is missing") unless key
-
-      accept_code = ::HTTP::WebSocket::Protocol.key_challenge(key)
-
-      response.status_code = 101
-      response.headers["Upgrade"] = "websocket"
-      response.headers["Connection"] = "Upgrade"
-      response.headers["Sec-WebSocket-Accept"] = accept_code
-
-      response.upgrade do |io|
-        socket = ::HTTP::WebSocket.new(io)
-        proc.call(socket)
-        socket.run
-      ensure
-        io.close
-      end
-    else
-      raise Middleware::Router::UpgradeRequired.new
-    end
-  end
-
-  protected def websocket_upgrade_request?(request)
-    return false unless upgrade = request.headers["Upgrade"]?
-    return false unless upgrade.compare("websocket", case_insensitive: true) == 0
-
-    request.headers.includes_word?("Connection", "Upgrade")
   end
 end
