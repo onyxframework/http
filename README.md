@@ -63,7 +63,7 @@ struct GetUser
   end
 
   def call
-    user = Onyx.query(User.where(id: params.path.id)).first? # This code is part of onyx/sql
+    user = Onyx::SQL.query(User.where(id: params.path.id)).first? # This code is part of onyx/sql
     raise UserNotFound.new unless user
 
     return UserView.new(user)
