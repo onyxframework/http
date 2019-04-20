@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.27.2">
+<meta name="generator" content="Crystal Docs 0.28.0">
 
 
 <link href="../../css/style.css" rel="stylesheet" type="text/css">
@@ -260,22 +260,29 @@
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/ext/http/server/response.cr#L4" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/ext/http/server/response.cr#L4" target="_blank">
         onyx-http/ext/http/server/response.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/ext/http/server/response/error.cr#L3" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/ext/http/server/response/error.cr#L3" target="_blank">
         onyx-http/ext/http/server/response/error.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/ext/http/server/response/view.cr#L4" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/ext/http/server/response/view.cr#L4" target="_blank">
         onyx-http/ext/http/server/response/view.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/ext/http/server/response/websocket_status_code.cr#L3" target="_blank">
+        onyx-http/ext/http/server/response/websocket_status_code.cr
       </a>
     
     <br/>
@@ -317,6 +324,20 @@
         <a href="#view%3D%28view%3AOnyx%3A%3AHTTP%3A%3AView%3F%29-instance-method" class="signature"><strong>#view=</strong>(view : Onyx::HTTP::View?)</a>
         
           <div class="summary"><p>A view to render.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#websocket_status_code%3AInt32%3F-instance-method" class="signature"><strong>#websocket_status_code</strong> : Int32?</a>
+        
+          <div class="summary"><p>Status code for websocket connection.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#websocket_status_code%3D%28websocket_status_code%3AInt32%3F%29-instance-method" class="signature"><strong>#websocket_status_code=</strong>(websocket_status_code : Int32?)</a>
+        
+          <div class="summary"><p>Status code for websocket connection.</p></div>
         
       </li>
     
@@ -380,7 +401,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/ext/http/server/response/error.cr#L7" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/ext/http/server/response/error.cr#L7" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -398,7 +419,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/ext/http/server/response/error.cr#L11" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/ext/http/server/response/error.cr#L11" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -416,7 +437,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/ext/http/server/response/view.cr#L8" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/ext/http/server/response/view.cr#L8" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -434,7 +455,43 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/ext/http/server/response/view.cr#L12" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/ext/http/server/response/view.cr#L12" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="websocket_status_code:Int32?-instance-method">
+      <div class="signature">
+        
+        def <strong>websocket_status_code</strong> : Int32?
+
+        <a class="method-permalink" href="#websocket_status_code%3AInt32%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Status code for websocket connection.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/ext/http/server/response/websocket_status_code.cr#L7" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="websocket_status_code=(websocket_status_code:Int32?)-instance-method">
+      <div class="signature">
+        
+        def <strong>websocket_status_code=</strong>(websocket_status_code : Int32?)
+
+        <a class="method-permalink" href="#websocket_status_code%3D%28websocket_status_code%3AInt32%3F%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Status code for websocket connection.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/ext/http/server/response/websocket_status_code.cr#L11" target="_blank">View source</a>]
         
       </div>
     </div>

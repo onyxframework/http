@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.27.2">
+<meta name="generator" content="Crystal Docs 0.28.0">
 
 
 <link href="../../../css/style.css" rel="stylesheet" type="text/css">
@@ -250,15 +250,20 @@ if it's present.</p>
 <code><a href="../../../Onyx/HTTP/Middleware/Router/MethodNotAllowed.html">Router::MethodNotAllowed</a></code> if the request method is not allowed or
 <code><a href="../../../Onyx/HTTP/Middleware/Router/UpgradeRequired.html">Router::UpgradeRequired</a></code> if the endpoint requires websocket protocol.</p>
 
-<pre><code>router <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">Middleware</span><span class="t">::</span><span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
-  get <span class="s">&quot;/&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
+<pre><code>router <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">Middleware</span><span class="t">::</span><span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>r<span class="o">|</span>
+  r.get <span class="s">&quot;/&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
     env.response <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello world!&quot;</span>
   <span class="k">end</span>
 
-  ws <span class="s">&quot;/&quot;</span> <span class="k">do</span> <span class="o">|</span>socket, env<span class="o">|</span>
+  r.ws <span class="s">&quot;/&quot;</span> <span class="k">do</span> <span class="o">|</span>socket, env<span class="o">|</span>
     socket.on_message <span class="k">do</span> <span class="o">|</span>message<span class="o">|</span>
       <span class="c"># ...</span>
     <span class="k">end</span>
+  <span class="k">end</span>
+
+  r.on <span class="s">&quot;/users&quot;</span> <span class="k">do</span>
+    r.post <span class="s">&quot;/&quot;</span>, <span class="t">Endpoint</span><span class="t">::</span><span class="t">User</span><span class="t">::</span><span class="t">Create</span>
+    r.get <span class="s">&quot;/:id&quot;</span>, <span class="t">Endpoint</span><span class="t">::</span><span class="t">User</span><span class="t">::</span><span class="t">Get</span>
   <span class="k">end</span>
 <span class="k">end</span>
 
@@ -289,35 +294,42 @@ server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</s
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router/bad_request.cr#L2" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router/bad_request.cr#L2" target="_blank">
         onyx-http/middleware/router/bad_request.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router/method_not_allowed.cr#L2" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router/method_not_allowed.cr#L2" target="_blank">
         onyx-http/middleware/router/method_not_allowed.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router/not_found.cr#L2" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router/not_found.cr#L2" target="_blank">
         onyx-http/middleware/router/not_found.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router/upgrade_required.cr#L2" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router/upgrade_required.cr#L2" target="_blank">
         onyx-http/middleware/router/upgrade_required.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router.cr#L35" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router/websocket_handler.cr#L2" target="_blank">
+        onyx-http/middleware/router/websocket_handler.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router.cr#L40" target="_blank">
         onyx-http/middleware/router.cr
       </a>
     
@@ -355,13 +367,6 @@ server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</s
       </li>
     
       <li class="entry-summary">
-        <a href="#delete%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method" class="signature"><strong>#delete</strong>(path, &proc : HTTP::Server::Context -> View | UNDERSCORE)</a>
-        
-          <div class="summary"><p>Draw a route for <em>path</em> with <code>DELETE</code> method.</p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
         <a href="#delete%28path%2Cendpoint%3AHTTP%3A%3AEndpoint.class%29-instance-method" class="signature"><strong>#delete</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> with <code>DELETE</code> calling <em>endpoint</em>.</p></div>
@@ -369,9 +374,9 @@ server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</s
       </li>
     
       <li class="entry-summary">
-        <a href="#draw%28%26block%29-instance-method" class="signature"><strong>#draw</strong>(&block)</a>
+        <a href="#delete%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method" class="signature"><strong>#delete</strong>(path, &proc : HTTP::Server::Context -> View | UNDERSCORE)</a>
         
-          <div class="summary"><p>Yield <code>with</code> self.</p></div>
+          <div class="summary"><p>Draw a route for <em>path</em> with <code>DELETE</code> method.</p></div>
         
       </li>
     
@@ -404,9 +409,21 @@ server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</s
       </li>
     
       <li class="entry-summary">
+        <a href="#namespace%3AArray%28String%29-instance-method" class="signature"><strong>#namespace</strong> : Array(String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#on%28path%2Cmethods%3AArray%28String%29%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method" class="signature"><strong>#on</strong>(path, methods : Array(String), &proc : HTTP::Server::Context -> View | UNDERSCORE)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> and <em>methods</em>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#on%28namespace%3AString%3F%3Dnil%2C%26block%3Aself-%3E%29-instance-method" class="signature"><strong>#on</strong>(namespace : String? = <span class="n">nil</span>, &block : <span class="k">self</span> -> )</a>
+        
+          <div class="summary"><p>Yield <code>self</code> with a <em>namespace</em>.</p></div>
         
       </li>
     
@@ -446,16 +463,16 @@ server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</s
       </li>
     
       <li class="entry-summary">
-        <a href="#post%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method" class="signature"><strong>#post</strong>(path, &proc : HTTP::Server::Context -> View | UNDERSCORE)</a>
+        <a href="#post%28path%2Cendpoint%3AHTTP%3A%3AEndpoint.class%29-instance-method" class="signature"><strong>#post</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)</a>
         
-          <div class="summary"><p>Draw a route for <em>path</em> with <code>POST</code> method.</p></div>
+          <div class="summary"><p>Draw a route for <em>path</em> with <code>POST</code> calling <em>endpoint</em>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#post%28path%2Cendpoint%3AHTTP%3A%3AEndpoint.class%29-instance-method" class="signature"><strong>#post</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)</a>
+        <a href="#post%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method" class="signature"><strong>#post</strong>(path, &proc : HTTP::Server::Context -> View | UNDERSCORE)</a>
         
-          <div class="summary"><p>Draw a route for <em>path</em> with <code>POST</code> calling <em>endpoint</em>.</p></div>
+          <div class="summary"><p>Draw a route for <em>path</em> with <code>POST</code> method.</p></div>
         
       </li>
     
@@ -476,12 +493,12 @@ server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</s
       <li class="entry-summary">
         <a href="#ws%28path%2C%26proc%3A%3A%3AHTTP%3A%3AWebSocket%2CHTTP%3A%3AServer%3A%3AContext-%3E%29-instance-method" class="signature"><strong>#ws</strong>(path, &proc : ::HTTP::WebSocket, HTTP::Server::Context -> )</a>
         
-          <div class="summary"><p>Draw a WebSocket route for <em>path</em>.</p></div>
+          <div class="summary"><p>Draw a <code>"ws://"</code> route for <em>path</em>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#ws%28path%2Cchannel%3AOnyx%3A%3AHTTP%3A%3AChannel.class%29-instance-method" class="signature"><strong>#ws</strong>(path, channel : <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">Channel</span>.<span class="k">class</span>)</a>
+        <a href="#ws%28path%2Cchannel%3AT.class%29%3ANilforallT-instance-method" class="signature"><strong>#ws</strong>(path, channel : <span class="t">T</span>.<span class="k">class</span>) : Nil forall T</a>
         
           <div class="summary"><p>Draw a <code>"ws://"</code> route for <em>path</em> binding <em>channel</em>.</p></div>
         
@@ -541,8 +558,8 @@ server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</s
         <div class="doc"><p>Initialize a new router and yield it. You should then define routes in the <em>&block</em>.</p>
 
 <pre><code><span class="c"># The simplest router</span>
-router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
-  get <span class="s">&quot;/&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
+router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>r<span class="o">|</span>
+  r.get <span class="s">&quot;/&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
     env.response <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello world!&quot;</span>
   <span class="k">end</span>
 <span class="k">end</span></code></pre></div>
@@ -550,7 +567,7 @@ router <span class="o">=</span> <span class="t">Router</span>.<span class="k">ne
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router.cr#L56" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router.cr#L63" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -576,32 +593,7 @@ raising <code>RouteNotFound</code> otherwise. Calls the next handler if it's pre
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router.cr#L64" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="delete(path,&amp;proc:HTTP::Server::Context-&gt;View|UNDERSCORE)-instance-method">
-      <div class="signature">
-        
-        def <strong>delete</strong>(path, &proc : HTTP::Server::Context -> <a href="../../../Onyx/HTTP/View.html">View</a> | UNDERSCORE)
-
-        <a class="method-permalink" href="#delete%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method">#</a>
-      </div>
-      
-        <div class="doc"><p>Draw a route for <em>path</em> with <code>DELETE</code> method. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance
-is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Response</a>#view</code> is set to this view.</p>
-
-<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
-  delete <span class="s">&quot;/bar&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
-    env.response <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello from DELETE /bar!&quot;</span>
-  <span class="k">end</span>
-<span class="k">end</span></code></pre></div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router.cr#L71" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -618,37 +610,39 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
 See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance is returned, then the
 <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Response</a>#view</code> is set  to this view.</p>
 
-<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
-  delete <span class="s">&quot;/bar&quot;</span>, <span class="t">MyEndpoint</span>
+<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>r<span class="o">|</span>
+  r.delete <span class="s">&quot;/bar&quot;</span>, <span class="t">MyEndpoint</span>
 <span class="k">end</span></code></pre></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="draw(&amp;block)-instance-method">
+    <div class="entry-detail" id="delete(path,&amp;proc:HTTP::Server::Context-&gt;View|UNDERSCORE)-instance-method">
       <div class="signature">
         
-        def <strong>draw</strong>(&block)
+        def <strong>delete</strong>(path, &proc : HTTP::Server::Context -> <a href="../../../Onyx/HTTP/View.html">View</a> | UNDERSCORE)
 
-        <a class="method-permalink" href="#draw%28%26block%29-instance-method">#</a>
+        <a class="method-permalink" href="#delete%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method">#</a>
       </div>
       
-        <div class="doc"><p>Yield <code>with</code> self.</p>
+        <div class="doc"><p>Draw a route for <em>path</em> with <code>DELETE</code> method. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance
+is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Response</a>#view</code> is set to this view.</p>
 
-<pre><code>router.draw <span class="k">do</span>
-  post <span class="s">&quot;/&quot;</span> { }
-  get <span class="s">&quot;/&quot;</span> { }
+<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>r<span class="o">|</span>
+  r.delete <span class="s">&quot;/bar&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
+    env.response <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello from DELETE /bar!&quot;</span>
+  <span class="k">end</span>
 <span class="k">end</span></code></pre></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router.cr#L118" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -664,8 +658,8 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
         <div class="doc"><p>Draw a route for <em>path</em> with <code>GET</code> method. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance
 is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Response</a>#view</code> is set to this view.</p>
 
-<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
-  get <span class="s">&quot;/bar&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
+<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>r<span class="o">|</span>
+  r.get <span class="s">&quot;/bar&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
     env.response <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello from GET /bar!&quot;</span>
   <span class="k">end</span>
 <span class="k">end</span></code></pre></div>
@@ -673,7 +667,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -690,14 +684,14 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
 See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance is returned, then the
 <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Response</a>#view</code> is set  to this view.</p>
 
-<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
-  get <span class="s">&quot;/bar&quot;</span>, <span class="t">MyEndpoint</span>
+<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>r<span class="o">|</span>
+  r.get <span class="s">&quot;/bar&quot;</span>, <span class="t">MyEndpoint</span>
 <span class="k">end</span></code></pre></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -713,8 +707,8 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
         <div class="doc"><p>Draw a route for <em>path</em> with <code>HEAD</code> method. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance
 is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Response</a>#view</code> is set to this view.</p>
 
-<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
-  head <span class="s">&quot;/bar&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
+<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>r<span class="o">|</span>
+  r.head <span class="s">&quot;/bar&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
     env.response <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello from HEAD /bar!&quot;</span>
   <span class="k">end</span>
 <span class="k">end</span></code></pre></div>
@@ -722,7 +716,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -739,14 +733,30 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
 See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance is returned, then the
 <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Response</a>#view</code> is set  to this view.</p>
 
-<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
-  head <span class="s">&quot;/bar&quot;</span>, <span class="t">MyEndpoint</span>
+<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>r<span class="o">|</span>
+  r.head <span class="s">&quot;/bar&quot;</span>, <span class="t">MyEndpoint</span>
 <span class="k">end</span></code></pre></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="namespace:Array(String)-instance-method">
+      <div class="signature">
+        
+        def <strong>namespace</strong> : Array(String)
+
+        <a class="method-permalink" href="#namespace%3AArray%28String%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router.cr#L53" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -762,8 +772,8 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
         <div class="doc"><p>Draw a route for <em>path</em> and <em>methods</em>. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance is returned,
 then the <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Response</a>#view</code> is set to this view.</p>
 
-<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
-  on <span class="s">&quot;/foo&quot;</span>, methods: <span class="s">%w(get post)</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
+<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>r<span class="o">|</span>
+  r.on <span class="s">&quot;/foo&quot;</span>, methods: <span class="s">%w(get post)</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
     env.response <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello from </span><span class="i">#{</span>env.request.method<span class="i">}</span><span class="s"> /foo!&quot;</span>
   <span class="k">end</span>
 <span class="k">end</span></code></pre></div>
@@ -771,7 +781,33 @@ then the <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Resp
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router.cr#L132" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router.cr#L148" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="on(namespace:String?=nil,&amp;block:self-&gt;)-instance-method">
+      <div class="signature">
+        
+        def <strong>on</strong>(namespace : String? = <span class="n">nil</span>, &block : <span class="k">self</span> -> )
+
+        <a class="method-permalink" href="#on%28namespace%3AString%3F%3Dnil%2C%26block%3Aself-%3E%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Yield <code>self</code> with a <em>namespace</em>.
+The <em>namespace</em> can also be empty or <code>nil</code>, so you can prettify your router blocks.</p>
+
+<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>r<span class="o">|</span>
+  r.on <span class="s">&quot;/users&quot;</span> <span class="k">do</span>
+    r.post <span class="s">&quot;/&quot;</span>   <span class="c"># Resulting route is &quot;POST /users/&quot;</span>
+    r.get <span class="s">&quot;/:id&quot;</span> <span class="c"># Resulting route is &quot;GET /users/:id&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router.cr#L128" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -788,14 +824,14 @@ then the <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Resp
 If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Response</a>#view</code> is set
 to this view.</p>
 
-<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
-  on <span class="s">&quot;/foo&quot;</span>, methods: <span class="s">%w(get post)</span>, <span class="t">MyEndpoint</span>
+<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>r<span class="o">|</span>
+  r.on <span class="s">&quot;/foo&quot;</span>, methods: <span class="s">%w(get post)</span>, <span class="t">MyEndpoint</span>
 <span class="k">end</span></code></pre></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router.cr#L153" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router.cr#L169" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -812,14 +848,14 @@ to this view.</p>
 See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance is returned, then the
 <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Response</a>#view</code> is set  to this view.</p>
 
-<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
-  options <span class="s">&quot;/bar&quot;</span>, <span class="t">MyEndpoint</span>
+<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>r<span class="o">|</span>
+  r.options <span class="s">&quot;/bar&quot;</span>, <span class="t">MyEndpoint</span>
 <span class="k">end</span></code></pre></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -835,8 +871,8 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
         <div class="doc"><p>Draw a route for <em>path</em> with <code>OPTIONS</code> method. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance
 is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Response</a>#view</code> is set to this view.</p>
 
-<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
-  options <span class="s">&quot;/bar&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
+<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>r<span class="o">|</span>
+  r.options <span class="s">&quot;/bar&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
     env.response <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello from OPTIONS /bar!&quot;</span>
   <span class="k">end</span>
 <span class="k">end</span></code></pre></div>
@@ -844,7 +880,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -860,8 +896,8 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
         <div class="doc"><p>Draw a route for <em>path</em> with <code>PATCH</code> method. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance
 is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Response</a>#view</code> is set to this view.</p>
 
-<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
-  patch <span class="s">&quot;/bar&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
+<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>r<span class="o">|</span>
+  r.patch <span class="s">&quot;/bar&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
     env.response <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello from PATCH /bar!&quot;</span>
   <span class="k">end</span>
 <span class="k">end</span></code></pre></div>
@@ -869,7 +905,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -886,39 +922,14 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
 See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance is returned, then the
 <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Response</a>#view</code> is set  to this view.</p>
 
-<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
-  patch <span class="s">&quot;/bar&quot;</span>, <span class="t">MyEndpoint</span>
+<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>r<span class="o">|</span>
+  r.patch <span class="s">&quot;/bar&quot;</span>, <span class="t">MyEndpoint</span>
 <span class="k">end</span></code></pre></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="post(path,&amp;proc:HTTP::Server::Context-&gt;View|UNDERSCORE)-instance-method">
-      <div class="signature">
-        
-        def <strong>post</strong>(path, &proc : HTTP::Server::Context -> <a href="../../../Onyx/HTTP/View.html">View</a> | UNDERSCORE)
-
-        <a class="method-permalink" href="#post%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method">#</a>
-      </div>
-      
-        <div class="doc"><p>Draw a route for <em>path</em> with <code>POST</code> method. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance
-is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Response</a>#view</code> is set to this view.</p>
-
-<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
-  post <span class="s">&quot;/bar&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
-    env.response <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello from POST /bar!&quot;</span>
-  <span class="k">end</span>
-<span class="k">end</span></code></pre></div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -935,14 +946,39 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
 See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance is returned, then the
 <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Response</a>#view</code> is set  to this view.</p>
 
-<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
-  post <span class="s">&quot;/bar&quot;</span>, <span class="t">MyEndpoint</span>
+<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>r<span class="o">|</span>
+  r.post <span class="s">&quot;/bar&quot;</span>, <span class="t">MyEndpoint</span>
 <span class="k">end</span></code></pre></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="post(path,&amp;proc:HTTP::Server::Context-&gt;View|UNDERSCORE)-instance-method">
+      <div class="signature">
+        
+        def <strong>post</strong>(path, &proc : HTTP::Server::Context -> <a href="../../../Onyx/HTTP/View.html">View</a> | UNDERSCORE)
+
+        <a class="method-permalink" href="#post%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Draw a route for <em>path</em> with <code>POST</code> method. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance
+is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Response</a>#view</code> is set to this view.</p>
+
+<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>r<span class="o">|</span>
+  r.post <span class="s">&quot;/bar&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
+    env.response <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello from POST /bar!&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -959,14 +995,14 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
 See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance is returned, then the
 <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Response</a>#view</code> is set  to this view.</p>
 
-<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
-  put <span class="s">&quot;/bar&quot;</span>, <span class="t">MyEndpoint</span>
+<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>r<span class="o">|</span>
+  r.put <span class="s">&quot;/bar&quot;</span>, <span class="t">MyEndpoint</span>
 <span class="k">end</span></code></pre></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -982,8 +1018,8 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
         <div class="doc"><p>Draw a route for <em>path</em> with <code>PUT</code> method. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance
 is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Response</a>#view</code> is set to this view.</p>
 
-<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
-  put <span class="s">&quot;/bar&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
+<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>r<span class="o">|</span>
+  r.put <span class="s">&quot;/bar&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
     env.response <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello from PUT /bar!&quot;</span>
   <span class="k">end</span>
 <span class="k">end</span></code></pre></div>
@@ -991,7 +1027,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1004,12 +1040,12 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
         <a class="method-permalink" href="#ws%28path%2C%26proc%3A%3A%3AHTTP%3A%3AWebSocket%2CHTTP%3A%3AServer%3A%3AContext-%3E%29-instance-method">#</a>
       </div>
       
-        <div class="doc"><p>Draw a WebSocket route for <em>path</em>.</p>
+        <div class="doc"><p>Draw a <code>"ws://"</code> route for <em>path</em>.</p>
 
 <p>A request is currently determined as websocket by <code>"Upgrade": "Websocket"</code> header.</p>
 
-<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
-  ws <span class="s">&quot;/foo/:bar&quot;</span> <span class="k">do</span> <span class="o">|</span>socket, env<span class="o">|</span>
+<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>r<span class="o">|</span>
+  r.ws <span class="s">&quot;/foo/:bar&quot;</span> <span class="k">do</span> <span class="o">|</span>socket, env<span class="o">|</span>
     socket.send(<span class="s">&quot;Hello WS!&quot;</span>)
   <span class="k">end</span>
 <span class="k">end</span></code></pre></div>
@@ -1017,30 +1053,30 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router.cr#L199" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router.cr#L215" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="ws(path,channel:Onyx::HTTP::Channel.class)-instance-method">
+    <div class="entry-detail" id="ws(path,channel:T.class):NilforallT-instance-method">
       <div class="signature">
         
-        def <strong>ws</strong>(path, channel : <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">Channel</span>.<span class="k">class</span>)
+        def <strong>ws</strong>(path, channel : <span class="t">T</span>.<span class="k">class</span>) : Nil forall T
 
-        <a class="method-permalink" href="#ws%28path%2Cchannel%3AOnyx%3A%3AHTTP%3A%3AChannel.class%29-instance-method">#</a>
+        <a class="method-permalink" href="#ws%28path%2Cchannel%3AT.class%29%3ANilforallT-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a <code>"ws://"</code> route for <em>path</em> binding <em>channel</em>. See <code><a href="../../../Onyx/HTTP/Channel.html">Channel</a></code>.
 A request is currently determined as websocket by <code>"Upgrade": "Websocket"</code> header.</p>
 
-<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
-  ws <span class="s">&quot;/foo&quot;</span>, <span class="t">MyChannel</span>
+<pre><code>router <span class="o">=</span> <span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>r<span class="o">|</span>
+  r.ws <span class="s">&quot;/foo&quot;</span>, <span class="t">MyChannel</span>
 <span class="k">end</span></code></pre></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/middleware/router.cr#L211" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/middleware/router.cr#L227" target="_blank">View source</a>]
         
       </div>
     </div>

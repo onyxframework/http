@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.27.2">
+<meta name="generator" content="Crystal Docs 0.28.0">
 
 
 <link href="../../css/style.css" rel="stylesheet" type="text/css">
@@ -257,7 +257,7 @@ HTTP error if something is wrong.</p>
 <h2>Errors</h2>
 
 <p>Channel errors can be defined with the <code><a href="../../Onyx/HTTP/Endpoint.html#errors%28%26block%29-macro">Endpoint.errors</a></code> macro. They can be raised
-when the request is not upgraded yet (by overriding default <code><a href="../../Onyx/HTTP/Channel.html#call-instance-method">#call</a></code> method or in callbacks),
+when the request is not upgraded yet (by overriding default <code><a href="../../Onyx/HTTP/Channel.html#call%28socket%29-instance-method">#call</a></code> method or in callbacks),
 or when it is already a websocket.</p>
 
 <p>Some considertations when raising when already upgraded:</p>
@@ -307,10 +307,10 @@ properly closing the socket, so you do not need a rescuer there</li></ul>
 
 <p>Router example:</p>
 
-<pre><code>router <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span>
-  ws <span class="s">&quot;/&quot;</span>, <span class="t">Channels</span><span class="t">::</span><span class="t">Echo</span>
+<pre><code>router <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</span><span class="t">HTTP</span><span class="t">::</span><span class="t">Router</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>r<span class="o">|</span>
+  r.ws <span class="s">&quot;/&quot;</span>, <span class="t">Channels</span><span class="t">::</span><span class="t">Echo</span>
   <span class="c"># Equivalent of</span>
-  ws <span class="s">&quot;/&quot;</span> <span class="k">do</span> <span class="o">|</span>context<span class="o">|</span>
+  r.ws <span class="s">&quot;/&quot;</span> <span class="k">do</span> <span class="o">|</span>context<span class="o">|</span>
     channel.call(context)
   <span class="k">end</span>
 <span class="k">end</span></code></pre>
@@ -338,7 +338,7 @@ properly closing the socket, so you do not need a rescuer there</li></ul>
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/channel.cr#L84" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/channel.cr#L84" target="_blank">
         onyx-http/channel.cr
       </a>
     
@@ -367,9 +367,9 @@ properly closing the socket, so you do not need a rescuer there</li></ul>
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#call-instance-method" class="signature"><strong>#call</strong></a>
+        <a href="#call%28socket%29-instance-method" class="signature"><strong>#call</strong>(socket)</a>
         
-          <div class="summary"><p>By default calls <code>#upgrade</code>, which upgrades the request to a websocket and then calls <code>#bind</code>.</p></div>
+          <div class="summary"><p>Call <code>#bind</code>.</p></div>
         
       </li>
     
@@ -459,7 +459,7 @@ properly closing the socket, so you do not need a rescuer there</li></ul>
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/channel.cr#L85" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/channel.cr#L85" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -469,21 +469,20 @@ properly closing the socket, so you do not need a rescuer there</li></ul>
 
   <h2>Instance Method Detail</h2>
   
-    <div class="entry-detail" id="call-instance-method">
+    <div class="entry-detail" id="call(socket)-instance-method">
       <div class="signature">
         
-        def <strong>call</strong>
+        def <strong>call</strong>(socket)
 
-        <a class="method-permalink" href="#call-instance-method">#</a>
+        <a class="method-permalink" href="#call%28socket%29-instance-method">#</a>
       </div>
       
-        <div class="doc"><p>By default calls <code>#upgrade</code>, which upgrades the request to
-a websocket and then calls <code>#bind</code>.</p></div>
+        <div class="doc"><p>Call <code>#bind</code>.</p></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/channel.cr#L89" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/channel.cr#L93" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -501,7 +500,7 @@ a websocket and then calls <code>#bind</code>.</p></div>
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/dd50c8ea92700c947f5a65eb927fca2f2043584b/src/onyx-http/channel.cr#L115" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/541dfc9da58595fd0d6ece3b0f6e0a1df6c990ba/src/onyx-http/channel.cr#L117" target="_blank">View source</a>]
         
       </div>
     </div>
