@@ -138,7 +138,7 @@ module Onyx::HTTP::Middleware
       else
         {
           error: {
-            name:    ::HTTP.default_status_message_for(500),
+            name:    ::HTTP::Status.new(500).description,
             message: nil,
             code:    500,
             payload: nil,
@@ -201,7 +201,7 @@ module Onyx::HTTP::Middleware
         context.response << "500 " << error.status_message
         context.response << " — " << error.message << "\n\n" << error.backtrace.join("\n")
       else
-        context.response << "500 " << ::HTTP.default_status_message_for(500)
+        context.response << "500 " << ::HTTP::Status.new(500).description
       end
     end
   end
