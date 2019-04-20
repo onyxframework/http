@@ -48,7 +48,7 @@ module Onyx::HTTP::Middleware
       websocket = context.request.headers.includes_word?("Upgrade", "Websocket")
       if websocket
         method = "WS".rjust(7).colorize(color(100)).mode(:bold)
-        progess = "upgrading".colorize(:dark_gray)
+        progess = "…".colorize(:dark_gray)
 
         resource = context.request.path
 
