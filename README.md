@@ -39,11 +39,11 @@ The simplest hello world:
 ```crystal
 require "onyx/http"
 
-Onyx.get "/" do |env|
+Onyx::HTTP.get "/" do |env|
   env.response << "Hello, world!"
 end
 
-Onyx.listen
+Onyx::HTTP.listen
 ```
 
 Encapsulated endpoints:
@@ -70,7 +70,7 @@ struct GetUser
   end
 end
 
-Onyx.get "/users/:id", GetUser
+Onyx::HTTP.get "/users/:id", GetUser
 ```
 
 Encapsulated views:
@@ -97,7 +97,7 @@ struct Echo
   end
 end
 
-Onyx.ws "/", Echo
+Onyx::HTTP.ws "/", Echo
 ```
 
 ## Documentation 📚
