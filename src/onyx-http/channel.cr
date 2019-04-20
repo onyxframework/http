@@ -73,10 +73,10 @@ require "./endpoint"
 # Router example:
 #
 # ```
-# router = Onyx::HTTP::Router.new do
-#   ws "/", Channels::Echo
+# router = Onyx::HTTP::Router.new do |r|
+#   r.ws "/", Channels::Echo
 #   # Equivalent of
-#   ws "/" do |context|
+#   r.ws "/" do |context|
 #     channel.call(context)
 #   end
 # end

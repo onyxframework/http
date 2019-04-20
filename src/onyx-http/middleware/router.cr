@@ -16,15 +16,20 @@ module Onyx::HTTP::Middleware
   # `Router::UpgradeRequired` if the endpoint requires websocket protocol.
   #
   # ```
-  # router = Onyx::HTTP::Middleware::Router.new do
-  #   get "/" do |env|
+  # router = Onyx::HTTP::Middleware::Router.new do |r|
+  #   r.get "/" do |env|
   #     env.response << "Hello world!"
   #   end
   #
-  #   ws "/" do |socket, env|
+  #   r.ws "/" do |socket, env|
   #     socket.on_message do |message|
   #       # ...
   #     end
+  #   end
+  #
+  #   r.on "/users" do
+  #     r.post "/", Endpoint::User::Create
+  #     r.get "/:id", Endpoint::User::Get
   #   end
   # end
   #
@@ -43,19 +48,21 @@ module Onyx::HTTP::Middleware
     @tree = Radix::Tree(Node).new
     @hash = {} of String => Node
 
+    getter namespace = Array(String).new
+
     # Initialize a new router and yield it. You should then define routes in the *&block*.
     #
     # ```
     # # The simplest router
-    # router = Router.new do
-    #   get "/" do |env|
+    # router = Router.new do |r|
+    #   r.get "/" do |env|
     #     env.response << "Hello world!"
     #   end
     # end
     # ```
     def self.new
       instance = new
-      with instance yield
+      yield instance
       instance
     end
 
@@ -66,7 +73,7 @@ module Onyx::HTTP::Middleware
         path = "/ws" + context.request.path.rstrip('/')
         result = lookup(path)
       else
-        path = "/" + context.request.method.downcase + context.request.path.rstrip('/')
+        path = '/' + context.request.method.downcase + context.request.path.rstrip('/')
         result = lookup(path)
       end
 
@@ -85,7 +92,7 @@ module Onyx::HTTP::Middleware
 
         HTTP_METHODS.each do |method|
           next if method == context.request.method.downcase
-          path = "/#{method}#{context.request.path.rstrip('/')}"
+          path = '/' + method + context.request.path.rstrip('/')
           found << method if lookup(path).payload
         end
 
@@ -107,31 +114,40 @@ module Onyx::HTTP::Middleware
       end
     end
 
-    # Yield `with` self.
+    # Yield `self` with a *namespace*.
+    # The *namespace* can also be empty or `nil`, so you can prettify your router blocks.
     #
     # ```
-    # router.draw do
-    #   post "/" { }
-    #   get "/" { }
+    # router = Router.new do |r|
+    #   r.on "/users" do
+    #     r.post "/"   # Resulting route is "POST /users/"
+    #     r.get "/:id" # Resulting route is "GET /users/:id"
+    #   end
     # end
     # ```
-    def draw(&block)
-      with self yield
+    def on(namespace : String? = nil, &block : self ->)
+      if namespace && !namespace.empty?
+        @namespace.push(namespace)
+        yield self
+        @namespace.pop
+      else
+        yield self
+      end
     end
 
     # Draw a route for *path* and *methods*. If a `View` instance is returned,
     # then the `::HTTP::Server::Response#view` is set to this view.
     #
     # ```
-    # router = Router.new do
-    #   on "/foo", methods: %w(get post) do |env|
+    # router = Router.new do |r|
+    #   r.on "/foo", methods: %w(get post) do |env|
     #     env.response << "Hello from #{env.request.method} /foo!"
     #   end
     # end
     # ```
     def on(path, methods : Array(String), &proc : ::HTTP::Server::Context -> View | _)
       methods.map(&.downcase).each do |method|
-        add("/" + method + path, ContextProc.new do |context|
+        add('/' + method, path, ContextProc.new do |context|
           view? = proc.call(context)
 
           if view = view?.as?(HTTP::View)
@@ -146,8 +162,8 @@ module Onyx::HTTP::Middleware
     # to this view.
     #
     # ```
-    # router = Router.new do
-    #   on "/foo", methods: %w(get post), MyEndpoint
+    # router = Router.new do |r|
+    #   r.on "/foo", methods: %w(get post), MyEndpoint
     # end
     # ```
     def on(path, methods : Array(String), endpoint : HTTP::Endpoint.class)
@@ -161,8 +177,8 @@ module Onyx::HTTP::Middleware
       # is returned, then the `::HTTP::Server::Response#view` is set to this view.
       #
       # ```
-      # router = Router.new do
-      #   {{method.id}} "/bar" do |env|
+      # router = Router.new do |r|
+      #   r.{{method.id}} "/bar" do |env|
       #     env.response << "Hello from {{method.upcase.id}} /bar!"
       #   end
       # end
@@ -176,8 +192,8 @@ module Onyx::HTTP::Middleware
       # `::HTTP::Server::Response#view` is set  to this view.
       #
       # ```
-      # router = Router.new do
-      #   {{method.id}} "/bar", MyEndpoint
+      # router = Router.new do |r|
+      #   r.{{method.id}} "/bar", MyEndpoint
       # end
       # ```
       def {{method.id}}(path, endpoint : HTTP::Endpoint.class)
@@ -190,22 +206,22 @@ module Onyx::HTTP::Middleware
     # A request is currently determined as websocket by `"Upgrade": "Websocket"` header.
     #
     # ```
-    # router = Router.new do
-    #   ws "/foo/:bar" do |socket, env|
+    # router = Router.new do |r|
+    #   r.ws "/foo/:bar" do |socket, env|
     #     socket.send("Hello WS!")
     #   end
     # end
     # ```
     def ws(path, &proc : ::HTTP::WebSocket, ::HTTP::Server::Context ->)
-      add("/ws" + path, WebSocketHandler.new(&proc))
+      add("/ws", path, WebSocketHandler.new(&proc))
     end
 
     # Draw a `"ws://"` route for *path* binding *channel*. See `Channel`.
     # A request is currently determined as websocket by `"Upgrade": "Websocket"` header.
     #
     # ```
-    # router = Router.new do
-    #   ws "/foo", MyChannel
+    # router = Router.new do |r|
+    #   r.ws "/foo", MyChannel
     # end
     # ```
     def ws(path, channel : T.class) : Nil forall T
@@ -225,7 +241,7 @@ module Onyx::HTTP::Middleware
         ch.bind(socket)
       end
 
-      add("/ws" + path, ContextProc.new do |context|
+      add("/ws", path, ContextProc.new do |context|
         ch = channel.new(context)
         ws_handler.call(context)
       end)
@@ -242,12 +258,18 @@ module Onyx::HTTP::Middleware
       end
     end
 
-    protected def add(path, node)
-      if path.includes?(':')
-        @tree.add(path.rstrip('/'), node)
+    protected def add(method, path, node)
+      if @namespace.empty?
+        resulting_path = method + path.rstrip('/')
       else
-        raise DuplicateRouteError.new(path) if @hash.has_key?(path)
-        @hash[path.rstrip('/')] = node
+        resulting_path = method + @namespace.join + path.rstrip('/')
+      end
+
+      if resulting_path.includes?(':')
+        @tree.add(resulting_path, node)
+      else
+        raise DuplicateRouteError.new(resulting_path) if @hash.has_key?(resulting_path)
+        @hash[resulting_path] = node
       end
     rescue Radix::Tree::DuplicateError
       raise DuplicateRouteError.new(path)

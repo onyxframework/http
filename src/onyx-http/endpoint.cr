@@ -46,10 +46,10 @@ require "./ext/http/server/response/view"
 # Router example:
 #
 # ```
-# router = Onyx::HTTP::Router.new do
-#   get "/", Endpoints::GetUser
+# router = Onyx::HTTP::Router.new do |r|
+#   r.get "/", Endpoints::GetUser
 #   # Equivalent of
-#   get "/" do |context|
+#   r.get "/" do |context|
 #     view? = Endpoints::GetUser.call(context)
 #
 #     if view = view?.as?(HTTP::View)

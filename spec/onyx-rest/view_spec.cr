@@ -37,8 +37,8 @@ class Spec::View
     def initialize
       renderer = Onyx::HTTP::Middleware::Renderer.new
       rescuer = Onyx::HTTP::Middleware::Rescuer::Silent(Exception).new(renderer)
-      router = Onyx::HTTP::Middleware::Router.new do
-        get "/" do |env|
+      router = Onyx::HTTP::Middleware::Router.new do |r|
+        r.get "/" do |env|
           TestView.new("baz")
         end
       end

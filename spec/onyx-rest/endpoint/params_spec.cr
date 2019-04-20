@@ -74,9 +74,12 @@ class Spec::Endpoint::Params
 
   class Server
     def initialize
-      router = Onyx::HTTP::Middleware::Router.new do
-        post "/:foo/:bar", Endpoint
-        post "/form", FormEndpoint
+      router = Onyx::HTTP::Middleware::Router.new do |r|
+        r.on "/:foo" do
+          r.post "/:bar", Endpoint
+        end
+
+        r.post "/form", FormEndpoint
       end
 
       renderer = Onyx::HTTP::Middleware::Renderer.new

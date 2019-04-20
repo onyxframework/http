@@ -22,8 +22,8 @@ class Spec::Endpoint::Errors
 
   class Server
     def initialize
-      router = Onyx::HTTP::Middleware::Router.new do
-        get "/", Endpoint
+      router = Onyx::HTTP::Middleware::Router.new do |r|
+        r.get "/", Endpoint
       end
 
       renderer = Onyx::HTTP::Middleware::Renderer.new

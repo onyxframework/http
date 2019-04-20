@@ -32,8 +32,8 @@ class Spec::Channel
     def initialize
       renderer = Onyx::HTTP::Middleware::Renderer.new
       rescuer = Onyx::HTTP::Middleware::Rescuer::Silent(Exception).new(renderer)
-      router = Onyx::HTTP::Middleware::Router.new do
-        ws "/test/:id", Channel
+      router = Onyx::HTTP::Middleware::Router.new do |r|
+        r.ws "/test/:id", Channel
       end
 
       @server = Onyx::HTTP::Server.new([rescuer, router])
