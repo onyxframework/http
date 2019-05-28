@@ -62,12 +62,13 @@ class Spec::Endpoint::Params
     include Onyx::HTTP::Endpoint
 
     params do
-      form require: true do
+      form require: true, preserve_body: true do
         type foo : Int32
       end
     end
 
     def call
+      context.response << context.request.body.not_nil!.gets_to_end << "\n"
       context.response << params.form.foo
     end
   end
@@ -153,12 +154,12 @@ describe "Onyx::HTTP::Endpoint .params" do
     end
   end
 
-  context "when form is required" do
+  context "when form is required and body is preserved" do
     context "without content type" do
       it do
         response = client.post("/form", body: "foo=42")
         response.status_code.should eq 200
-        response.body.should eq "42"
+        response.body.should eq "foo=42\n42"
       end
     end
 
@@ -166,7 +167,7 @@ describe "Onyx::HTTP::Endpoint .params" do
       it do
         response = client.post("/form", headers: HTTP::Headers{"Content-Type" => "bar"}, body: "foo=42")
         response.status_code.should eq 200
-        response.body.should eq "42"
+        response.body.should eq "foo=42\n42"
       end
     end
 
@@ -174,7 +175,7 @@ describe "Onyx::HTTP::Endpoint .params" do
       it do
         response = client.post("/form", headers: HTTP::Headers{"Content-Type" => "application/x-www-form-urlencoded"}, body: "foo=42")
         response.status_code.should eq 200
-        response.body.should eq "42"
+        response.body.should eq "foo=42\n42"
       end
     end
 

@@ -11,6 +11,8 @@ module Onyx::HTTP::Endpoint
   # * `require` -- if set to `true`, will attempt to parse JSON params regardless
   # of the `"Content-Type"` header and return a parameter error otherwise; the `params.json`
   # getter becomes non-nilable
+  # * `preserve_body` -- if set to `true`, the request body would be **copied**
+  # and thus accessible after the parsing
   #
   # ## Example
   #
@@ -75,7 +77,7 @@ module Onyx::HTTP::Endpoint
   # ```shell
   # > curl -X POST -d '{"user":{"email":"foo@example.com"}}' http://localhost:5000/users/1
   # ```
-  macro json(require required = false, &block)
+  macro json(require required = false, preserve_body = false, &block)
     class JSONError < Onyx::HTTP::Error(400)
     end
 
@@ -146,7 +148,15 @@ module Onyx::HTTP::Endpoint
             if request.headers["Content-Type"]?.try &.=~ /^application\/json/
           {% end %}
             if body = request.body
+              {% if preserve_body %}
+                body = copy_io(body, request.content_length)
+              {% end %}
+
               @json = JSON.from_json(body.gets_to_end)
+
+              {% if preserve_body %}
+                request.body = body.rewind
+              {% end %}
             else
               raise JSONError.new("Missing request body")
             end

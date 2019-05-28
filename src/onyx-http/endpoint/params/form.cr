@@ -10,6 +10,8 @@ module Onyx::HTTP::Endpoint
   # * `require` -- if set to `true`, will attempt to parse form params regardless
   # of the `"Content-Type"` header and return a parameter error otherwise; the `params.form`
   # getter becomes non-nilable
+  # * `preserve_body` -- if set to `true`, the request body would be **copied**
+  # and thus accessible after the parsing
   #
   # ## Example
   #
@@ -74,7 +76,7 @@ module Onyx::HTTP::Endpoint
   # ```shell
   # > curl -X POST -d "user[email]=foo@example.com" http://localhost:5000/users/42
   # ```
-  macro form(require required = false, &block)
+  macro form(require required = false, preserve_body = false, &block)
     class FormError < Onyx::HTTP::Error(400)
       def initialize(message : String, @path : Array(String))
         super(message)
@@ -152,7 +154,15 @@ module Onyx::HTTP::Endpoint
             if request.headers["Content-Type"]?.try &.=~ /^application\/x-www-form-urlencoded/
           {% end %}
             if body = request.body
+              {% if preserve_body %}
+                body = copy_io(body, request.content_length)
+              {% end %}
+
               @form = Form.from_query(body.gets_to_end)
+
+              {% if preserve_body %}
+                request.body = body.rewind
+              {% end %}
             else
               raise FormError.new("Missing request body", [] of String)
             end

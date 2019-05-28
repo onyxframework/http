@@ -11,6 +11,19 @@ module Onyx::HTTP::Endpoint
   # which all are `HTTP::Error`s with 400 code.
   macro params(&block)
     struct Params
+      # This method is used to copy request body if needed.
+      protected def copy_io(from : IO, limit = nil) : IO
+        to = IO::Memory.new
+
+        if limit
+          IO.copy(from, to, limit)
+        else
+          IO.copy(from, to)
+        end
+
+        return to.rewind
+      end
+
       def initialize(request : ::HTTP::Request)
       end
 
