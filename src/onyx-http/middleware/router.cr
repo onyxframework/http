@@ -148,9 +148,9 @@ module Onyx::HTTP::Middleware
     def on(path, methods : Array(String), &proc : ::HTTP::Server::Context -> View | _)
       methods.map(&.downcase).each do |method|
         add('/' + method, path, ContextProc.new do |context|
-          view? = proc.call(context)
+          view = proc.call(context)
 
-          if view = view?.as?(HTTP::View)
+          if view = view.as?(HTTP::View)
             context.response.view ||= view
           end
         end)

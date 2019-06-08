@@ -1,5 +1,5 @@
 require "http/server/response"
-require "../../../view"
+require "../../../../view"
 
 class HTTP::Server::Response
   # A view to render.
