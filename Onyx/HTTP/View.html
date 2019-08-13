@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.29.0">
+<meta name="generator" content="Crystal Docs 0.30.1">
 
 
 <link href="../../css/style.css" rel="stylesheet" type="text/css">
@@ -242,7 +242,7 @@
 
   <p>A reusable HTTP view.</p>
 
-<p>Views are usually rendered by the <code><a href="../../Onyx/HTTP/Middleware/Renderer.html">Middleware::Renderer</a></code> invoking the <code><a href="../../Onyx/HTTP/View.html#render%28context%3AHTTP%3A%3AServer%3A%3AContext%29-instance-method">#render</a></code> method.
+<p>Views are usually rendered by the <code><a href="../../Onyx/HTTP/Middleware/Renderer.html">Middleware::Renderer</a></code> invoking the <code><a href="../../Onyx/HTTP/View.html#render(context:HTTP::Server::Context)-instance-method">#render</a></code> method.
 You can use views either in raw endpoint procs or within <code><a href="../../Onyx/HTTP/Endpoint.html#call-instance-method">Endpoint#call</a></code>.</p>
 
 <pre><code><span class="k">struct</span> <span class="t">UserView</span>
@@ -280,9 +280,9 @@ router.get <span class="s">&quot;/user/:id&quot;</span> <span class="k">do</span
   <span class="k">end</span>
 <span class="k">end</span></code></pre>
 
-<p>Apart from directly implementing the <code><a href="../../Onyx/HTTP/View.html#render%28context%3AHTTP%3A%3AServer%3A%3AContext%29-instance-method">#render</a></code> method, you can use the convenient macros:</p>
+<p>Apart from directly implementing the <code><a href="../../Onyx/HTTP/View.html#render(context:HTTP::Server::Context)-instance-method">#render</a></code> method, you can use the convenient macros:</p>
 
-<ul><li><code><a href="../../Onyx/HTTP/View.html#text%28value%2Ccontent_type%3D%26quot%3Btext%2Fplain%26quot%3B%2Caccept%3D%7B%26quot%3Btext%2Fplain%26quot%3B%7D%29-macro">.text</a></code> to render the view as a text with <code>text/plain</code> content type by default</li><li><code><a href="../../Onyx/HTTP/View.html#json%28object%2Ccontent_type%3D%26quot%3Bapplication%2Fjson%26quot%3B%2Caccept%3D%7B%26quot%3Bapplication%2Fjson%26quot%3B%7D%2C%26block%29-macro">.json</a></code> to render the view as a JSON with <code>application/json</code> content type by default</li><li><code><a href="../../Onyx/HTTP/View.html#xml%28content_type%3D%26quot%3Bapplication%2Fxml%26quot%3B%2Caccept%3D%7B%26quot%3Bapplication%2Fxml%26quot%3B%7D%2C%26block%29-macro">.xml</a></code> to render the view as XML with <code>application/xml</code> content type by default</li><li><code><a href="../../Onyx/HTTP/View.html#template%28template%2Ccontent_type%3D%26quot%3Btext%2Fhtml%26quot%3B%2Caccept%3D%7B%26quot%3Btext%2Fhtml%26quot%3B%7D%29-macro">.template</a></code> to render the view as a generic template (powered by <a href="https://github.com/jeromegn/kilt" target="_blank">Kilt</a>)
+<ul><li><code><a href="../../Onyx/HTTP/View.html#text(value,content_type=&quot;text/plain&quot;,accept=%7B&quot;text/plain&quot;%7D)-macro">.text</a></code> to render the view as a text with <code>text/plain</code> content type by default</li><li><code><a href="../../Onyx/HTTP/View.html#json(object,content_type=&quot;application/json&quot;,accept=%7B&quot;application/json&quot;%7D,&block)-macro">.json</a></code> to render the view as a JSON with <code>application/json</code> content type by default</li><li><code><a href="../../Onyx/HTTP/View.html#xml(content_type=&quot;application/xml&quot;,accept=%7B&quot;application/xml&quot;%7D,&block)-macro">.xml</a></code> to render the view as XML with <code>application/xml</code> content type by default</li><li><code><a href="../../Onyx/HTTP/View.html#template(template,content_type=&quot;text/html&quot;,accept=%7B&quot;text/html&quot;%7D)-macro">.template</a></code> to render the view as a generic template (powered by <a href="https://github.com/jeromegn/kilt" target="_blank">Kilt</a>)
 with <code>text/html</code> content type by default</li></ul>
 
 <p>If you have only one macro of these three called in a view, then the request's <code>"Accept"</code>
@@ -345,7 +345,7 @@ that's why the latter takes precendence when <code>"Accept"</code> header is <co
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/view.cr#L104" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/view.cr#L104" target="_blank">
         onyx-http/view.cr
       </a>
     
@@ -364,7 +364,7 @@ that's why the latter takes precendence when <code>"Accept"</code> header is <co
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#render%28context%3AHTTP%3A%3AServer%3A%3AContext%29-instance-method" class="signature"><strong>#render</strong>(context : HTTP::Server::Context)</a>
+        <a href="#render(context:HTTP::Server::Context)-instance-method" class="signature"><strong>#render</strong>(context : HTTP::Server::Context)</a>
         
       </li>
     
@@ -376,42 +376,42 @@ that's why the latter takes precendence when <code>"Accept"</code> header is <co
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#json%28object%2Ccontent_type%3D%26quot%3Bapplication%2Fjson%26quot%3B%2Caccept%3D%7B%26quot%3Bapplication%2Fjson%26quot%3B%7D%2C%26block%29-macro" class="signature"><strong>json</strong>(object, content_type = <span class="s">&quot;application/json&quot;</span>, accept = {<span class="s">&quot;application/json&quot;</span>}, &block)</a>
+        <a href="#json(object,content_type=&quot;application/json&quot;,accept=%7B&quot;application/json&quot;%7D,&block)-macro" class="signature"><strong>json</strong>(object, content_type = <span class="s">&quot;application/json&quot;</span>, accept = {<span class="s">&quot;application/json&quot;</span>}, &block)</a>
         
           <div class="summary"><p>Add JSON rendering to this view.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#json%28content_type%3D%26quot%3Bapplication%2Fjson%26quot%3B%2Caccept%3D%7B%26quot%3Bapplication%2Fjson%26quot%3B%7D%2C%26block%29-macro" class="signature"><strong>json</strong>(content_type = <span class="s">&quot;application/json&quot;</span>, accept = {<span class="s">&quot;application/json&quot;</span>}, &block)</a>
+        <a href="#json(content_type=&quot;application/json&quot;,accept=%7B&quot;application/json&quot;%7D,&block)-macro" class="signature"><strong>json</strong>(content_type = <span class="s">&quot;application/json&quot;</span>, accept = {<span class="s">&quot;application/json&quot;</span>}, &block)</a>
         
           <div class="summary"><p>Add JSON rendering with builder to this view.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#json%28content_type%3D%26quot%3Bapplication%2Fjson%26quot%3B%2Caccept%3D%7B%26quot%3Bapplication%2Fjson%26quot%3B%7D%2C%2A%2Aobject%29-macro" class="signature"><strong>json</strong>(content_type = <span class="s">&quot;application/json&quot;</span>, accept = {<span class="s">&quot;application/json&quot;</span>}, **object)</a>
+        <a href="#json(content_type=&quot;application/json&quot;,accept=%7B&quot;application/json&quot;%7D,**object)-macro" class="signature"><strong>json</strong>(content_type = <span class="s">&quot;application/json&quot;</span>, accept = {<span class="s">&quot;application/json&quot;</span>}, **object)</a>
         
           <div class="summary"><p>Add JSON rendering to this view.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#template%28template%2Ccontent_type%3D%26quot%3Btext%2Fhtml%26quot%3B%2Caccept%3D%7B%26quot%3Btext%2Fhtml%26quot%3B%7D%29-macro" class="signature"><strong>template</strong>(template, content_type = <span class="s">&quot;text/html&quot;</span>, accept = {<span class="s">&quot;text/html&quot;</span>})</a>
+        <a href="#template(template,content_type=&quot;text/html&quot;,accept=%7B&quot;text/html&quot;%7D)-macro" class="signature"><strong>template</strong>(template, content_type = <span class="s">&quot;text/html&quot;</span>, accept = {<span class="s">&quot;text/html&quot;</span>})</a>
         
           <div class="summary"><p>Add template rendering to this view.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#text%28value%2Ccontent_type%3D%26quot%3Btext%2Fplain%26quot%3B%2Caccept%3D%7B%26quot%3Btext%2Fplain%26quot%3B%7D%29-macro" class="signature"><strong>text</strong>(value, content_type = <span class="s">&quot;text/plain&quot;</span>, accept = {<span class="s">&quot;text/plain&quot;</span>})</a>
+        <a href="#text(value,content_type=&quot;text/plain&quot;,accept=%7B&quot;text/plain&quot;%7D)-macro" class="signature"><strong>text</strong>(value, content_type = <span class="s">&quot;text/plain&quot;</span>, accept = {<span class="s">&quot;text/plain&quot;</span>})</a>
         
           <div class="summary"><p>Add plain text rendering to this view.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#xml%28content_type%3D%26quot%3Bapplication%2Fxml%26quot%3B%2Caccept%3D%7B%26quot%3Bapplication%2Fxml%26quot%3B%7D%2C%26block%29-macro" class="signature"><strong>xml</strong>(content_type = <span class="s">&quot;application/xml&quot;</span>, accept = {<span class="s">&quot;application/xml&quot;</span>}, &block)</a>
+        <a href="#xml(content_type=&quot;application/xml&quot;,accept=%7B&quot;application/xml&quot;%7D,&block)-macro" class="signature"><strong>xml</strong>(content_type = <span class="s">&quot;application/xml&quot;</span>, accept = {<span class="s">&quot;application/xml&quot;</span>}, &block)</a>
         
           <div class="summary"><p>Add XML rendering with builder to this view.</p></div>
         
@@ -437,13 +437,13 @@ that's why the latter takes precendence when <code>"Accept"</code> header is <co
         abstract 
         def <strong>render</strong>(context : HTTP::Server::Context)
 
-        <a class="method-permalink" href="#render%28context%3AHTTP%3A%3AServer%3A%3AContext%29-instance-method">#</a>
+        <a class="method-permalink" href="#render(context:HTTP::Server::Context)-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/view.cr#L105" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/view.cr#L105" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -458,7 +458,7 @@ that's why the latter takes precendence when <code>"Accept"</code> header is <co
         
         macro <strong>json</strong>(object, content_type = <span class="s">&quot;application/json&quot;</span>, accept = {<span class="s">&quot;application/json&quot;</span>}, &block)
 
-        <a class="method-permalink" href="#json%28object%2Ccontent_type%3D%26quot%3Bapplication%2Fjson%26quot%3B%2Caccept%3D%7B%26quot%3Bapplication%2Fjson%26quot%3B%7D%2C%26block%29-macro">#</a>
+        <a class="method-permalink" href="#json(object,content_type=&quot;application/json&quot;,accept=%7B&quot;application/json&quot;%7D,&block)-macro">#</a>
       </div>
       
         <div class="doc"><p>Add JSON rendering to this view. It is expanded to this:</p>
@@ -474,7 +474,7 @@ that's why the latter takes precendence when <code>"Accept"</code> header is <co
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/view.cr#L144" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/view.cr#L144" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -484,7 +484,7 @@ that's why the latter takes precendence when <code>"Accept"</code> header is <co
         
         macro <strong>json</strong>(content_type = <span class="s">&quot;application/json&quot;</span>, accept = {<span class="s">&quot;application/json&quot;</span>}, &block)
 
-        <a class="method-permalink" href="#json%28content_type%3D%26quot%3Bapplication%2Fjson%26quot%3B%2Caccept%3D%7B%26quot%3Bapplication%2Fjson%26quot%3B%7D%2C%26block%29-macro">#</a>
+        <a class="method-permalink" href="#json(content_type=&quot;application/json&quot;,accept=%7B&quot;application/json&quot;%7D,&block)-macro">#</a>
       </div>
       
         <div class="doc"><p>Add JSON rendering with builder to this view.</p>
@@ -506,7 +506,7 @@ that's why the latter takes precendence when <code>"Accept"</code> header is <co
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/view.cr#L183" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/view.cr#L183" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -516,7 +516,7 @@ that's why the latter takes precendence when <code>"Accept"</code> header is <co
         
         macro <strong>json</strong>(content_type = <span class="s">&quot;application/json&quot;</span>, accept = {<span class="s">&quot;application/json&quot;</span>}, **object)
 
-        <a class="method-permalink" href="#json%28content_type%3D%26quot%3Bapplication%2Fjson%26quot%3B%2Caccept%3D%7B%26quot%3Bapplication%2Fjson%26quot%3B%7D%2C%2A%2Aobject%29-macro">#</a>
+        <a class="method-permalink" href="#json(content_type=&quot;application/json&quot;,accept=%7B&quot;application/json&quot;%7D,**object)-macro">#</a>
       </div>
       
         <div class="doc"><p>Add JSON rendering to this view. It is expanded like this:</p>
@@ -528,7 +528,7 @@ that's why the latter takes precendence when <code>"Accept"</code> header is <co
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/view.cr#L218" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/view.cr#L218" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -538,7 +538,7 @@ that's why the latter takes precendence when <code>"Accept"</code> header is <co
         
         macro <strong>template</strong>(template, content_type = <span class="s">&quot;text/html&quot;</span>, accept = {<span class="s">&quot;text/html&quot;</span>})
 
-        <a class="method-permalink" href="#template%28template%2Ccontent_type%3D%26quot%3Btext%2Fhtml%26quot%3B%2Caccept%3D%7B%26quot%3Btext%2Fhtml%26quot%3B%7D%29-macro">#</a>
+        <a class="method-permalink" href="#template(template,content_type=&quot;text/html&quot;,accept=%7B&quot;text/html&quot;%7D)-macro">#</a>
       </div>
       
         <div class="doc"><p>Add template rendering to this view. It is expanded like this:</p>
@@ -550,7 +550,7 @@ that's why the latter takes precendence when <code>"Accept"</code> header is <co
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/view.cr#L127" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/view.cr#L127" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -560,7 +560,7 @@ that's why the latter takes precendence when <code>"Accept"</code> header is <co
         
         macro <strong>text</strong>(value, content_type = <span class="s">&quot;text/plain&quot;</span>, accept = {<span class="s">&quot;text/plain&quot;</span>})
 
-        <a class="method-permalink" href="#text%28value%2Ccontent_type%3D%26quot%3Btext%2Fplain%26quot%3B%2Caccept%3D%7B%26quot%3Btext%2Fplain%26quot%3B%7D%29-macro">#</a>
+        <a class="method-permalink" href="#text(value,content_type=&quot;text/plain&quot;,accept=%7B&quot;text/plain&quot;%7D)-macro">#</a>
       </div>
       
         <div class="doc"><p>Add plain text rendering to this view. It is expanded like this:</p>
@@ -572,7 +572,7 @@ that's why the latter takes precendence when <code>"Accept"</code> header is <co
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/view.cr#L114" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/view.cr#L114" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -582,7 +582,7 @@ that's why the latter takes precendence when <code>"Accept"</code> header is <co
         
         macro <strong>xml</strong>(content_type = <span class="s">&quot;application/xml&quot;</span>, accept = {<span class="s">&quot;application/xml&quot;</span>}, &block)
 
-        <a class="method-permalink" href="#xml%28content_type%3D%26quot%3Bapplication%2Fxml%26quot%3B%2Caccept%3D%7B%26quot%3Bapplication%2Fxml%26quot%3B%7D%2C%26block%29-macro">#</a>
+        <a class="method-permalink" href="#xml(content_type=&quot;application/xml&quot;,accept=%7B&quot;application/xml&quot;%7D,&block)-macro">#</a>
       </div>
       
         <div class="doc"><p>Add XML rendering with builder to this view.
@@ -604,7 +604,7 @@ See <a href="https://crystal-lang.org/api/latest/XML/Builder.html" target="_blan
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/view.cr#L239" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/view.cr#L239" target="_blank">View source</a>]
         
       </div>
     </div>

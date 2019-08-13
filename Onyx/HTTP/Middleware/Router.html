@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.29.0">
+<meta name="generator" content="Crystal Docs 0.30.1">
 
 
 <link href="../../../css/style.css" rel="stylesheet" type="text/css">
@@ -294,42 +294,42 @@ server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</s
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router/bad_request.cr#L2" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router/bad_request.cr#L2" target="_blank">
         onyx-http/middleware/router/bad_request.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router/method_not_allowed.cr#L2" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router/method_not_allowed.cr#L2" target="_blank">
         onyx-http/middleware/router/method_not_allowed.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router/not_found.cr#L2" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router/not_found.cr#L2" target="_blank">
         onyx-http/middleware/router/not_found.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router/upgrade_required.cr#L2" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router/upgrade_required.cr#L2" target="_blank">
         onyx-http/middleware/router/upgrade_required.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router/websocket_handler.cr#L2" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router/websocket_handler.cr#L2" target="_blank">
         onyx-http/middleware/router/websocket_handler.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router.cr#L40" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router.cr#L40" target="_blank">
         onyx-http/middleware/router.cr
       </a>
     
@@ -344,7 +344,7 @@ server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</s
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28%26block%29-class-method" class="signature"><strong>.new</strong>(&block)</a>
+        <a href="#new(&block)-class-method" class="signature"><strong>.new</strong>(&block)</a>
         
           <div class="summary"><p>Initialize a new router and yield it.</p></div>
         
@@ -360,145 +360,145 @@ server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</s
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#call%28context%29-instance-method" class="signature"><strong>#call</strong>(context)</a>
+        <a href="#call(context)-instance-method" class="signature"><strong>#call</strong>(context)</a>
         
           <div class="summary"><p>Lookup for a route, update <code>context.request.path_params</code> and call the matching proc, raising <code>RouteNotFound</code> otherwise.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#delete%28path%2Cendpoint%3AHTTP%3A%3AEndpoint.class%29-instance-method" class="signature"><strong>#delete</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)</a>
+        <a href="#delete(path,endpoint:HTTP::Endpoint.class)-instance-method" class="signature"><strong>#delete</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> with <code>DELETE</code> calling <em>endpoint</em>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#delete%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method" class="signature"><strong>#delete</strong>(path, &proc : HTTP::Server::Context -> View | UNDERSCORE)</a>
+        <a href="#delete(path,&proc:HTTP::Server::Context-%3EView%7CUNDERSCORE)-instance-method" class="signature"><strong>#delete</strong>(path, &proc : HTTP::Server::Context -> View | UNDERSCORE)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> with <code>DELETE</code> method.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#get%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method" class="signature"><strong>#get</strong>(path, &proc : HTTP::Server::Context -> View | UNDERSCORE)</a>
+        <a href="#get(path,&proc:HTTP::Server::Context-%3EView%7CUNDERSCORE)-instance-method" class="signature"><strong>#get</strong>(path, &proc : HTTP::Server::Context -> View | UNDERSCORE)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> with <code>GET</code> method.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#get%28path%2Cendpoint%3AHTTP%3A%3AEndpoint.class%29-instance-method" class="signature"><strong>#get</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)</a>
+        <a href="#get(path,endpoint:HTTP::Endpoint.class)-instance-method" class="signature"><strong>#get</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> with <code>GET</code> calling <em>endpoint</em>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#head%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method" class="signature"><strong>#head</strong>(path, &proc : HTTP::Server::Context -> View | UNDERSCORE)</a>
+        <a href="#head(path,&proc:HTTP::Server::Context-%3EView%7CUNDERSCORE)-instance-method" class="signature"><strong>#head</strong>(path, &proc : HTTP::Server::Context -> View | UNDERSCORE)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> with <code>HEAD</code> method.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#head%28path%2Cendpoint%3AHTTP%3A%3AEndpoint.class%29-instance-method" class="signature"><strong>#head</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)</a>
+        <a href="#head(path,endpoint:HTTP::Endpoint.class)-instance-method" class="signature"><strong>#head</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> with <code>HEAD</code> calling <em>endpoint</em>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#namespace%3AArray%28String%29-instance-method" class="signature"><strong>#namespace</strong> : Array(String)</a>
+        <a href="#namespace:Array(String)-instance-method" class="signature"><strong>#namespace</strong> : Array(String)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#on%28path%2Cmethods%3AArray%28String%29%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method" class="signature"><strong>#on</strong>(path, methods : Array(String), &proc : HTTP::Server::Context -> View | UNDERSCORE)</a>
+        <a href="#on(path,methods:Array(String),&proc:HTTP::Server::Context-%3EView%7CUNDERSCORE)-instance-method" class="signature"><strong>#on</strong>(path, methods : Array(String), &proc : HTTP::Server::Context -> View | UNDERSCORE)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> and <em>methods</em>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#on%28namespace%3AString%3F%3Dnil%2C%26block%3Aself-%3E%29-instance-method" class="signature"><strong>#on</strong>(namespace : String? = <span class="n">nil</span>, &block : <span class="k">self</span> -> )</a>
+        <a href="#on(namespace:String?=nil,&block:self-%3E)-instance-method" class="signature"><strong>#on</strong>(namespace : String? = <span class="n">nil</span>, &block : <span class="k">self</span> -> )</a>
         
           <div class="summary"><p>Yield <code>self</code> with a <em>namespace</em>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#on%28path%2Cmethods%3AArray%28String%29%2Cendpoint%3AHTTP%3A%3AEndpoint.class%29-instance-method" class="signature"><strong>#on</strong>(path, methods : Array(String), endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)</a>
+        <a href="#on(path,methods:Array(String),endpoint:HTTP::Endpoint.class)-instance-method" class="signature"><strong>#on</strong>(path, methods : Array(String), endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> and <em>methods</em> calling <em>endpoint</em>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#options%28path%2Cendpoint%3AHTTP%3A%3AEndpoint.class%29-instance-method" class="signature"><strong>#options</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)</a>
+        <a href="#options(path,endpoint:HTTP::Endpoint.class)-instance-method" class="signature"><strong>#options</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> with <code>OPTIONS</code> calling <em>endpoint</em>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#options%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method" class="signature"><strong>#options</strong>(path, &proc : HTTP::Server::Context -> View | UNDERSCORE)</a>
+        <a href="#options(path,&proc:HTTP::Server::Context-%3EView%7CUNDERSCORE)-instance-method" class="signature"><strong>#options</strong>(path, &proc : HTTP::Server::Context -> View | UNDERSCORE)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> with <code>OPTIONS</code> method.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#patch%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method" class="signature"><strong>#patch</strong>(path, &proc : HTTP::Server::Context -> View | UNDERSCORE)</a>
+        <a href="#patch(path,&proc:HTTP::Server::Context-%3EView%7CUNDERSCORE)-instance-method" class="signature"><strong>#patch</strong>(path, &proc : HTTP::Server::Context -> View | UNDERSCORE)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> with <code>PATCH</code> method.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#patch%28path%2Cendpoint%3AHTTP%3A%3AEndpoint.class%29-instance-method" class="signature"><strong>#patch</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)</a>
+        <a href="#patch(path,endpoint:HTTP::Endpoint.class)-instance-method" class="signature"><strong>#patch</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> with <code>PATCH</code> calling <em>endpoint</em>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#post%28path%2Cendpoint%3AHTTP%3A%3AEndpoint.class%29-instance-method" class="signature"><strong>#post</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)</a>
+        <a href="#post(path,endpoint:HTTP::Endpoint.class)-instance-method" class="signature"><strong>#post</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> with <code>POST</code> calling <em>endpoint</em>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#post%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method" class="signature"><strong>#post</strong>(path, &proc : HTTP::Server::Context -> View | UNDERSCORE)</a>
+        <a href="#post(path,&proc:HTTP::Server::Context-%3EView%7CUNDERSCORE)-instance-method" class="signature"><strong>#post</strong>(path, &proc : HTTP::Server::Context -> View | UNDERSCORE)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> with <code>POST</code> method.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#put%28path%2Cendpoint%3AHTTP%3A%3AEndpoint.class%29-instance-method" class="signature"><strong>#put</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)</a>
+        <a href="#put(path,endpoint:HTTP::Endpoint.class)-instance-method" class="signature"><strong>#put</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> with <code>PUT</code> calling <em>endpoint</em>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#put%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method" class="signature"><strong>#put</strong>(path, &proc : HTTP::Server::Context -> View | UNDERSCORE)</a>
+        <a href="#put(path,&proc:HTTP::Server::Context-%3EView%7CUNDERSCORE)-instance-method" class="signature"><strong>#put</strong>(path, &proc : HTTP::Server::Context -> View | UNDERSCORE)</a>
         
           <div class="summary"><p>Draw a route for <em>path</em> with <code>PUT</code> method.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#ws%28path%2C%26proc%3A%3A%3AHTTP%3A%3AWebSocket%2CHTTP%3A%3AServer%3A%3AContext-%3E%29-instance-method" class="signature"><strong>#ws</strong>(path, &proc : ::HTTP::WebSocket, HTTP::Server::Context -> )</a>
+        <a href="#ws(path,&proc:::HTTP::WebSocket,HTTP::Server::Context-%3E)-instance-method" class="signature"><strong>#ws</strong>(path, &proc : ::HTTP::WebSocket, HTTP::Server::Context -> )</a>
         
           <div class="summary"><p>Draw a <code>"ws://"</code> route for <em>path</em>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#ws%28path%2Cchannel%3AT.class%29%3ANilforallT-instance-method" class="signature"><strong>#ws</strong>(path, channel : <span class="t">T</span>.<span class="k">class</span>) : Nil forall T</a>
+        <a href="#ws(path,channel:T.class):NilforallT-instance-method" class="signature"><strong>#ws</strong>(path, channel : <span class="t">T</span>.<span class="k">class</span>) : Nil forall T</a>
         
           <div class="summary"><p>Draw a <code>"ws://"</code> route for <em>path</em> binding <em>channel</em>.</p></div>
         
@@ -552,7 +552,7 @@ server <span class="o">=</span> <span class="t">Onyx</span><span class="t">::</s
         
         def self.<strong>new</strong>(&block)
 
-        <a class="method-permalink" href="#new%28%26block%29-class-method">#</a>
+        <a class="method-permalink" href="#new(&block)-class-method">#</a>
       </div>
       
         <div class="doc"><p>Initialize a new router and yield it. You should then define routes in the <em>&block</em>.</p>
@@ -567,7 +567,7 @@ router <span class="o">=</span> <span class="t">Router</span>.<span class="k">ne
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router.cr#L63" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router.cr#L63" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -584,7 +584,7 @@ router <span class="o">=</span> <span class="t">Router</span>.<span class="k">ne
         
         def <strong>call</strong>(context)
 
-        <a class="method-permalink" href="#call%28context%29-instance-method">#</a>
+        <a class="method-permalink" href="#call(context)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Lookup for a route, update <code>context.request.path_params</code> and call the matching proc,
@@ -593,7 +593,7 @@ raising <code>RouteNotFound</code> otherwise. Calls the next handler if it's pre
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router.cr#L71" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router.cr#L71" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -603,7 +603,7 @@ raising <code>RouteNotFound</code> otherwise. Calls the next handler if it's pre
         
         def <strong>delete</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)
 
-        <a class="method-permalink" href="#delete%28path%2Cendpoint%3AHTTP%3A%3AEndpoint.class%29-instance-method">#</a>
+        <a class="method-permalink" href="#delete(path,endpoint:HTTP::Endpoint.class)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a route for <em>path</em> with <code>DELETE</code> calling <em>endpoint</em>.
@@ -617,7 +617,7 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -627,7 +627,7 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
         
         def <strong>delete</strong>(path, &proc : HTTP::Server::Context -> <a href="../../../Onyx/HTTP/View.html">View</a> | UNDERSCORE)
 
-        <a class="method-permalink" href="#delete%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method">#</a>
+        <a class="method-permalink" href="#delete(path,&proc:HTTP::Server::Context-%3EView%7CUNDERSCORE)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a route for <em>path</em> with <code>DELETE</code> method. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance
@@ -642,7 +642,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -652,7 +652,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
         
         def <strong>get</strong>(path, &proc : HTTP::Server::Context -> <a href="../../../Onyx/HTTP/View.html">View</a> | UNDERSCORE)
 
-        <a class="method-permalink" href="#get%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method">#</a>
+        <a class="method-permalink" href="#get(path,&proc:HTTP::Server::Context-%3EView%7CUNDERSCORE)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a route for <em>path</em> with <code>GET</code> method. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance
@@ -667,7 +667,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -677,7 +677,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
         
         def <strong>get</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)
 
-        <a class="method-permalink" href="#get%28path%2Cendpoint%3AHTTP%3A%3AEndpoint.class%29-instance-method">#</a>
+        <a class="method-permalink" href="#get(path,endpoint:HTTP::Endpoint.class)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a route for <em>path</em> with <code>GET</code> calling <em>endpoint</em>.
@@ -691,7 +691,7 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -701,7 +701,7 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
         
         def <strong>head</strong>(path, &proc : HTTP::Server::Context -> <a href="../../../Onyx/HTTP/View.html">View</a> | UNDERSCORE)
 
-        <a class="method-permalink" href="#head%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method">#</a>
+        <a class="method-permalink" href="#head(path,&proc:HTTP::Server::Context-%3EView%7CUNDERSCORE)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a route for <em>path</em> with <code>HEAD</code> method. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance
@@ -716,7 +716,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -726,7 +726,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
         
         def <strong>head</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)
 
-        <a class="method-permalink" href="#head%28path%2Cendpoint%3AHTTP%3A%3AEndpoint.class%29-instance-method">#</a>
+        <a class="method-permalink" href="#head(path,endpoint:HTTP::Endpoint.class)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a route for <em>path</em> with <code>HEAD</code> calling <em>endpoint</em>.
@@ -740,7 +740,7 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -750,13 +750,13 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
         
         def <strong>namespace</strong> : Array(String)
 
-        <a class="method-permalink" href="#namespace%3AArray%28String%29-instance-method">#</a>
+        <a class="method-permalink" href="#namespace:Array(String)-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router.cr#L53" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router.cr#L53" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -766,7 +766,7 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
         
         def <strong>on</strong>(path, methods : Array(String), &proc : HTTP::Server::Context -> <a href="../../../Onyx/HTTP/View.html">View</a> | UNDERSCORE)
 
-        <a class="method-permalink" href="#on%28path%2Cmethods%3AArray%28String%29%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method">#</a>
+        <a class="method-permalink" href="#on(path,methods:Array(String),&proc:HTTP::Server::Context-%3EView%7CUNDERSCORE)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a route for <em>path</em> and <em>methods</em>. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance is returned,
@@ -781,7 +781,7 @@ then the <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Resp
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router.cr#L148" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router.cr#L148" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -791,7 +791,7 @@ then the <code><a href="../../../HTTP/Server/Response.html">::HTTP::Server::Resp
         
         def <strong>on</strong>(namespace : String? = <span class="n">nil</span>, &block : <span class="k">self</span> -> )
 
-        <a class="method-permalink" href="#on%28namespace%3AString%3F%3Dnil%2C%26block%3Aself-%3E%29-instance-method">#</a>
+        <a class="method-permalink" href="#on(namespace:String?=nil,&block:self-%3E)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Yield <code>self</code> with a <em>namespace</em>.
@@ -807,7 +807,7 @@ The <em>namespace</em> can also be empty or <code>nil</code>, so you can prettif
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router.cr#L128" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router.cr#L128" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -817,7 +817,7 @@ The <em>namespace</em> can also be empty or <code>nil</code>, so you can prettif
         
         def <strong>on</strong>(path, methods : Array(String), endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)
 
-        <a class="method-permalink" href="#on%28path%2Cmethods%3AArray%28String%29%2Cendpoint%3AHTTP%3A%3AEndpoint.class%29-instance-method">#</a>
+        <a class="method-permalink" href="#on(path,methods:Array(String),endpoint:HTTP::Endpoint.class)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a route for <em>path</em> and <em>methods</em> calling <em>endpoint</em>. See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>.
@@ -831,7 +831,7 @@ to this view.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router.cr#L169" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router.cr#L169" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -841,7 +841,7 @@ to this view.</p>
         
         def <strong>options</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)
 
-        <a class="method-permalink" href="#options%28path%2Cendpoint%3AHTTP%3A%3AEndpoint.class%29-instance-method">#</a>
+        <a class="method-permalink" href="#options(path,endpoint:HTTP::Endpoint.class)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a route for <em>path</em> with <code>OPTIONS</code> calling <em>endpoint</em>.
@@ -855,7 +855,7 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -865,7 +865,7 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
         
         def <strong>options</strong>(path, &proc : HTTP::Server::Context -> <a href="../../../Onyx/HTTP/View.html">View</a> | UNDERSCORE)
 
-        <a class="method-permalink" href="#options%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method">#</a>
+        <a class="method-permalink" href="#options(path,&proc:HTTP::Server::Context-%3EView%7CUNDERSCORE)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a route for <em>path</em> with <code>OPTIONS</code> method. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance
@@ -880,7 +880,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -890,7 +890,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
         
         def <strong>patch</strong>(path, &proc : HTTP::Server::Context -> <a href="../../../Onyx/HTTP/View.html">View</a> | UNDERSCORE)
 
-        <a class="method-permalink" href="#patch%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method">#</a>
+        <a class="method-permalink" href="#patch(path,&proc:HTTP::Server::Context-%3EView%7CUNDERSCORE)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a route for <em>path</em> with <code>PATCH</code> method. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance
@@ -905,7 +905,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -915,7 +915,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
         
         def <strong>patch</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)
 
-        <a class="method-permalink" href="#patch%28path%2Cendpoint%3AHTTP%3A%3AEndpoint.class%29-instance-method">#</a>
+        <a class="method-permalink" href="#patch(path,endpoint:HTTP::Endpoint.class)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a route for <em>path</em> with <code>PATCH</code> calling <em>endpoint</em>.
@@ -929,7 +929,7 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -939,7 +939,7 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
         
         def <strong>post</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)
 
-        <a class="method-permalink" href="#post%28path%2Cendpoint%3AHTTP%3A%3AEndpoint.class%29-instance-method">#</a>
+        <a class="method-permalink" href="#post(path,endpoint:HTTP::Endpoint.class)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a route for <em>path</em> with <code>POST</code> calling <em>endpoint</em>.
@@ -953,7 +953,7 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -963,7 +963,7 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
         
         def <strong>post</strong>(path, &proc : HTTP::Server::Context -> <a href="../../../Onyx/HTTP/View.html">View</a> | UNDERSCORE)
 
-        <a class="method-permalink" href="#post%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method">#</a>
+        <a class="method-permalink" href="#post(path,&proc:HTTP::Server::Context-%3EView%7CUNDERSCORE)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a route for <em>path</em> with <code>POST</code> method. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance
@@ -978,7 +978,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -988,7 +988,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
         
         def <strong>put</strong>(path, endpoint : <span class="t">HTTP</span><span class="t">::</span><span class="t">Endpoint</span>.<span class="k">class</span>)
 
-        <a class="method-permalink" href="#put%28path%2Cendpoint%3AHTTP%3A%3AEndpoint.class%29-instance-method">#</a>
+        <a class="method-permalink" href="#put(path,endpoint:HTTP::Endpoint.class)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a route for <em>path</em> with <code>PUT</code> calling <em>endpoint</em>.
@@ -1002,7 +1002,7 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1012,7 +1012,7 @@ See <code><a href="../../../Onyx/HTTP/Endpoint.html">Endpoint</a></code>. If a <
         
         def <strong>put</strong>(path, &proc : HTTP::Server::Context -> <a href="../../../Onyx/HTTP/View.html">View</a> | UNDERSCORE)
 
-        <a class="method-permalink" href="#put%28path%2C%26proc%3AHTTP%3A%3AServer%3A%3AContext-%3EView%7CUNDERSCORE%29-instance-method">#</a>
+        <a class="method-permalink" href="#put(path,&proc:HTTP::Server::Context-%3EView%7CUNDERSCORE)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a route for <em>path</em> with <code>PUT</code> method. If a <code><a href="../../../Onyx/HTTP/View.html">View</a></code> instance
@@ -1027,7 +1027,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1037,7 +1037,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
         
         def <strong>ws</strong>(path, &proc : ::HTTP::WebSocket, HTTP::Server::Context -> )
 
-        <a class="method-permalink" href="#ws%28path%2C%26proc%3A%3A%3AHTTP%3A%3AWebSocket%2CHTTP%3A%3AServer%3A%3AContext-%3E%29-instance-method">#</a>
+        <a class="method-permalink" href="#ws(path,&proc:::HTTP::WebSocket,HTTP::Server::Context-%3E)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a <code>"ws://"</code> route for <em>path</em>.</p>
@@ -1053,7 +1053,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router.cr#L215" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router.cr#L215" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1063,7 +1063,7 @@ is returned, then the <code><a href="../../../HTTP/Server/Response.html">::HTTP:
         
         def <strong>ws</strong>(path, channel : <span class="t">T</span>.<span class="k">class</span>) : Nil forall T
 
-        <a class="method-permalink" href="#ws%28path%2Cchannel%3AT.class%29%3ANilforallT-instance-method">#</a>
+        <a class="method-permalink" href="#ws(path,channel:T.class):NilforallT-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Draw a <code>"ws://"</code> route for <em>path</em> binding <em>channel</em>. See <code><a href="../../../Onyx/HTTP/Channel.html">Channel</a></code>.
@@ -1076,7 +1076,7 @@ A request is currently determined as websocket by <code>"Upgrade": "Websocket"</
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/router.cr#L227" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/router.cr#L227" target="_blank">View source</a>]
         
       </div>
     </div>

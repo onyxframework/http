@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.29.0">
+<meta name="generator" content="Crystal Docs 0.30.1">
 
 
 <link href="../../../css/style.css" rel="stylesheet" type="text/css">
@@ -240,8 +240,8 @@
 
   <h2>Overview</h2>
 
-  <p>Rescues <code>T</code>. Firstly calls <code><a href="../../../Onyx/HTTP/Middleware/Rescuer.html#handle%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method">#handle</a></code> to handle the error (e.g. log it).
-Calls <code><a href="../../../Onyx/HTTP/Middleware/Rescuer.html#before_next_handler%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method">#before_next_handler</a></code> and then the <code><a href="../../../Onyx/HTTP/Middleware/Rescuer.html#next_handler%3A%3A%3AHTTP%3A%3AHandler-instance-method">#next_handler</a></code>.</p>
+  <p>Rescues <code>T</code>. Firstly calls <code><a href="../../../Onyx/HTTP/Middleware/Rescuer.html#handle(context:HTTP::Server::Context,error:T)-instance-method">#handle</a></code> to handle the error (e.g. log it).
+Calls <code><a href="../../../Onyx/HTTP/Middleware/Rescuer.html#before_next_handler(context:HTTP::Server::Context,error:T)-instance-method">#before_next_handler</a></code> and then the <code><a href="../../../Onyx/HTTP/Middleware/Rescuer.html#next_handler:::HTTP::Handler-instance-method">#next_handler</a></code>.</p>
 
 <p>See <code><a href="../../../Onyx/HTTP/Middleware/Rescuer/Standard.html">Rescuer::Standard</a></code> and <code><a href="../../../Onyx/HTTP/Middleware/Rescuer/Silent.html">Rescuer::Silent</a></code>.</p>
 
@@ -277,28 +277,28 @@ Calls <code><a href="../../../Onyx/HTTP/Middleware/Rescuer.html#before_next_hand
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/rescuer.cr#L8" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/rescuer.cr#L8" target="_blank">
         onyx-http/middleware/rescuer.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/rescuer/silent.cr#L5" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/rescuer/silent.cr#L5" target="_blank">
         onyx-http/middleware/rescuer/silent.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/rescuer/error.cr#L3" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/rescuer/error.cr#L3" target="_blank">
         onyx-http/middleware/rescuer/error.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/rescuer/standard.cr#L8" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/rescuer/standard.cr#L8" target="_blank">
         onyx-http/middleware/rescuer/standard.cr
       </a>
     
@@ -313,7 +313,7 @@ Calls <code><a href="../../../Onyx/HTTP/Middleware/Rescuer.html#before_next_hand
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28next_handler%3A%3A%3AHTTP%3A%3AHandler%29-class-method" class="signature"><strong>.new</strong>(next_handler : ::HTTP::Handler)</a>
+        <a href="#new(next_handler:::HTTP::Handler)-class-method" class="signature"><strong>.new</strong>(next_handler : ::HTTP::Handler)</a>
         
           <div class="summary"><p>Initialize with a <em>next_handler</em> to call when a error is rescued.</p></div>
         
@@ -329,28 +329,28 @@ Calls <code><a href="../../../Onyx/HTTP/Middleware/Rescuer.html#before_next_hand
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#before_next_handler%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method" class="signature"><strong>#before_next_handler</strong>(context : HTTP::Server::Context, error : T)</a>
+        <a href="#before_next_handler(context:HTTP::Server::Context,error:T)-instance-method" class="signature"><strong>#before_next_handler</strong>(context : HTTP::Server::Context, error : T)</a>
         
-          <div class="summary"><p>Called just before the <code><a href="../../../Onyx/HTTP/Middleware/Rescuer.html#next_handler%3A%3A%3AHTTP%3A%3AHandler-instance-method">#next_handler</a></code> is called.</p></div>
+          <div class="summary"><p>Called just before the <code><a href="../../../Onyx/HTTP/Middleware/Rescuer.html#next_handler:::HTTP::Handler-instance-method">#next_handler</a></code> is called.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#handle%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method" class="signature"><strong>#handle</strong>(context : HTTP::Server::Context, error : T)</a>
+        <a href="#handle(context:HTTP::Server::Context,error:T)-instance-method" class="signature"><strong>#handle</strong>(context : HTTP::Server::Context, error : T)</a>
         
           <div class="summary"><p>Process the error before further handling.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#next_handler%3A%3A%3AHTTP%3A%3AHandler-instance-method" class="signature"><strong>#next_handler</strong> : ::HTTP::Handler</a>
+        <a href="#next_handler:::HTTP::Handler-instance-method" class="signature"><strong>#next_handler</strong> : ::HTTP::Handler</a>
         
           <div class="summary"><p>A handler to call when a error is rescued.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#next_handler%3D%28next_handler%3A%3A%3AHTTP%3A%3AHandler%29-instance-method" class="signature"><strong>#next_handler=</strong>(next_handler : ::HTTP::Handler)</a>
+        <a href="#next_handler=(next_handler:::HTTP::Handler)-instance-method" class="signature"><strong>#next_handler=</strong>(next_handler : ::HTTP::Handler)</a>
         
           <div class="summary"><p>A handler to call when a error is rescued.</p></div>
         
@@ -384,7 +384,7 @@ Calls <code><a href="../../../Onyx/HTTP/Middleware/Rescuer.html#before_next_hand
         
         def self.<strong>new</strong>(next_handler : ::HTTP::Handler)
 
-        <a class="method-permalink" href="#new%28next_handler%3A%3A%3AHTTP%3A%3AHandler%29-class-method">#</a>
+        <a class="method-permalink" href="#new(next_handler:::HTTP::Handler)-class-method">#</a>
       </div>
       
         <div class="doc"><p>Initialize with a <em>next_handler</em> to call when a error is rescued.</p></div>
@@ -392,7 +392,7 @@ Calls <code><a href="../../../Onyx/HTTP/Middleware/Rescuer.html#before_next_hand
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/rescuer.cr#L15" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/rescuer.cr#L15" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -409,16 +409,16 @@ Calls <code><a href="../../../Onyx/HTTP/Middleware/Rescuer.html#before_next_hand
         
         def <strong>before_next_handler</strong>(context : HTTP::Server::Context, error : T)
 
-        <a class="method-permalink" href="#before_next_handler%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method">#</a>
+        <a class="method-permalink" href="#before_next_handler(context:HTTP::Server::Context,error:T)-instance-method">#</a>
       </div>
       
-        <div class="doc"><p>Called just before the <code><a href="../../../Onyx/HTTP/Middleware/Rescuer.html#next_handler%3A%3A%3AHTTP%3A%3AHandler-instance-method">#next_handler</a></code> is called.
+        <div class="doc"><p>Called just before the <code><a href="../../../Onyx/HTTP/Middleware/Rescuer.html#next_handler:::HTTP::Handler-instance-method">#next_handler</a></code> is called.
 It does <code>context.response.error = error</code> by default.</p></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/rescuer.cr#L32" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/rescuer.cr#L32" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -428,7 +428,7 @@ It does <code>context.response.error = error</code> by default.</p></div>
         abstract 
         def <strong>handle</strong>(context : HTTP::Server::Context, error : T)
 
-        <a class="method-permalink" href="#handle%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method">#</a>
+        <a class="method-permalink" href="#handle(context:HTTP::Server::Context,error:T)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Process the error before further handling. A good example is logging it.</p></div>
@@ -436,7 +436,7 @@ It does <code>context.response.error = error</code> by default.</p></div>
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/rescuer.cr#L28" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/rescuer.cr#L28" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -446,7 +446,7 @@ It does <code>context.response.error = error</code> by default.</p></div>
         
         def <strong>next_handler</strong> : ::HTTP::Handler
 
-        <a class="method-permalink" href="#next_handler%3A%3A%3AHTTP%3A%3AHandler-instance-method">#</a>
+        <a class="method-permalink" href="#next_handler:::HTTP::Handler-instance-method">#</a>
       </div>
       
         <div class="doc"><p>A handler to call when a error is rescued.</p></div>
@@ -454,7 +454,7 @@ It does <code>context.response.error = error</code> by default.</p></div>
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/rescuer.cr#L14" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/rescuer.cr#L14" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -464,7 +464,7 @@ It does <code>context.response.error = error</code> by default.</p></div>
         
         def <strong>next_handler=</strong>(next_handler : ::HTTP::Handler)
 
-        <a class="method-permalink" href="#next_handler%3D%28next_handler%3A%3A%3AHTTP%3A%3AHandler%29-instance-method">#</a>
+        <a class="method-permalink" href="#next_handler=(next_handler:::HTTP::Handler)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>A handler to call when a error is rescued.</p></div>
@@ -472,7 +472,7 @@ It does <code>context.response.error = error</code> by default.</p></div>
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/rescuer.cr#L18" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/rescuer.cr#L18" target="_blank">View source</a>]
         
       </div>
     </div>

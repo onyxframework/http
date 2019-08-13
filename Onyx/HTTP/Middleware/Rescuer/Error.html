@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.29.0">
+<meta name="generator" content="Crystal Docs 0.30.1">
 
 
 <link href="../../../../css/style.css" rel="stylesheet" type="text/css">
@@ -256,7 +256,7 @@
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/rescuer/error.cr#L4" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/rescuer/error.cr#L4" target="_blank">
         onyx-http/middleware/rescuer/error.cr
       </a>
     
@@ -271,7 +271,7 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28next_handler%3A%3A%3AHTTP%3A%3AHandler%29-class-method" class="signature"><strong>.new</strong>(next_handler : ::HTTP::Handler)</a>
+        <a href="#new(next_handler:::HTTP::Handler)-class-method" class="signature"><strong>.new</strong>(next_handler : ::HTTP::Handler)</a>
         
           <div class="summary"><p>Initialize with a <em>next_handler</em> to call when a error is rescued.</p></div>
         
@@ -294,7 +294,7 @@
   <h3>Instance methods inherited from class <code><a href="../../../../Onyx/HTTP/Middleware/Rescuer/Silent.html">Onyx::HTTP::Middleware::Rescuer::Silent</a>(<a href="../../../../Onyx/HTTP/Error.html">Onyx::HTTP::Error(Code)</a>)</code></h3>
   
   
-    <a href="../../../../Onyx/HTTP/Middleware/Rescuer/Silent.html#handle%28context%2Cerror%29-instance-method" class="tooltip">
+    <a href="../../../../Onyx/HTTP/Middleware/Rescuer/Silent.html#handle(context,error)-instance-method" class="tooltip">
       <span>handle(context, error)</span>
     handle</a>
     
@@ -306,7 +306,7 @@
   <h3>Constructor methods inherited from class <code><a href="../../../../Onyx/HTTP/Middleware/Rescuer/Silent.html">Onyx::HTTP::Middleware::Rescuer::Silent</a>(<a href="../../../../Onyx/HTTP/Error.html">Onyx::HTTP::Error(Code)</a>)</code></h3>
   
   
-    <a href="../../../../Onyx/HTTP/Middleware/Rescuer/Silent.html#new%28next_handler%3A%3A%3AHTTP%3A%3AHandler%29-class-method" class="tooltip">
+    <a href="../../../../Onyx/HTTP/Middleware/Rescuer/Silent.html#new(next_handler:::HTTP::Handler)-class-method" class="tooltip">
       <span>new(next_handler : ::HTTP::Handler)</span>
     new</a>
     
@@ -322,22 +322,22 @@
   <h3>Instance methods inherited from module <code><a href="../../../../Onyx/HTTP/Middleware/Rescuer.html">Onyx::HTTP::Middleware::Rescuer</a>(<a href="../../../../Onyx/HTTP/Error.html">Onyx::HTTP::Error(Code)</a>)</code></h3>
   
   
-    <a href="../../../../Onyx/HTTP/Middleware/Rescuer.html#before_next_handler%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method" class="tooltip">
+    <a href="../../../../Onyx/HTTP/Middleware/Rescuer.html#before_next_handler(context:HTTP::Server::Context,error:T)-instance-method" class="tooltip">
       <span>before_next_handler(context : HTTP::Server::Context, error : T)</span>
     before_next_handler</a>, 
     
   
-    <a href="../../../../Onyx/HTTP/Middleware/Rescuer.html#handle%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method" class="tooltip">
+    <a href="../../../../Onyx/HTTP/Middleware/Rescuer.html#handle(context:HTTP::Server::Context,error:T)-instance-method" class="tooltip">
       <span>handle(context : HTTP::Server::Context, error : T)</span>
     handle</a>, 
     
   
-    <a href="../../../../Onyx/HTTP/Middleware/Rescuer.html#next_handler%3A%3A%3AHTTP%3A%3AHandler-instance-method" class="tooltip">
+    <a href="../../../../Onyx/HTTP/Middleware/Rescuer.html#next_handler:::HTTP::Handler-instance-method" class="tooltip">
       <span>next_handler : ::HTTP::Handler</span>
     next_handler</a>, 
     
   
-    <a href="../../../../Onyx/HTTP/Middleware/Rescuer.html#next_handler%3D%28next_handler%3A%3A%3AHTTP%3A%3AHandler%29-instance-method" class="tooltip">
+    <a href="../../../../Onyx/HTTP/Middleware/Rescuer.html#next_handler=(next_handler:::HTTP::Handler)-instance-method" class="tooltip">
       <span>next_handler=(next_handler : ::HTTP::Handler)</span>
     next_handler=</a>
     
@@ -349,7 +349,7 @@
   <h3>Constructor methods inherited from module <code><a href="../../../../Onyx/HTTP/Middleware/Rescuer.html">Onyx::HTTP::Middleware::Rescuer</a>(<a href="../../../../Onyx/HTTP/Error.html">Onyx::HTTP::Error(Code)</a>)</code></h3>
   
   
-    <a href="../../../../Onyx/HTTP/Middleware/Rescuer.html#new%28next_handler%3A%3A%3AHTTP%3A%3AHandler%29-class-method" class="tooltip">
+    <a href="../../../../Onyx/HTTP/Middleware/Rescuer.html#new(next_handler:::HTTP::Handler)-class-method" class="tooltip">
       <span>new(next_handler : ::HTTP::Handler)</span>
     new</a>
     
@@ -400,7 +400,7 @@
         
         def self.<strong>new</strong>(next_handler : ::HTTP::Handler)
 
-        <a class="method-permalink" href="#new%28next_handler%3A%3A%3AHTTP%3A%3AHandler%29-class-method">#</a>
+        <a class="method-permalink" href="#new(next_handler:::HTTP::Handler)-class-method">#</a>
       </div>
       
         <div class="doc"><p>Initialize with a <em>next_handler</em> to call when a error is rescued.</p></div>
@@ -408,7 +408,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/rescuer.cr#L15" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/rescuer.cr#L15" target="_blank">View source</a>]
         
       </div>
     </div>

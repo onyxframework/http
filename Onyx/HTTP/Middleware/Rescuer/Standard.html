@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.29.0">
+<meta name="generator" content="Crystal Docs 0.30.1">
 
 
 <link href="../../../../css/style.css" rel="stylesheet" type="text/css">
@@ -275,7 +275,7 @@ handlers <span class="o">=</span> [logger, rescuer, router, renderer]</code></pr
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/rescuer/standard.cr#L20" target="_blank">
+      <a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/rescuer/standard.cr#L20" target="_blank">
         onyx-http/middleware/rescuer/standard.cr
       </a>
     
@@ -290,7 +290,7 @@ handlers <span class="o">=</span> [logger, rescuer, router, renderer]</code></pr
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28next_handler%3A%3A%3AHTTP%3A%3AHandler%3F%3Dnil%2Clogger%3A%3A%3ALogger%3D%3A%3ALogger.new%28STDERR%29%2Cverbose%3ABool%3Dtrue%29-class-method" class="signature"><strong>.new</strong>(next_handler : ::HTTP::Handler? = <span class="n">nil</span>, logger : ::Logger = <span class="t">::</span><span class="t">Logger</span>.<span class="k">new</span>(<span class="t">STDERR</span>), verbose : Bool = <span class="n">true</span>)</a>
+        <a href="#new(next_handler:::HTTP::Handler?=nil,logger:::Logger=::Logger.new(STDERR),verbose:Bool=true)-class-method" class="signature"><strong>.new</strong>(next_handler : ::HTTP::Handler? = <span class="n">nil</span>, logger : ::Logger = <span class="t">::</span><span class="t">Logger</span>.<span class="k">new</span>(<span class="t">STDERR</span>), verbose : Bool = <span class="n">true</span>)</a>
         
           <div class="summary"><p>Set <em>verbose</em> to <code>false</code> to turn off logging errors' backtraces.</p></div>
         
@@ -306,21 +306,21 @@ handlers <span class="o">=</span> [logger, rescuer, router, renderer]</code></pr
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#handle%28context%2Cerror%29-instance-method" class="signature"><strong>#handle</strong>(context, error)</a>
+        <a href="#handle(context,error)-instance-method" class="signature"><strong>#handle</strong>(context, error)</a>
         
-          <div class="summary"><p>Log the <em>error</em> into the <code><a href="../../../../Onyx/HTTP/Middleware/Rescuer/Standard.html#logger%3A%3A%3ALogger-instance-method">#logger</a></code>.</p></div>
+          <div class="summary"><p>Log the <em>error</em> into the <code><a href="../../../../Onyx/HTTP/Middleware/Rescuer/Standard.html#logger:::Logger-instance-method">#logger</a></code>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#logger%3A%3A%3ALogger-instance-method" class="signature"><strong>#logger</strong> : ::Logger</a>
+        <a href="#logger:::Logger-instance-method" class="signature"><strong>#logger</strong> : ::Logger</a>
         
           <div class="summary"><p>A <code><a href="../../../../Onyx/HTTP/Middleware/Logger.html">Logger</a></code> to log to.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#logger%3D%28logger%3A%3A%3ALogger%29-instance-method" class="signature"><strong>#logger=</strong>(logger : ::Logger)</a>
+        <a href="#logger=(logger:::Logger)-instance-method" class="signature"><strong>#logger=</strong>(logger : ::Logger)</a>
         
           <div class="summary"><p>A <code><a href="../../../../Onyx/HTTP/Middleware/Logger.html">Logger</a></code> to log to.</p></div>
         
@@ -339,22 +339,22 @@ handlers <span class="o">=</span> [logger, rescuer, router, renderer]</code></pr
   <h3>Instance methods inherited from module <code><a href="../../../../Onyx/HTTP/Middleware/Rescuer.html">Onyx::HTTP::Middleware::Rescuer(T)</a></code></h3>
   
   
-    <a href="../../../../Onyx/HTTP/Middleware/Rescuer.html#before_next_handler%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method" class="tooltip">
+    <a href="../../../../Onyx/HTTP/Middleware/Rescuer.html#before_next_handler(context:HTTP::Server::Context,error:T)-instance-method" class="tooltip">
       <span>before_next_handler(context : HTTP::Server::Context, error : T)</span>
     before_next_handler</a>, 
     
   
-    <a href="../../../../Onyx/HTTP/Middleware/Rescuer.html#handle%28context%3AHTTP%3A%3AServer%3A%3AContext%2Cerror%3AT%29-instance-method" class="tooltip">
+    <a href="../../../../Onyx/HTTP/Middleware/Rescuer.html#handle(context:HTTP::Server::Context,error:T)-instance-method" class="tooltip">
       <span>handle(context : HTTP::Server::Context, error : T)</span>
     handle</a>, 
     
   
-    <a href="../../../../Onyx/HTTP/Middleware/Rescuer.html#next_handler%3A%3A%3AHTTP%3A%3AHandler-instance-method" class="tooltip">
+    <a href="../../../../Onyx/HTTP/Middleware/Rescuer.html#next_handler:::HTTP::Handler-instance-method" class="tooltip">
       <span>next_handler : ::HTTP::Handler</span>
     next_handler</a>, 
     
   
-    <a href="../../../../Onyx/HTTP/Middleware/Rescuer.html#next_handler%3D%28next_handler%3A%3A%3AHTTP%3A%3AHandler%29-instance-method" class="tooltip">
+    <a href="../../../../Onyx/HTTP/Middleware/Rescuer.html#next_handler=(next_handler:::HTTP::Handler)-instance-method" class="tooltip">
       <span>next_handler=(next_handler : ::HTTP::Handler)</span>
     next_handler=</a>
     
@@ -366,7 +366,7 @@ handlers <span class="o">=</span> [logger, rescuer, router, renderer]</code></pr
   <h3>Constructor methods inherited from module <code><a href="../../../../Onyx/HTTP/Middleware/Rescuer.html">Onyx::HTTP::Middleware::Rescuer(T)</a></code></h3>
   
   
-    <a href="../../../../Onyx/HTTP/Middleware/Rescuer.html#new%28next_handler%3A%3A%3AHTTP%3A%3AHandler%29-class-method" class="tooltip">
+    <a href="../../../../Onyx/HTTP/Middleware/Rescuer.html#new(next_handler:::HTTP::Handler)-class-method" class="tooltip">
       <span>new(next_handler : ::HTTP::Handler)</span>
     new</a>
     
@@ -417,7 +417,7 @@ handlers <span class="o">=</span> [logger, rescuer, router, renderer]</code></pr
         
         def self.<strong>new</strong>(next_handler : ::HTTP::Handler? = <span class="n">nil</span>, logger : ::Logger = <span class="t">::</span><span class="t">Logger</span>.<span class="k">new</span>(<span class="t">STDERR</span>), verbose : Bool = <span class="n">true</span>)
 
-        <a class="method-permalink" href="#new%28next_handler%3A%3A%3AHTTP%3A%3AHandler%3F%3Dnil%2Clogger%3A%3A%3ALogger%3D%3A%3ALogger.new%28STDERR%29%2Cverbose%3ABool%3Dtrue%29-class-method">#</a>
+        <a class="method-permalink" href="#new(next_handler:::HTTP::Handler?=nil,logger:::Logger=::Logger.new(STDERR),verbose:Bool=true)-class-method">#</a>
       </div>
       
         <div class="doc"><p>Set <em>verbose</em> to <code>false</code> to turn off logging errors' backtraces.</p></div>
@@ -425,7 +425,7 @@ handlers <span class="o">=</span> [logger, rescuer, router, renderer]</code></pr
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/rescuer/standard.cr#L27" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/rescuer/standard.cr#L27" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -442,15 +442,15 @@ handlers <span class="o">=</span> [logger, rescuer, router, renderer]</code></pr
         
         def <strong>handle</strong>(context, error)
 
-        <a class="method-permalink" href="#handle%28context%2Cerror%29-instance-method">#</a>
+        <a class="method-permalink" href="#handle(context,error)-instance-method">#</a>
       </div>
       
-        <div class="doc"><p>Log the <em>error</em> into the <code><a href="../../../../Onyx/HTTP/Middleware/Rescuer/Standard.html#logger%3A%3A%3ALogger-instance-method">#logger</a></code>.</p></div>
+        <div class="doc"><p>Log the <em>error</em> into the <code><a href="../../../../Onyx/HTTP/Middleware/Rescuer/Standard.html#logger:::Logger-instance-method">#logger</a></code>.</p></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/rescuer/standard.cr#L36" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/rescuer/standard.cr#L36" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -460,7 +460,7 @@ handlers <span class="o">=</span> [logger, rescuer, router, renderer]</code></pr
         
         def <strong>logger</strong> : ::Logger
 
-        <a class="method-permalink" href="#logger%3A%3A%3ALogger-instance-method">#</a>
+        <a class="method-permalink" href="#logger:::Logger-instance-method">#</a>
       </div>
       
         <div class="doc"><p>A <code><a href="../../../../Onyx/HTTP/Middleware/Logger.html">Logger</a></code> to log to. Can be changed in runtime.</p></div>
@@ -468,7 +468,7 @@ handlers <span class="o">=</span> [logger, rescuer, router, renderer]</code></pr
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/rescuer/standard.cr#L26" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/rescuer/standard.cr#L26" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -478,7 +478,7 @@ handlers <span class="o">=</span> [logger, rescuer, router, renderer]</code></pr
         
         def <strong>logger=</strong>(logger : ::Logger)
 
-        <a class="method-permalink" href="#logger%3D%28logger%3A%3A%3ALogger%29-instance-method">#</a>
+        <a class="method-permalink" href="#logger=(logger:::Logger)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>A <code><a href="../../../../Onyx/HTTP/Middleware/Logger.html">Logger</a></code> to log to. Can be changed in runtime.</p></div>
@@ -486,7 +486,7 @@ handlers <span class="o">=</span> [logger, rescuer, router, renderer]</code></pr
       <br/>
       <div>
         
-          [<a href="https://github.com/onyxframework/http/blob/5e950b4426234da6e6aa7b11d76a4318639d032e/src/onyx-http/middleware/rescuer/standard.cr#L30" target="_blank">View source</a>]
+          [<a href="https://github.com/onyxframework/http/blob/7b23271f8b03440227cbdbdb5edd670a6b7a26aa/src/onyx-http/middleware/rescuer/standard.cr#L30" target="_blank">View source</a>]
         
       </div>
     </div>
